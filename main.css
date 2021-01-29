@@ -46,7 +46,7 @@ header, nav, section, article, aside, footer, hgroup {
 html, body {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  background-color: rgb(43 44 51);
+  background-color: white;
   font-size: 16px;
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -101,12 +101,15 @@ label {
 }
 
 form {
-    padding: 40px;
+    background-color: #20aa4d;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
     border-radius: 4px;
     margin-top: 20px;
-    -webkit-box-shadow: 0px 0px 12px 8px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 0px 12px 8px rgba(0,0,0,1);
-    box-shadow: 0px 0px 12px 8px rgba(0,0,0,1);
+    -webkit-box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
+    box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
 }
 
 ​input[type=checkbox] {
@@ -116,6 +119,10 @@ form {
     line-height: 1.1em;
 }
 
+select {
+  margin-bottom: 8px;
+}
+
 /* 
 ---------------------------------------------
 global styles
@@ -123,7 +130,7 @@ global styles
 */
 html,
 body {
-  background: #006225;
+  background:#f5f6f2;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -141,23 +148,45 @@ body {
     transition: all .5s ease 0s;
   }
   
-  .header-area .main-nav {
+  .header-area {
     min-height: 80px;
     background: rgb(43 44 51);
   }
-  
-  .header-area .main-nav .logo {
-    line-height: 80px;
-    color: #fff;
-    font-size: 32px;
-    font-weight: 800;
-    text-transform: uppercase;
-    float: left;
-    -webkit-transition: all 0.3s ease 0s;
-    -moz-transition: all 0.3s ease 0s;
-    -o-transition: all 0.3s ease 0s;
-    transition: all 0.3s ease 0s;
+
+  .row {
+    padding-top: 8px;
   }
+
+  .main-selector {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+  }
+
+  .button {
+    background-color: #fab477;
+    border-radius: 4px;
+    padding: 8px;
+    border: none;
+    transition: .3s all;
+    float: right;
+  }
+
+  .button:hover {
+    background-color:#f5841f;
+    border-radius: 4px;
+    padding: 8px;
+    transition: .3s all;
+  }
+
+  .icon {
+    transform: scalex(-1);
+    -webkit-box-shadow: -4px 4px 5px 3px rgba(0,0,0,1);
+    -moz-box-shadow: -4px 4px 5px 3px rgba(0,0,0,1);
+    box-shadow: -4px 4px 5px 2px rgba(0,0,0,0.6);
+    display: inline-block;
+  }
+
 
   /* 
 ---------------------------------------------
@@ -167,9 +196,9 @@ footer
 footer {
     text-align: center;
     padding: 30px 0px;
-    background-color: black;
+    background: rgb(43 44 51);
     position:absolute;
     bottom: 0;
     width: 100%;
   }
-  /* 
+  /*
