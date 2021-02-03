@@ -61,11 +61,16 @@ a {
   text-decoration: none !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h3, h4, h5, h6 {
   margin-top: 0px;
   margin-bottom: 0px;
   color: white;
   padding: 8px;
+}
+
+h2 {
+  color: rgb(0, 0, 0, 0.5);
+  text-align: center;
 }
 
 ul {
@@ -155,6 +160,7 @@ body {
 
   .row {
     padding-top: 8px;
+    position: relative;
   }
 
   .main-selector {
@@ -164,12 +170,15 @@ body {
   }
 
   .button {
-    background-color: #fab477;
+    background-color:#f5841f;
     border-radius: 4px;
     padding: 8px;
     border: none;
     transition: .3s all;
-    float: right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 1.5em;
   }
 
   .button:hover {
@@ -177,6 +186,7 @@ body {
     border-radius: 4px;
     padding: 8px;
     transition: .3s all;
+    font-size: 1.6em;
   }
 
   .icon {
@@ -187,6 +197,32 @@ body {
     display: inline-block;
   }
 
+  .row-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    opacity: 0.8;
+  }
+
+  .active {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+  }
+
+  .active h2 {
+    color: black;
+  }
+
+  .active img {
+    -webkit-box-shadow: -4px 4px 5px 3px rgba(0,0,0,1);
+    -moz-box-shadow: -4px 4px 5px 3px rgba(0,0,0,1);
+    box-shadow: -4px 4px 5px 2px rgba(0,0,0,0.6);
+    width: 55%;
+    opacity: 1;
+  }
 
   /* 
 ---------------------------------------------

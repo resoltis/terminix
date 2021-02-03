@@ -3,8 +3,10 @@
 //Get the dropdown list by ID
 var select = document.getElementById('service');
 //Function that recognizes change in value
-function logValue() {
-    switch (this.value) {
+
+
+function logValue(type) {
+    switch (type) {
         //Each case gets the 'value' from the drop down option
         case 's3':
             //Hide each form except the one selected
@@ -15,6 +17,14 @@ function logValue() {
             document.getElementById('rds_form').style.display = "none";
             document.getElementById('lambda_form').style.display = "none";
             document.getElementById('fargate_form').style.display = "none";
+
+            document.getElementById('s3_picker').toggleAttribute("active", 1000);
+            document.getElementById('s3_picker').classList.add("active");
+            document.getElementById('ec2_picker').classList.remove("active");
+            document.getElementById('rds_picker').classList.remove("active");
+            document.getElementById('lambda_picker').classList.remove("active");
+            document.getElementById('fargate_picker').classList.remove("active");
+            
             break;
         case 'ec2':
             document.getElementById('s3_form').style.display = "none";
@@ -22,6 +32,13 @@ function logValue() {
             document.getElementById('rds_form').style.display = "none";
             document.getElementById('lambda_form').style.display = "none";
             document.getElementById('fargate_form').style.display = "none";
+
+            document.getElementById('s3_picker').classList.remove("active");
+            document.getElementById('ec2_picker').classList.add("active");
+            document.getElementById('rds_picker').classList.remove("active");
+            document.getElementById('lambda_picker').classList.remove("active");
+            document.getElementById('fargate_picker').classList.remove("active");
+            
             break;
         case 'rds':
             document.getElementById('s3_form').style.display = "none";
@@ -29,6 +46,13 @@ function logValue() {
             document.getElementById('rds_form').style.display = "block";
             document.getElementById('lambda_form').style.display = "none";
             document.getElementById('fargate_form').style.display = "none";
+            
+            document.getElementById('s3_picker').classList.remove("active");
+            document.getElementById('ec2_picker').classList.remove("active");
+            document.getElementById('rds_picker').classList.add("active");
+            document.getElementById('lambda_picker').classList.remove("active");
+            document.getElementById('fargate_picker').classList.remove("active");
+            
             break;
         case 'lambda':
             document.getElementById('s3_form').style.display = "none";
@@ -36,6 +60,13 @@ function logValue() {
             document.getElementById('rds_form').style.display = "none";
             document.getElementById('lambda_form').style.display = "block";
             document.getElementById('fargate_form').style.display = "none";
+            
+            document.getElementById('s3_picker').classList.remove("active");
+            document.getElementById('ec2_picker').classList.remove("active");
+            document.getElementById('rds_picker').classList.remove("active");
+            document.getElementById('lambda_picker').classList.add("active");
+            document.getElementById('fargate_picker').classList.remove("active");
+            
             break;
         case 'fargate':
             document.getElementById('s3_form').style.display = "none";
@@ -43,13 +74,15 @@ function logValue() {
             document.getElementById('rds_form').style.display = "none";
             document.getElementById('lambda_form').style.display = "none";
             document.getElementById('fargate_form').style.display = "block";
+            
+            document.getElementById('s3_picker').classList.remove("active");
+            document.getElementById('ec2_picker').classList.remove("active");
+            document.getElementById('rds_picker').classList.remove("active");
+            document.getElementById('lambda_picker').classList.remove("active");
+            document.getElementById('fargate_picker').classList.add("active");
+            
             break;
     }
 }
 select.addEventListener('change', logValue, false);
 
-function create_s3_tf () {
-    var name = document.getElementById('s3_name').value;
-    var size = document.getElementById('s3_size').value;
-    alert(name + size);
-}
