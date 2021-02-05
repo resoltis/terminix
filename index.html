@@ -46,7 +46,7 @@
                     </div>
                 </div>-->
                 <div class="col-md-1"></div>
-                <div class="col-md-2 active" id="s3_picker">
+                <div class="col-md-2" id="s3_picker">
                     <img class="row-icon" src="icons/s3.jpg" onclick="logValue('s3')"/>
                     <h2>S3 Bucket</h2>
                 </div>
@@ -62,7 +62,7 @@
                     <img class="row-icon" src="icons/lambda.jpg" onclick="logValue('lambda')"/>
                     <h2>Lambda Function</h2>
                 </div>
-                <div class="col-md-2" id="fargate_picker">
+                <div class="col-md-2 active" id="fargate_picker">
                     <img class="row-icon" src="icons/fargate.jpg" onclick="logValue('fargate')"/>
                     <h2>Fargate Instance</h2>
                 </div>
@@ -72,7 +72,7 @@
                 <!--Set width of form aka 7 columns out of the 12 on the page-->
                 <div class="col-md-10">
                     <!--S3 Bucket form-->
-                    <form id="s3_form" onsubmit="create_s3_tf()">
+                    <form id="s3_form" style="display: none;">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
@@ -247,7 +247,7 @@
                     </form>
 
                     <!--Fargate Container form-->
-                    <form id="fargate_form" style="display: none;">
+                    <form id="fargate_form">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
@@ -257,26 +257,36 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <label for="pam1">Choose A Parameter:</label>
-                                    <select id="pam1" name="pam1">
-                                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
-                                        <option value="s3">S3 Bucket</option>
-                                        <option value="ec2">EC2 Instance</option>
-                                        <option value="rds">RDS Database</option>
-                                        <option value="lambda">Lambda Function</option>
-                                        <option value="fargate">Fargate Instance</option>
-                                    </select>
+                                    <div class="col-md-6">
+                                        <label for="url">Enter Repo URL:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="url" id="url" type="text">
+                                    </div>
                                 </div>
                                 <div class="row">
-                                    <label for="pam2">Choose A Parameter:</label>
-                                    <select id="pam2" name="pam2">
-                                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
-                                        <option value="s3">S3 Bucket</option>
-                                        <option value="ec2">Test</option>
-                                        <option value="rds">RDS Database</option>
-                                        <option value="lambda">Lambda Function</option>
-                                        <option value="fargate">Fargate Instance</option>
-                                    </select>
+                                    <div class="col-md-6">
+                                        <label for="environment">Choose An Envirionment:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="environment" name="environment">
+                                            <!--all the values in the dropdown list, 'value' is what is passed to JS-->
+                                            <option value="dev">Dev</option>
+                                            <option value="test">Test</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="environment">Choose An Envirionment:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="environment" name="environment" style="width: 100%;">
+                                            <!--all the values in the dropdown list, 'value' is what is passed to JS-->
+                                            <option value="dev">Dev</option>
+                                            <option value="test">Test</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
