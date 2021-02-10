@@ -86,3 +86,78 @@ function logValue(type) {
 }
 select.addEventListener('change', logValue, false);
 
+
+//make sure to change environment based on account
+function detectAccount(selectObject) {
+    var value = selectObject.value;
+    if(value === "corpsapps" || value === "integration") {
+        var list = document.getElementById('environment').getElementsByTagName('option');
+        for (var i = 0; i < list.length; i++) {
+            // lowercase comparison for case-insensitivity
+            if(list[i].value.toLowerCase() == "uat") list[i].hidden = false ;
+            if(list[i].value.toLowerCase() == "qa") list[i].hidden = false ;
+            if(list[i].value.toLowerCase() == "training") list[i].hidden = false ;
+          }
+    }
+    else {
+        var list = document.getElementById('environment').getElementsByTagName('option');
+        for (var i = 0; i < list.length; i++) {
+            // lowercase comparison for case-insensitivity
+            if(list[i].value.toLowerCase() == "uat") list[i].hidden = true ;
+            if(list[i].value.toLowerCase() == "qa") list[i].hidden = true ;
+            if(list[i].value.toLowerCase() == "training") list[i].hidden = true ;
+          }
+
+    }
+  }
+
+  //make sure task cpu and task memory are compatible
+function detectTaskCPU() {
+    
+    var cpu = document.getElementById('taskCPU');
+    var memory = document.getElementById('taskMemory');
+
+    if(cpu.value === "1024") 
+    {
+        memory[2].selected = "selected";
+        memory[0].hidden = true;
+        memory[1].hidden = true;
+        memory[2].hidden = false;
+    }
+    else
+    if(cpu.value === "512") 
+    {
+        memory[1].selected = "selected";
+        memory[0].hidden = true;
+        memory[1].hidden = false;
+        memory[2].hidden = false;
+    }
+    else
+    if(cpu.value === "256") 
+    { 
+        memory[0].selected = "selected";
+        memory[0].hidden = false;
+        memory[1].hidden = false;
+        memory[2].hidden = false;
+    }
+
+
+}
+
+function uploadFiles() {
+    alert(('Account:' + account.value) + '\n' +
+    ('Environment:' +environment.value) + '\n' +
+    ('Business Unit:' +businessUnit.value) + '\n' +
+    ('Name:' +fargateName.value) + '\n' +
+    ('Name Prefix:' +namePrefix.value) + '\n' +
+    ('Cluster Name:' +clusterName.value) + '\n' +
+    ('Task Container:' +taskContainer.value) + '\n' +
+    ('Container Name:' +containerName.value) + '\n' +
+    ('Host Port:' +hostPort.value) + '\n' +
+    ('Container Port:' +containerPort.value) + '\n' +
+    ('Task CPU:' +taskCPU.value) + '\n' +
+    ('Task Memory:' +taskMemory.value) + '\n' +
+    ('ALB Port:' +albPort.value) + '\n' +
+    ('Task Container Image:' +taskContainerImage.value) + '\n' +
+    ('App Count:' +appCount.value));
+}

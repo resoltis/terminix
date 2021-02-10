@@ -55,6 +55,7 @@ html, body {
 
 body {
     padding-top: 85px;
+    padding-bottom: 85px;
 }
 
 a {
@@ -103,8 +104,8 @@ header img {
 label {
     color: white;
     font-size: 1.3em;
-    text-align: right;
-    float: right;
+    text-align: left;
+    width: 100%;
 }
 
 form {
@@ -177,9 +178,6 @@ body {
     padding: 8px;
     border: none;
     transition: .3s all;
-    position: absolute;
-    right: 0;
-    bottom: 0;
     font-size: 1.5em;
   }
 
@@ -224,8 +222,12 @@ body {
     opacity: 1;
   }
 
-  .col-md-6 input, select {
+  .col-md-4 input, select {
     width: 100%;
+  }
+
+  .col-md-4 {
+    padding: 24px;
   }
 
 
@@ -237,7 +239,6 @@ footer
 */
 footer {
     text-align: center;
-    padding: 30px 0px;
     background: rgb(43 44 51);
     position:absolute;
     bottom: 0;
