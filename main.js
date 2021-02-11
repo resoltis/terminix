@@ -150,6 +150,7 @@ function uploadFiles() {
     ('Business Unit:' +businessUnit.value) + '\n' +
     ('Name:' +fargateName.value) + '\n' +
     ('Name Prefix:' +namePrefix.value) + '\n' +
+    ('Repo URL:' +repoUrl.value) + '\n' +
     ('Cluster Name:' +clusterName.value) + '\n' +
     ('Task Container:' +taskContainer.value) + '\n' +
     ('Container Name:' +containerName.value) + '\n' +
