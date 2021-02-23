@@ -67,17 +67,21 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   'launch_type = "FARGATE"' + '\n' +
   'container_port = ' + req.body.containerPort;
 
+  fs.mkdir(req.body.environment);
+
   //Write the file
-  fs.writeFile('dev.tfvars', content, err => {
+  fs.writeFile(req.body.environment + '\dev.tfvars', content, err => {
       if (err) {
           console.debug(err);
           //We may need to send user to a file fail page here
           return
       }
   //file written successfully
+
   });
 
   //When finished, send user to file success page!
   res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
+
 });
 
