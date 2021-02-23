@@ -71,6 +71,36 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   ' region = "us-east-1"' + '\n' +
   ' profile = "' + req.body.businessUnit + '"' + '\n' + '}';
 
+
+  const variableContent = '#common' + '\n' + 
+  'variable "Environment" { default = "" }' + '\n' +
+  'variable "Provisioned" { default = "" }' + '\n' +
+  'variable "ManagedBy" { default = "" }' + '\n' +
+  'variable "BusinessUnit" { default = "" }' + '\n' +
+  
+  'variable "vpc_id" { default = "" }' + '\n' +
+  'variable "subnets" {' + '\n' +
+  ' type    = list(string)' + '\n' +
+  ' default = []' + '\n' +
+  '}' + '\n' +
+  'variable "name" { default = "" }' + '\n' +
+  'variable "name_prefix" { default = "" }' + '\n' +
+  'variable "cluster_name" { default = "" }' + '\n' +
+  
+  'variable "task_container_image" { default = "" }' + '\n' +
+  'variable "container_name" { default = "" }' + '\n' +
+  'variable "task_container_port" { default = "" }' + '\n' +
+  'variable "task_host_port" { default = "" }' + '\n' +
+  'variable "task_definition_cpu" { default = "" }' + '\n' +
+  'variable "task_definition_memory" { default = "" }' + '\n' +
+  'variable "alb_port" { default = "" }' + '\n' +
+  'variable "alb_protocol" { default = "" }' + '\n' +
+  'variable "tg_port" { default = "" }' + '\n' +
+  'variable "tg_protocol" { default = "" }' + '\n' +
+  'variable "app_count" { default = "" }' + '\n' +
+  'variable "launch_type" { default = "" }' + '\n' +
+  'variable "container_port" { default = "" }';
+
   //Write the file
   fs.writeFile('dev.tfvars', devContent, err => {
       if (err) {
@@ -82,6 +112,13 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   });
 
   fs.writeFile('provider.tf', providerContent, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
+  });
+
+  fs.writeFile('variables.tf', variableContent, err => {
     if (err) {
       console.debug(err);
       return
