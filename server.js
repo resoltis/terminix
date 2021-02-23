@@ -35,7 +35,7 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
 
   //Put TF file text into a single string called content
   //Variables are passed as 'req.body' + variable name
-  const content = '#tags' + '\n' +
+  const devContent = '#tags' + '\n' +
   'Environment  =\"' + req.body.environment + '\"\n' +
   'Provisioned  = "SampathOlluri"' + '\n' +
   'ManagedBy    = "Terraform"' + '\n' +
@@ -67,14 +67,25 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   'launch_type = "FARGATE"' + '\n' +
   'container_port = ' + req.body.containerPort;
 
+  const providerContent = 'provider "aws" { ' + '\n' +
+  ' region = "us-east-1"' + '\n' +
+  ' profile = "' + req.body.businessUnit + '"' + '\n' + '}';
+
   //Write the file
-  fs.writeFile('dev.tfvars', content, err => {
+  fs.writeFile('dev.tfvars', devContent, err => {
       if (err) {
           console.debug(err);
           //We may need to send user to a file fail page here
           return
       }
   //file written successfully
+  });
+
+  fs.writeFile('provider.tf', providerContent, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
   });
 
   //When finished, send user to file success page!
