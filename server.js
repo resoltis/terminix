@@ -35,9 +35,9 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
 
   //Put TF file text into a single string called content
   //Variables are passed as 'req.body' + variable name
-  const content = '#tags' + '\n' +
+  const devContent = '#tags' + '\n' +
   'Environment  =\"' + req.body.environment + '\"\n' +
-  'Provisioned  = "SampathOlluri"' + '\n' +
+  'Provisioned  = "UACapstoneTeam"' + '\n' +
   'ManagedBy    = "Terraform"' + '\n' +
   'BusinessUnit = \"' + req.body.businessUnit + '\"\n\n' +
 
@@ -48,7 +48,7 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   'cluster_name = \"' + req.body.clusterName + '\"\n\n' +
 
   '#task_defination' + '\n' +
-  'task_container_image   = "328023855383.dkr.ecr.us-east-1.amazonaws.com/salesforceworkorderkafkaconsumer:dev"' + '\n' +
+  'task_container_image   = ' +  req.body.taskContainerImage +'\n' +
   'task_container_port    = ' + req.body.containerPort + '\n' +
   'task_host_port         = ' + req.body.hostPort + '\n' +
   'task_definition_cpu    = ' + req.body.taskCPU + '\n' +
@@ -67,10 +67,210 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   'launch_type = "FARGATE"' + '\n' +
   'container_port = ' + req.body.containerPort;
 
-  fs.mkdir(req.body.environment);
+  const providerContent = 'provider "aws" { ' + '\n' +
+  ' region = "us-east-1"' + '\n' +
+  ' profile = "' + req.body.businessUnit + '"' + '\n' + '}';
+
+
+  const variableContent = '#common' + '\n' + 
+  'variable "Environment" { default = "" }' + '\n' +
+  'variable "Provisioned" { default = "" }' + '\n' +
+  'variable "ManagedBy" { default = "" }' + '\n' +
+  'variable "BusinessUnit" { default = "" }' + '\n' +
+  
+  'variable "vpc_id" { default = "" }' + '\n' +
+  'variable "subnets" {' + '\n' +
+  ' type    = list(string)' + '\n' +
+  ' default = []' + '\n' +
+  '}' + '\n' +
+  'variable "name" { default = "" }' + '\n' +
+  'variable "name_prefix" { default = "" }' + '\n' +
+  'variable "cluster_name" { default = "" }' + '\n' +
+  
+  'variable "task_container_image" { default = "" }' + '\n' +
+  'variable "container_name" { default = "" }' + '\n' +
+  'variable "task_container_port" { default = "" }' + '\n' +
+  'variable "task_host_port" { default = "" }' + '\n' +
+  'variable "task_definition_cpu" { default = "" }' + '\n' +
+  'variable "task_definition_memory" { default = "" }' + '\n' +
+  'variable "alb_port" { default = "" }' + '\n' +
+  'variable "alb_protocol" { default = "" }' + '\n' +
+  'variable "tg_port" { default = "" }' + '\n' +
+  'variable "tg_protocol" { default = "" }' + '\n' +
+  'variable "app_count" { default = "" }' + '\n' +
+  'variable "launch_type" { default = "" }' + '\n' +
+  'variable "container_port" { default = "" }';
+
+  // backend file
+  const providerBackEnd = 'terraform {'
+    + '\n\t' + 'backend "s3" {'
+    + '\n\t\t' + 'bucket  = "tf-svm-state-files-prod"'
+    + '\n\t\t' + 'key     = "' + req.body.businessUnit + '/salesforceworkorderkafkaconsumer/ecs_fargate_stack/terraform.tfstate"'
+    + '\n\t\t' + 'region  = "us-east-1"'
+    + '\n\t\t' + 'profile = "obiwanprod"'
+    + '\n\t' + '}'
+    + '\n' + '}';
+
+  // main file
+  const providerMain = '#########################################################'
+    + '\n' + '#environment variable for task defination'
+    + '\n' + '#########################################################'
+    + '\n' + '\n' + '#   task_container_environment = {'
+    + '\n' + '#     "ASPNETCORE_ENVIRONMENT" = var.Environment'
+    + '\n' + '#   }' + '\n'
+    + '\n' + '#########################################################'
+    + '\n' + '#########################################################'
+    + '\n' + '#tags'
+    + '\n' + '#########################################################'
+    + '\n' + 'locals {'
+    + '\n\t' + 'Environment  = var.Environment'
+    + '\n\t' + 'Provisioned  = var.Provisioned'
+    + '\n\t' + 'ManagedBy    = var.ManagedBy'
+    + '\n\t' + 'BusinessUnit = var.BusinessUnit'
+    + '\n' + '}'
+    + '\n' + '\n' + 'locals {'
+    + '\n\t' + '# Common tags to be assigned to all resources'
+    + '\n\t' + 'common_tags = {'
+    + '\n\t\t' + 'Environment  = local.Environment'
+    + '\n\t\t' + 'Provisioned  = local.Provisioned'
+    + '\n\t\t' + 'ManagedBy    = local.ManagedBy'
+    + '\n\t\t' + 'BusinessUnit = local.BusinessUnit'
+    + '\n\t' + '}'
+    + '\n' + '}'
+    + '\n' + '\n' + '#########################################################'
+    + '\n' + '#Container Defination'
+    + '\n' + '#########################################################'
+    + '\n' + '\n' + 'resource "aws_cloudwatch_log_group" "main" {'
+    + '\n\t' + 'name              = "${var.name}"'
+    + '\n\t' + 'tags              = local.common_tags'
+    + '\n\t' + 'retention_in_days = 14'
+    + '\n' + '}'
+    + '\n' + '\n' + 'module "ecs-task-definition" {'
+    + '\n\t' + 'source = "git::https://ounganpfuzzeit7hzjd3iiw2m5a3wbmkdmssbn5xgtm24nenxdpq@tfs-svm.visualstudio.com/Terraform-Modules/_git/terraform-aws-ecs-fargate-task-definition?ref=master"'
+    + '\n' + '\n\t' + 'enabled              = true'
+    + '\n\t' + 'name_prefix          = "${var.name}-td"'
+    + '\n\t' + 'task_container_image = var.task_container_image'
+    + '\n' + '\n\t' + 'container_name      = var.name'
+    + '\n\t' + 'task_container_port = var.task_container_port'
+    + '\n\t' + 'task_host_port      = var.task_host_port'
+    + '\n' + '\n\t' + 'task_definition_cpu    = var.task_definition_cpu'
+    + '\n\t' + 'task_definition_memory = var.task_definition_memory'
+    + '\n' + '\n\t' + 'task_container_environment = {'
+    + '\n\t\t' + '  "ASPNETCORE_ENVIRONMENT" = var.Environment'
+    + '\n\t' + '}' + '\n'
+    + '\n\t' + 'cloudwatch_log_group_name = var.name'
+    + '\n' + '\n\t' + 'task_stop_timeout = 90'
+    + '\n' + '\n\t' + 'tags = local.common_tags'
+    + '\n' + '\n' + '}'
+    + '\n' + '\n' + '\n' + '#########################################################'
+    + '\n' + '#Cluster'
+    + '\n' + '#########################################################'
+    + '\n' + '\n' + 'resource "aws_ecs_cluster" "main" {'
+    + '\n' + 'name = var.cluster_name'
+    + '\n' + ' tags = local.common_tags'
+    + '\n' + '}'
+    + '\n' + '\n' + '#########################################################'
+    + '\n' + '# ALB'
+    + '\n' + '#########################################################'
+    + '\n' + 'resource "aws_lb" "main" {'
+    + '\n' + 'name               = "${var.name}-lb"'
+    + '\n' + 'internal           = true' + '\n' + 'load_balancer_type = "application"'
+    + '\n' + 'security_groups    = [aws_security_group.main.id]'
+    + '\n' + 'subnets            = var.subnets'
+    + '\n' + ' tags               = local.common_tags'
+    + '\n' + '}' + '\n'
+    + '\n' + '# lb listerner'
+    + '\n' + 'resource "aws_lb_listener" "main" {'
+    + '\n' + '\n' + 'load_balancer_arn = aws_lb.main.id'
+    + '\n' + 'port              = var.alb_port'
+    + '\n' + 'protocol          = var.alb_protocol'
+    + '\n' + '\n' + 'default_action'
+    + '\n' + 'target_group_arn = aws_lb_target_group.main.id' + '\n' + 'type             = "forward"'
+    + '\n' + '}' + '\n'
+    + '\n' + '#########################################################'
+    + '\n' + '#Target Group'
+    + '\n' + '#########################################################'
+    + '\n' + '\n' + 'resource "aws_lb_target_group" "main" {'
+    + '\n' + '\n\t' + 'name     = "${var.name}-tg"'
+    + '\n\t' + 'port     = var.tg_port'
+    + '\n\t' + 'protocol = var.tg_protocol'
+    + '\n' + '\n\t' + 'vpc_id      = var.vpc_id'
+    + '\n\t' + 'target_type = "ip"'
+    + '\n' + '\n\t' + 'deregistration_delay = 90'
+    + '\n\t' + ' tags                 = local.common_tags'
+    + '\n' + '\n\t' + 'health_check {'
+    + '\n\t\t' + 'timeout             = 5'
+    + '\n\t\t' + 'interval            = 30'
+    + '\n\t\t' + 'path                = "/"'
+    + '\n\t\t' + 'protocol            = var.tg_protocol'
+    + '\n\t\t' + 'healthy_threshold   = 3'
+    + '\n\t\t' + 'unhealthy_threshold = 3'
+    + '\n\t\t' + 'matcher             = "200"'
+    + '\n\t' + '}' + '\n' +
+    + '\n' + '}' + '\n' +
+    + '\n' + '#########################################################'
+    + '\n' + '#Security Group'
+    + '\n' + '#########################################################' + '\n'
+    + '\n' + 'resource "aws_security_group" "main" {'
+    + '\n\t' + 'name   = "${var.name}-sg"'
+    + '\n\t' + 'vpc_id = var.vpc_id'
+    + '\n\t' + 'tags   = local.common_tags'
+    + '\n' + '}' + '\n'
+    + '\n' + 'resource "aws_security_group_rule" "app_lb_allow_outbound" {'
+    + '\n\t' + 'security_group_id = aws_security_group.main.id' + '\n'
+    + '\n\t' + 'type        = "egress"'
+    + '\n\t' + 'from_port   = 0'
+    + '\n\t' + 'to_port     = 0'
+    + '\n\t' + 'protocol    = "-1"'
+    + '\n\t' + 'cidr_blocks = ["0.0.0.0/0"]'
+    + '\n' + '}' + '\n'
+    + '\n' + 'resource "aws_security_group_rule" "app_lb_allow_all_http" {'
+    + '\n\t' + 'security_group_id = aws_security_group.main.id'
+    + '\n\t' + 'type              = "ingress"'
+    + '\n\t' + 'from_port         = 0'
+    + '\n\t' + 'to_port           = 65535'
+    + '\n\t' + 'protocol          = "tcp"'
+    + '\n\t' + 'cidr_blocks       = ["10.0.0.0/8"]'
+    + '\n' + '}' + '\n'
+    + '\n' + '#########################################################'
+    + '\n' + '# ECS Fargate Service'
+    + '\n' + '#########################################################' + '\n'
+    + '\n' + 'resource "aws_ecs_service" "main" {'
+    + '\n\t' + 'name            = "${var.name}-service"'
+    + '\n\t' + 'cluster         = aws_ecs_cluster.main.id'
+    + '\n\t' + 'task_definition = module.ecs-task-definition.task_definition_arn'
+    + '\n\t' + 'desired_count   = var.app_count'
+    + '\n\t' + 'launch_type     = var.launch_type'
+    + '\n\t' + 'tags            = local.common_tags' + '\n'
+    + '\n\t' + 'network_configuration {'
+    + '\n\t\t' + 'security_groups = [aws_security_group.main.id]'
+    + '\n\t\t' + 'subnets         = var.subnets'
+    + '\n\t\t' + 'assign_public_ip = false'
+    + '\n\t' + '}' + '\n'
+    + '\n\t' + 'load_balancer {'
+    + '\n\t\t' + 'target_group_arn = aws_lb_target_group.main.id'
+    + '\n\t\t' + 'container_name   = var.name'
+    + '\n\t\t' + 'container_port   = var.container_port'
+    + '\n\t' + '}' + '\n'
+    + '\n\t' + 'depends_on = [aws_lb_listener.main]'
+    + '\n' + '}'
+
+  fs.mkdir(path.join(__dirname, 'fargate-files'), (err) => { 
+    if (err) { 
+        return console.error(err); 
+    } 
+    console.log('Directory created successfully!'); 
+}); 
+
+fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) => { 
+  if (err) { 
+      return console.error(err); 
+  } 
+  console.log('Directory created successfully!'); 
+}); 
 
   //Write the file
-  fs.writeFile(req.body.environment + '\dev.tfvars', content, err => {
+  fs.writeFile('fargate-files\\' + req.body.environment + '\\dev.tfvars', devContent, err => {
       if (err) {
           console.debug(err);
           //We may need to send user to a file fail page here
@@ -79,6 +279,36 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   //file written successfully
 
   });
+
+  fs.writeFile('fargate-files\\' + req.body.environment + '\\provider.tf', providerContent, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
+  });
+
+  fs.writeFile('fargate-files\\' + req.body.environment + '\\variables.tf', variableContent, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
+  });
+
+    // write backend file
+    fs.writeFile('fargate-files\\' + req.body.environment + '\\backend.tf', providerBackEnd, err => {
+      if (err) {
+        console.debug(err);
+        return
+      }
+    });
+  
+    //write main file
+    fs.writeFile('fargate-files\\' + req.body.environment + '\\main.tf', providerMain, err => {
+      if (err) {
+        console.debug(err);
+        return
+      }
+    });
 
   //When finished, send user to file success page!
   res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
