@@ -88,9 +88,9 @@ function logValue(type) {
 
 //make sure to change environment based on account
 function detectAccount(selectObject) {
-    document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
+    //document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
     var value = selectObject.value;
-    if(value === "corpsapps" || value === "integration") {
+    if(value === "TMX-CorpsApps" || value === "TMX-Integration") {
         var list = document.getElementById('environment').getElementsByTagName('option');
         for (var i = 0; i < list.length; i++) {
             // lowercase comparison for case-insensitivity

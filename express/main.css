@@ -149,7 +149,7 @@ body {
     right: 0px;
     z-index: 100;
     height: 80px;
-    background:rgb(43 44 51);
+    background:rgb(0 47 71);
     -webkit-transition: all .5s ease 0s;
     -moz-transition: all .5s ease 0s;
     -o-transition: all .5s ease 0s;
@@ -158,7 +158,7 @@ body {
   
   .header-area {
     min-height: 80px;
-    background: rgb(43 44 51);
+    background: rgb(0 47 71);
   }
 
   .row {
