@@ -254,15 +254,17 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
     + '\n\t' + '}' + '\n'
     + '\n\t' + 'depends_on = [aws_lb_listener.main]'
     + '\n' + '}'
-
-  fs.mkdir(path.join(__dirname, 'fargate-files'), (err) => { 
+ 
+    fs.mkdirSync(path.join('fargate-files'), (err) => { 
     if (err) { 
         return console.error(err); 
     } 
     console.log('Directory created successfully!'); 
+    
 }); 
+ 
 
-fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) => { 
+fs.mkdirSync(path.join( 'fargate-files', req.body.environment), (err) => { 
   if (err) { 
       return console.error(err); 
   } 
@@ -270,7 +272,7 @@ fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) =
 }); 
 
   //Write the file
-  fs.writeFile('fargate-files\\' + req.body.environment + '\\dev.tfvars', devContent, err => {
+  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'dev.tfvars'), devContent, err => {
       if (err) {
           console.debug(err);
           //We may need to send user to a file fail page here
@@ -280,14 +282,14 @@ fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) =
 
   });
 
-  fs.writeFile('fargate-files\\' + req.body.environment + '\\provider.tf', providerContent, err => {
+  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'provider.tf'), providerContent, err => {
     if (err) {
       console.debug(err);
       return
     }
   });
 
-  fs.writeFile('fargate-files\\' + req.body.environment + '\\variables.tf', variableContent, err => {
+  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'variables.tf'), variableContent, err => {
     if (err) {
       console.debug(err);
       return
@@ -295,7 +297,7 @@ fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) =
   });
 
     // write backend file
-    fs.writeFile('fargate-files\\' + req.body.environment + '\\backend.tf', providerBackEnd, err => {
+    fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'backend.tf'), providerBackEnd, err => {
       if (err) {
         console.debug(err);
         return
@@ -303,7 +305,7 @@ fs.mkdir(path.join(__dirname, 'fargate-files\\' + req.body.environment), (err) =
     });
   
     //write main file
-    fs.writeFile('fargate-files\\' + req.body.environment + '\\main.tf', providerMain, err => {
+    fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'main.tf'), providerMain, err => {
       if (err) {
         console.debug(err);
         return
