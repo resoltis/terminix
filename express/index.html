@@ -270,7 +270,7 @@
                                 </div>
                                 <div class="row">
                                     <label for="environment">Choose an Environment:</label>
-                                    <select id="environment" name="environment" onchange='detectEnvironment(this)'>
+                                    <select id="environment" name="environment">
                                         <option value="Dev">Dev</option>
                                         <option value="Test">Test</option>
                                         <option value="Prod">Prod</option>
@@ -281,7 +281,7 @@
                                 </div>
                                 <div class="row">
                                     <label for="businessUnit">Enter a business unit:</label>
-                                    <input type="text" id="businessUnit" name="businessUnit" readonly value="TMX-BI-Dev"/>
+                                    <input type="text" id="businessUnit" name="businessUnit" required/>
                                 </div>
                                 <div class="row">
                                     <label for="fargateName">Enter a name:</label>
