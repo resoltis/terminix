@@ -316,7 +316,8 @@ fs.mkdirSync(path.join( 'fargate-files', req.body.environment), (err) => {
   res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
 
 });
-/*app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){ 
+/* Commented out app.post while in progress
+app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){ 
   //Require file system for writing to file
   const fs = require('fs');
 
