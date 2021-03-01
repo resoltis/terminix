@@ -316,4 +316,46 @@ fs.mkdirSync(path.join( 'fargate-files', req.body.environment), (err) => {
   res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
 
 });
+app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){ 
+  //Require file system for writing to file
+  const fs = require('fs');
 
+  //Print out the data we received
+  console.log(req.body);
+
+  //Backend File 
+  const providerBackEnd = 'terraform {'
+    + '\n\t' + 'backend "s3" {'
+    + '\n\t\t' + 'bucket  = "tf-svm-state-files-prod"'
+    + '\n\t\t' + 'key     = "' + req.body.businessUnit + 'https_alb_lambda/terraform.tfstate"'
+    + '\n\t\t' + 'region  = "us-east-1"'
+    + '\n\t\t' + 'profile = "obiwanprod"'
+    + '\n\t' + '}'
+    + '\n' + '}';
+
+  const providerMain = '#########################################################'
+  + '\n' + '#tags'
+  + '\n' + '#########################################################'
+  + '\n' + 'locals {'
+  + '\n\t' + 'Environment  = var.Environment'
+  + '\n\t' + 'Provisioned  = var.Provisioned'
+  + '\n\t' + 'ManagedBy    = var.ManagedBy'
+  + '\n\t' + 'BusinessUnit = var.BusinessUnit'
+  + '\n' + '}'
+  + '\n' + '\n' + 'locals {'
+  + '\n\t' + '# Common tags to be assigned to all resources'
+  + '\n\t' + 'common_tags = {'
+  + '\n\t\t' + 'Environment  = local.Environment'
+  + '\n\t\t' + 'Provisioned  = local.Provisioned'
+  + '\n\t\t' + 'ManagedBy    = local.ManagedBy'
+  + '\n\t\t' + 'BusinessUnit = local.BusinessUnit'
+  + '\n\t' + '}'
+  + '\n' + '}'
+  
+//Insert devContent file info here
+  const devContent;
+
+//Insert provider file here
+  const pr
+
+});
