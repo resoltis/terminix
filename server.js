@@ -25,7 +25,7 @@ app.listen(port, () => {
 
 //POST method for generating files
 //(POST action name, parser, function(request, response))
-app.post('/generateFiles', urlencodedParser, function(req, res){
+app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Require file system for writing to file
   const fs = require('fs');
@@ -36,70 +36,70 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
   //Put TF file text into a single string called content
   //Variables are passed as 'req.body' + variable name
   const devContent = '#tags' + '\n' +
-  'Environment  =\"' + req.body.environment + '\"\n' +
-  'Provisioned  = "UACapstoneTeam"' + '\n' +
-  'ManagedBy    = "Terraform"' + '\n' +
-  'BusinessUnit = \"' + req.body.businessUnit + '\"\n\n' +
+    'Environment  =\"' + req.body.environment + '\"\n' +
+    'Provisioned  = "UACapstoneTeam"' + '\n' +
+    'ManagedBy    = "Terraform"' + '\n' +
+    'BusinessUnit = \"' + req.body.businessUnit + '\"\n\n' +
 
-  '#common' + '\n' +
-  'name         = \"' + req.body.fargateName + '\"\n' +
-  'vpc_id       = "vpc-017f5c0837ecb0839"' + '\n' +
-  'subnets      = ["subnet-0d41c14e3fc453c9c", "subnet-0d744fae9354141aa"]' + '\n' +
-  'cluster_name = \"' + req.body.clusterName + '\"\n\n' +
+    '#common' + '\n' +
+    'name         = \"' + req.body.fargateName + '\"\n' +
+    'vpc_id       = "vpc-017f5c0837ecb0839"' + '\n' +
+    'subnets      = ["subnet-0d41c14e3fc453c9c", "subnet-0d744fae9354141aa"]' + '\n' +
+    'cluster_name = \"' + req.body.clusterName + '\"\n\n' +
 
-  '#task_defination' + '\n' +
-  'task_container_image   = ' +  req.body.taskContainerImage +'\n' +
-  'task_container_port    = ' + req.body.containerPort + '\n' +
-  'task_host_port         = ' + req.body.hostPort + '\n' +
-  'task_definition_cpu    = ' + req.body.taskCPU + '\n' +
-  'task_definition_memory = ' + req.body.taskMemory + '\n\n' +
+    '#task_defination' + '\n' +
+    'task_container_image   = ' + req.body.taskContainerImage + '\n' +
+    'task_container_port    = ' + req.body.containerPort + '\n' +
+    'task_host_port         = ' + req.body.hostPort + '\n' +
+    'task_definition_cpu    = ' + req.body.taskCPU + '\n' +
+    'task_definition_memory = ' + req.body.taskMemory + '\n\n' +
 
-  '#alb' + '\n' +
-  'alb_port     = ' + req.body.albPort + '\n' +
-  'alb_protocol = "HTTP"' + '\n\n' +
+    '#alb' + '\n' +
+    'alb_port     = ' + req.body.albPort + '\n' +
+    'alb_protocol = "HTTP"' + '\n\n' +
 
-  '#tg' + '\n' +
-  'tg_port     = ' + req.body.tgPort + '\n' +
-  'tg_protocol = "HTTP"' + '\n\n' +
+    '#tg' + '\n' +
+    'tg_port     = ' + req.body.tgPort + '\n' +
+    'tg_protocol = "HTTP"' + '\n\n' +
 
-  '#service' + '\n' +
-  'app_count   = ' + req.body.appCount + '\n' +
-  'launch_type = "FARGATE"' + '\n' +
-  'container_port = ' + req.body.containerPort;
+    '#service' + '\n' +
+    'app_count   = ' + req.body.appCount + '\n' +
+    'launch_type = "FARGATE"' + '\n' +
+    'container_port = ' + req.body.containerPort;
 
   const providerContent = 'provider "aws" { ' + '\n' +
-  ' region = "us-east-1"' + '\n' +
-  ' profile = "' + req.body.businessUnit + '"' + '\n' + '}';
+    ' region = "us-east-1"' + '\n' +
+    ' profile = "' + req.body.businessUnit + '"' + '\n' + '}';
 
 
-  const variableContent = '#common' + '\n' + 
-  'variable "Environment" { default = "" }' + '\n' +
-  'variable "Provisioned" { default = "" }' + '\n' +
-  'variable "ManagedBy" { default = "" }' + '\n' +
-  'variable "BusinessUnit" { default = "" }' + '\n' +
-  
-  'variable "vpc_id" { default = "" }' + '\n' +
-  'variable "subnets" {' + '\n' +
-  ' type    = list(string)' + '\n' +
-  ' default = []' + '\n' +
-  '}' + '\n' +
-  'variable "name" { default = "" }' + '\n' +
-  'variable "name_prefix" { default = "" }' + '\n' +
-  'variable "cluster_name" { default = "" }' + '\n' +
-  
-  'variable "task_container_image" { default = "" }' + '\n' +
-  'variable "container_name" { default = "" }' + '\n' +
-  'variable "task_container_port" { default = "" }' + '\n' +
-  'variable "task_host_port" { default = "" }' + '\n' +
-  'variable "task_definition_cpu" { default = "" }' + '\n' +
-  'variable "task_definition_memory" { default = "" }' + '\n' +
-  'variable "alb_port" { default = "" }' + '\n' +
-  'variable "alb_protocol" { default = "" }' + '\n' +
-  'variable "tg_port" { default = "" }' + '\n' +
-  'variable "tg_protocol" { default = "" }' + '\n' +
-  'variable "app_count" { default = "" }' + '\n' +
-  'variable "launch_type" { default = "" }' + '\n' +
-  'variable "container_port" { default = "" }';
+  const variableContent = '#common' + '\n' +
+    'variable "Environment" { default = "" }' + '\n' +
+    'variable "Provisioned" { default = "" }' + '\n' +
+    'variable "ManagedBy" { default = "" }' + '\n' +
+    'variable "BusinessUnit" { default = "" }' + '\n' +
+
+    'variable "vpc_id" { default = "" }' + '\n' +
+    'variable "subnets" {' + '\n' +
+    ' type    = list(string)' + '\n' +
+    ' default = []' + '\n' +
+    '}' + '\n' +
+    'variable "name" { default = "" }' + '\n' +
+    'variable "name_prefix" { default = "" }' + '\n' +
+    'variable "cluster_name" { default = "" }' + '\n' +
+
+    'variable "task_container_image" { default = "" }' + '\n' +
+    'variable "container_name" { default = "" }' + '\n' +
+    'variable "task_container_port" { default = "" }' + '\n' +
+    'variable "task_host_port" { default = "" }' + '\n' +
+    'variable "task_definition_cpu" { default = "" }' + '\n' +
+    'variable "task_definition_memory" { default = "" }' + '\n' +
+    'variable "alb_port" { default = "" }' + '\n' +
+    'variable "alb_protocol" { default = "" }' + '\n' +
+    'variable "tg_port" { default = "" }' + '\n' +
+    'variable "tg_protocol" { default = "" }' + '\n' +
+    'variable "app_count" { default = "" }' + '\n' +
+    'variable "launch_type" { default = "" }' + '\n' +
+    'variable "container_port" { default = "" }';
 
   // backend file
   const providerBackEnd = 'terraform {'
@@ -254,77 +254,77 @@ app.post('/generateFiles', urlencodedParser, function(req, res){
     + '\n\t' + '}' + '\n'
     + '\n\t' + 'depends_on = [aws_lb_listener.main]'
     + '\n' + '}'
- 
-    fs.mkdirSync(path.join('fargate-files'), (err) => { 
-    if (err) { 
-        return console.error(err); 
-    } 
-    console.log('Directory created successfully!'); 
-    
-}); 
- 
 
-fs.mkdirSync(path.join( 'fargate-files', req.body.environment), (err) => { 
-  if (err) { 
-      return console.error(err); 
-  } 
-  console.log('Directory created successfully!'); 
-}); 
+  fs.mkdirSync(path.join('fargate-files'), (err) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Directory created successfully!');
+
+  });
+  // test
+
+  fs.mkdirSync(path.join('fargate-files', req.body.environment), (err) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Directory created successfully!');
+  });
 
   //Write the file
-  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'dev.tfvars'), devContent, err => {
-      if (err) {
-          console.debug(err);
-          //We may need to send user to a file fail page here
-          return
-      }
-  //file written successfully
+  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'dev.tfvars'), devContent, err => {
+    if (err) {
+      console.debug(err);
+      //We may need to send user to a file fail page here
+      return
+    }
+    //file written successfully
 
   });
 
-  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'provider.tf'), providerContent, err => {
+  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'provider.tf'), providerContent, err => {
     if (err) {
       console.debug(err);
       return
     }
   });
 
-  fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'variables.tf'), variableContent, err => {
+  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'variables.tf'), variableContent, err => {
     if (err) {
       console.debug(err);
       return
     }
   });
 
-    // write backend file
-    fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'backend.tf'), providerBackEnd, err => {
-      if (err) {
-        console.debug(err);
-        return
-      }
-    });
-  
-    //write main file
-    fs.writeFileSync(path.join('fargate-files' , req.body.environment , 'main.tf'), providerMain, err => {
-      if (err) {
-        console.debug(err);
-        return
-      }
-    });
+  // write backend file
+  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'backend.tf'), providerBackEnd, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
+  });
+
+  //write main file
+  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'main.tf'), providerMain, err => {
+    if (err) {
+      console.debug(err);
+      return
+    }
+  });
 
   //When finished, send user to file success page!
   res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
 
 });
 /* Commented out app.post while in progress
-app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){ 
+app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
   //Require file system for writing to file
   const fs = require('fs');
 
   //Print out the data we received
   console.log(req.body);
 
-  //Backend File 
+  //Backend File
   const providerBackEnd = 'terraform {'
     + '\n\t' + 'backend "s3" {'
     + '\n\t\t' + 'bucket  = "tf-svm-state-files-prod"'
