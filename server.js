@@ -351,7 +351,7 @@ app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
   + '\n\t\t' + 'ManagedBy    = local.ManagedBy'
   + '\n\t\t' + 'BusinessUnit = local.BusinessUnit'
   + '\n\t' + '}'
-  + '\n' + '}'
+  + '\n' + '}';
 
 //Insert devContent file info here
   const devContent;
@@ -360,7 +360,7 @@ app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
   const providerContent;
 
 //role file
-+'\n' + '# # TODO: set lambda app permissions here'
+const providerRole = '# # TODO: set lambda app permissions here'
 +'\n' + '# resource "aws_iam_role_policy" "main" {'
 +'\n' + '#   role = "${aws_iam_role.app_role.arn}"'
 +'\n' + '#   name = "${local.ns}"'
@@ -430,7 +430,7 @@ app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
 +'\n' +'  ]'
 +'\n' +'}'
 +'\n' +'EOF'
-+'\n' +'}'
++'\n' +'}';
 
 
 
