@@ -351,7 +351,7 @@ app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
   + '\n\t\t' + 'ManagedBy    = local.ManagedBy'
   + '\n\t\t' + 'BusinessUnit = local.BusinessUnit'
   + '\n\t' + '}'
-  + '\n' + '}'
+  + '\n' + '}';
 
 //Insert devContent file info here
   const devContent;
@@ -359,7 +359,81 @@ app.post('lambda:InvokeFunction', urlencodedParser,function(req, res){
 //Insert provider file here
   const providerContent;
 
-//
+//role file
+const providerRole = '# # TODO: set lambda app permissions here'
++'\n' + '# resource "aws_iam_role_policy" "main" {'
++'\n' + '#   role = "${aws_iam_role.app_role.arn}"'
++'\n' + '#   name = "${local.ns}"'
++'\n' +
++'\n' + '#   policy = <<EOF'
++'\n' + '# {'
++'\n' + '#   "Version": "2012-10-17",'
++'\n' + '#   "Statement": ['
++'\n' + '#     {'
++'\n' + '#       "Effect": "Allow",'
++'\n' + '#       "Action": ['
++'\n' + '#         "change:me"'
++'\n' + '#       ],'
++'\n' + '#       "Resource": ['
++'\n' + '#         "*"'
++'\n' + '#       ]'
++'\n' + '#     }'
++'\n' + '#   ]'
++'\n' + '# }'
++'\n' + '# EOF'
++'\n' + '# }'
++'\n' +
++'\n' + 'resource "aws_iam_role" "app_role" {'
++'\n' + '  name = "${var.name}-role"'
++'\n' +
++'\n' +'  assume_role_policy = <<EOF'
++'\n' + '{'
++'\n' +'  "Version": "2012-10-17",'
++'\n' +'  "Statement": ['
++'\n' +'    {'
++'\n' +'      "Action": "sts:AssumeRole",'
++'\n' +'      "Principal": {'
++'\n' +'        "Service": "lambda.amazonaws.com"'
++'\n' +'      },'
++'\n' +'      "Effect": "Allow",'
++'\n' +'      "Sid": ""'
++'\n' +'    }'
++'\n' +'  ]'
++'\n' +'}'
++'\n' +'EOF'
++'\n' +'}'
++'\n' +
++'\n' +'resource "aws_iam_role_policy" "cloudwatch" {'
++'\n' +'  role = aws_iam_role.app_role.id'
++'\n' +'  name = "cw-${var.name}-role-policy"'
++'\n' +
++'\n' +'  policy = <<EOF'
++'\n' +'{'
++'\n' +'  "Version": "2012-10-17",'
++'\n' +'  "Statement": ['
++'\n' +'    {'
++'\n' +'      "Effect": "Allow",'
++'\n' +'      "Action": ['
++'\n' +'        "logs:CreateLogGroup",'
++'\n' +'        "logs:CreateLogStream",'
++'\n' +'        "logs:PutLogEvents",'
++'\n' +'        "ec2:DescribeNetworkInterfaces",'
++'\n' +'        "ec2:CreateNetworkInterface",'
++'\n' +'        "ec2:DeleteNetworkInterface",'
++'\n' +'        "ec2:DescribeInstances",'
++'\n' +'        "ec2:AttachNetworkInterface"'
++'\n' +'      ],'
++'\n' +'      "Resource": ['
++'\n' +'        "*"'
++'\n' +'      ]'
++'\n' +'    }'
++'\n' +'  ]'
++'\n' +'}'
++'\n' +'EOF'
++'\n' +'}';
+
+
+
 
 });
 */
