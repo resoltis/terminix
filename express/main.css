@@ -226,8 +226,13 @@ body {
     width: 100%;
   }
 
-  .col-md-4 {
+  .col-md-4, .col-md-8 {
     padding: 24px;
+  }
+
+  .subHeading{
+    color: white;
+    
   }
 
 
