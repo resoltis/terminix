@@ -210,42 +210,97 @@
                                     <h1>Lambda Function</h1>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <label for="pam1">Choose A Parameter:</label>
-                                    <select id="pam1" name="pam1">
-                                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
-                                        <option value="s3">S3 Bucket</option>
-                                        <option value="ec2">EC2 Instance</option>
-                                        <option value="rds">RDS Database</option>
-                                        <option value="lambda">Lambda Function</option>
-                                        <option value="fargate">Fargate Instance</option>
-                                    </select>
-                                </div>
-                                <div class="row">
-                                    <label for="pam2">Choose A Parameter:</label>
-                                    <select id="pam2" name="pam2">
-                                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
-                                        <option value="s3">S3 Bucket</option>
-                                        <option value="ec2">Test</option>
-                                        <option value="rds">RDS Database</option>
-                                        <option value="lambda">Lambda Function</option>
-                                        <option value="fargate">Fargate Instance</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <input type="submit" value="Generate Terraform Files" class="button float-right">
+                            <div class="row">
+                                <div class="col-md-4" style="padding-bottom: 0px;">
+                                    <h2 class = "subHeading">Tags</h2>
+                                </div>
+                                <div class="col-md-8" style="padding-bottom: 0px;">
+                                    <h2 class = "subHeading">Technical Inputs</h2>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-md-4" style = "border-left: 2px solid black;
+                                border-top: 2px solid black;
+                                border-bottom: 2px solid black;">
+                                    
+                                    <div class="row">
+                                        
+                                        <label for="environment">Choose an Environment:</label>
+                                        <select id="environment" name="environment">
+                                            <option value="Dev">Dev</option>
+                                            <option value="Test">Test</option>
+                                            <option value="Prod">Prod</option>
+                                            <option value="UAT" hidden>UAT</option>
+                                            <option value="QA" hidden>QA</option>
+                                            <option value="Training" hidden>Training</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="businessUnit">Enter a business unit:</label>
+                                        <input type="text" id="businessUnit" name="businessUnit" required/>
+                                    </div>
+                                    
+                                </div>
+                            
+                                
+                                <div class="col-md-4" style =
+                                 "border-left: 2px solid black;
+                                border-top: 2px solid black;
+                                border-bottom: 2px solid black;">
+                                    <div class="row">
+                                        
+                                        <label for="account">Choose an Account:</label>
+                                        <select id="account" name="account" onchange='detectAccount(this)'>
+                                            <option value="TMX-BI">TMX-BI</option>
+                                            <option value="TMX-Commercial">TMX-Commercial</option>
+                                            <option value="TMX-CorpsApps">TMX-CorpsApps</option>
+                                            <option value="TMX-Ecomm">TMX-Ecomm</option>
+                                            <option value="TMX-Integration">TMX-Integration</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="LamdaName">Enter a name:</label>
+                                        <input type="text" id="LamdaName" name="LamdaName" required/>
+                                    </div>
+                                    <!-- Entered URL text box-->
+                                    <div class="row">
+                                        <label for="repoUrl">Enter the Repo URL:</label>
+                                        <input type="text" id="repoUrl" name="repoUrl" required/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="VpcID">Enter a vpc Id:</label>
+                                        <input type="text" id="VpcId" name="VpcID" required/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="lbPort">Enter a lb port:</label>
+                                        <input type="number" id="lbPort" name="lbPort" required/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="lbProtocol">Enter a lb Protocol:</label>
+                                        <input type="text" id="albPort" name="albPort" required/>
+                                    </div>
+                                    <div class="row">
+                                        <label for="targetType">Enter a Target Type:</label>
+                                        <input type="text" id="targetType" name="targetType" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style = "border-top: 2px solid black;
+                                border-right: 2px solid black;
+                                border-bottom: 2px solid black;">
+                                 
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <input type="submit" value="Generate Terraform Files" class="button">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    
 
                     <!--Fargate Container form-->
                     <form id="fargate_form" action="/generateFiles" method="POST">
