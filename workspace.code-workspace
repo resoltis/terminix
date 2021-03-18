@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "UA-Capstone-2021",
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "UA-Capstone-2021"
+	}
+}

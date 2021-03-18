@@ -1,0 +1,149 @@
+<body>
+<!--Fargate Container form-->
+<form id="fargate_form" action="/generateFiles" method="POST">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <img class="icon" src="icons/fargate.jpg"/>
+                <h1>Fargate Container</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4" style="padding-bottom: 0px;">
+            <h2 class = "subHeading">Tags</h2>
+        </div>
+        <div class="col-md-8" style="padding-bottom: 0px;">
+            <h2 class = "subHeading">Technical Inputs</h2>
+        </div>
+    </div>
+    <div class = "row">
+        <div class="col-md-4" style = "border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;">
+            
+            <div class="row">
+                
+                <label for="environment">Choose an Environment:</label>
+                <select id="environment" name="environment">
+                    <option value="Dev">Dev</option>
+                    <option value="Test">Test</option>
+                    <option value="Prod">Prod</option>
+                    <option value="UAT" hidden>UAT</option>
+                    <option value="QA" hidden>QA</option>
+                    <option value="Training" hidden>Training</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="businessUnit">Enter a business unit:</label>
+                <input type="text" id="businessUnit" name="businessUnit" required/>
+            </div>
+            
+        </div>
+    
+        
+        <div class="col-md-4" style = "border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;">
+            <div class="row">
+                
+                <label for="account">Choose an Account:</label>
+                <select id="account" name="account" onchange='detectAccount(this)'>
+                    <option value="TMX-BI">TMX-BI</option>
+                    <option value="TMX-Commercial">TMX-Commercial</option>
+                    <option value="TMX-CorpsApps">TMX-CorpsApps</option>
+                    <option value="TMX-Ecomm">TMX-Ecomm</option>
+                    <option value="TMX-Integration">TMX-Integration</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="fargateName">Enter a name:</label>
+                <input type="text" id="fargateName" name="fargateName" required/>
+            </div>
+            <div class="row">
+                <label for="namePrefix">Enter a name prefix:</label>
+                <input type="text" id="namePrefix" name="namePrefix" required/>
+            </div>
+            <!-- Entered URL text box-->
+            <div class="row">
+                <label for="repoUrl">Enter the Repo URL:</label>
+                <input type="text" id="repoUrl" name="repoUrl" required/>
+            </div>
+            <div class="row">
+                <label for="clusterName">Enter a cluster name:</label>
+                <input type="text" id="clusterName" name="clusterName" required/>
+            </div>
+            <div class="row">
+                <label for="taskContainer">Enter a task container:</label>
+                <input type="text" id="taskContainer" name="taskContainer" required/>
+            </div>
+            <div class="row">
+                <label for="containerName">Enter a container name:</label>
+                <input type="text" id="containerName" name="containerName" required/>
+            </div>
+            
+        </div>
+
+        <div class="col-md-4" style = "border-top: 2px solid black;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;">
+            <div class="row">
+                <label for="hostPort">Enter a host port:</label>
+                <input type="number" id="hostPort" name="hostPort" placeholder="80" required/>
+            </div>
+            <div class="row">
+                <label for="containerPort">Enter a task container port:</label>
+                <input type="number" id="containerPort" name="containerPort" placeholder="80" required/>
+            </div>
+            <div class="row">
+                <label for="taskCPU">Choose Task CPU:</label>
+                <select id="taskCPU" name="taskCPU" onchange='detectTaskCPU()'>
+                    <option value="256">256 units</option>
+                    <option value="512">512 units</option>
+                    <option value="1024">1024 units</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="taskMemory">Choose Task Memory:</label>
+                <select id="taskMemory" name="taskMemory">
+                    <option value="0.5">0.5 GB</option>
+                    <option value="1">1 GB</option>
+                    <option value="2">2 GB</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="albPort">Choose an ALB Port:</label>
+                <select id="albPort" name="albPort">
+                    <option value="80">80</option>
+                    <option value="443">443</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="taskContainerImage">Enter a task container image:</label>
+                <input type="text" id="taskContainerImage" name="taskContainerImage"  required/>
+            </div>
+            <div class="row">
+                <label for="appCount">Choose app count:</label>
+                <select id="appCount" name="appCount">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+        </div>
+    
+    
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <input type="submit" value="Generate Terraform Files" class="button">
+            </div>
+        </div>
+    </div>
+</form>
+</body>

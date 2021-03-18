@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!--These dont really matter on software only accessed by company-->
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!--Title of the page at the top of the tab-->
+        <title>Terminix AWS Generator</title>
+
+        <!--Links the css sheets and any fonts-->
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="https://cdn-prod.servicemaster.com/-/media/Feature/Terminix/Header/terminix-favicon.png?rev=27996333162a403993c6ca67915db6cb">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js">
+        </script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        
+        
+        
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/test.js"></script>
+
+    </head> 
+    
+    <body id="body">
+        <!-- ***** Header Area Start ***** -->
+        <header class="header-area header-sticky">
+            <img src="icons/terminix-logo.png"/>
+        </header>
+        <!-- ***** Header Area End ***** -->
+        
+        <div style="padding: 5em;">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href="#" class="add-service">+ Add Service</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+            </div>
+        </div>
+
+        <script>
+            //Showing content & deleting tab
+            $(".nav-tabs")
+                .on("click", "a", function (e) {            //show content
+                    e.preventDefault();
+                    if (!$(this).hasClass('add-service')) { //If not add service button
+                        $('.tab-pane').hide(); //hide all tab panes
+                        $('.nav-tabs li').removeClass('active'); //de-activate all tabs at top
+
+                        var parent = $(this).parent('li'); //get parent list of selected tab
+                        $(parent).addClass('active'); //make selected tab appear active
+
+                        var content = $(this).attr('href'); //get tab content href
+                        $(content).show(); //show tab content
+                    }
+                })
+                .on("click", "span", function () {          //deleting tabs
+                    var anchor = $(this).siblings('a');     //anchor on link
+                    $(anchor.attr('href')).remove();        //delete link
+                    $(this).parent().remove();              //delete tab
+                    $(".nav-tabs li").children('a').first().click(); //idk what this does
+            });
+
+            //Adding a new service
+            $('.add-service').click(function (e) {
+                e.preventDefault();
+                var id = $(".nav-tabs").children().length; //Get number of tabs
+                var tabId = 'service_' + id; //Make ID name as String
+                $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
+                //add tab content section
+                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row"><select class="col-md-4" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service">Fargate Service</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
+                $('.nav-tabs li:nth-child(' + id + ') a').click();
+            });
+
+            //Change tab name depending on dropdown selection
+            $('.tab-content').on('change', 'select', function(e) {
+
+                var id = $(this).attr('id').split('_').pop(); //get id of tab
+
+                if(this.id === 'service_select_' + id) //if the service type select box value is changed
+                {
+                    var value = $(this).find(":selected").text(); //Get text value of selection
+                    $('#service_tab_' + id).text(value); //Change tab name based on ID
+                    $(this).parent().next().remove(); //remove form if service type changes
+                    $(this).parent().next().remove(); //injecting code from live server adds a script so we may need to delete this later, idk
+                }
+
+                switch(value) 
+                {
+                    case 'Fargate Service':
+                        $.get("fargate_form.html", function(data){ //get form data
+                            $('#service_' + id).append(data); //append to that tab only
+                        });
+                        break;
+                    case 'S3 Bucket':
+                        $.get("s3_form.html", function(data){ //get form data
+                            $('#service_' + id).append(data); //append to that tab only
+                        });
+                        break;
+                    case 'EC2 Instance':
+                        $.get("ec2_form.html", function(data){ //get form data
+                            $('#service_' + id).append(data); //append to that tab only
+                        });
+                        break;
+                }
+
+            });
+        </script>
+
+    </body>
+</html>

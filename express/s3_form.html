@@ -1,0 +1,38 @@
+<body>
+<!--S3 Bucket form-->
+<form id="s3_form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <img class="icon" src="icons/s3.jpg"/>
+                <h1>S3 Bucket</h1>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label for="s3_name">Enter a name: </label>
+                <input type="text" id="s3_name" name="s3_name" required/>
+            </div>
+            <div class="row">
+                <label for="s3_size">Choose a Size:</label>
+                <select id="s3_size" name="s3_size">
+                    <!--all the values in the dropdown list, 'value' is what is passed to JS-->
+                    <option value="20">20 GB</option>
+                    <option value="50">50 GB</option>
+                    <option value="100">100 GB</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <input type="submit" value="Generate Terraform Files" class="button">
+            </div>
+        </div>
+    </div>
+</form>
+</body>
