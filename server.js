@@ -140,7 +140,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Require file system for writing to file
   const fs = require('fs');
-
+staticValues.accName.get
   //Print out the data we received
   console.log(req.body);
 
@@ -365,6 +365,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     + '\n\t' + '}' + '\n'
     + '\n\t' + 'depends_on = [aws_lb_listener.main]'
     + '\n' + '}'
+    
 
   fs.mkdirSync(path.join('fargate-files'), (err) => {
     if (err) {
