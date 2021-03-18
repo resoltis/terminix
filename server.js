@@ -23,6 +23,117 @@ app.listen(port, () => {
 //DO NOT CHANGE ANYTHING ABOVE THIS UNTIL WE CONTAINERIZE THE WEB APP
 //////////////////////////////////////////////////////////////////////////////////////////
 
+//object array holding all static values related to each Account/Enviorment
+//AccountName = accName, Enviorment = env, vpc_id = vpc, lb subnets = lb1/lb2, 
+//App subnets = sub1/sub2
+let staticValues = [
+  { // BI-Dev 
+    "accName": "TMX-BI", "env": "Dev", "vpc": "vpc-06f5145b2cac7068b",
+    "lb1": "subnet-08ebb9f71f54d7c03", "lb2": "subnet-069e59ee55c7869e3",
+    "sub1": "subnet-095f194970f0b4e67", "sub2": "subnet-01bdd2bbffea58d05"
+  },
+  { // BI-Test
+    "accName": "TMX-BI", "env": "Test", "vpc": "vpc-03345761b43d01494",
+    "lb1": "subnet-05dcf2f33949ab8bd", "lb2": "subnet-0309f0225d9873637",
+    "sub1": "subnet-0201c3c0fef8eefcd", "sub2": "subnet-0201c3c0fef8eefcd"
+  },
+  { //BI-Prod
+    "accName": "TMX-BI", "env": "Prod", "vpc": "vpc-0771449020fb5142e",
+    "lb1": "subnet-020eb8f5b0f0bec16", "lb2": "subnet-036d6d25becc25da3",
+    "sub1": "subnet-0862fb5b5fdf06437", "sub2": "subnet-0862fb5b5fdf06437"
+  },
+  { //Commerical-Dev
+    "accName": "TMX-Commercial", "env": "Dev", "vpc": "vpc-0b5f89b263be69844",
+    "lb1": "subnet-021398ea60b6db2ae", "lb2": "subnet-07ab7d6171c3340c1",
+    "sub1": "subnet-0af63390f61105857", "sub2": "subnet-0003fb6b3111a1ad8"
+  },
+  { // Commerical-Test
+    "accName": "TMX-Commercial", "env": "Test", "vpc": "vpc-0362f2555d7037273",
+    "lb1": "subnet-0f05cdf1d8b3a118f", "lb2": "subnet-045cd73a31416024e",
+    "sub1": "subnet-0f7ee2e13ebc4b124", "sub2": "subnet-04e27598dd766efcc"
+  },
+  {// Commerical-Prod
+    "accName": "TMX-Commercial", "env": "Prod", "vpc": "vpc-057d430aaccafdca5",
+    "lb1": "subnet-0e423c994c9cd6025", "lb2": "subnet-017ee9c79564f6cae",
+    "sub1": "subnet-031af24954b9a26c4", "sub2": "subnet-0d5dc121b45ae86d3"
+  },
+  {//Corp-Dev 
+    "accName": "TMX-CorpApps", "env": "Dev", "vpc": "vpc-0fd1e0cfc291f05be",
+    "lb1": "subnet-07636b1042d2bf4da", "lb2": "subnet-0db16da98e74b5562",
+    "sub1": "subnet-0e38561ec0382221e", "sub2": "subnet-08e7f38db57fadb29"
+  },
+  {//Corp-test
+    "accName": "TMX-CorpApps", "env": "Test", "vpc": "vpc-0359fbc43164c103b",
+    "lb1": "subnet-071a220f94baf629d", "lb2": "subnet-0656c9f056d03ae3a",
+    "sub1": "subnet-082ee696766bc5ccf", "sub2": "subnet-050b0738760de4673"
+  },
+  {//Corp-prod
+    "accName": "TMX-CorpApps", "env": "Prod", "vpc": "vpc-0e4c7265233e3ff91",
+    "lb1": "subnet-0450745fc01dadedd", "lb2": "subnet-0a6c6f339336989f8",
+    "sub1": "subnet-0d1a6ffad8ac87cb2", "sub2": "subnet-0def93e6d4e2b5bb1"
+  },
+  {//Corp-UAT
+    "accName": "TMX-CorpApps", "env": "UAT", "vpc": "vpc-0258852e2748a052b",
+    "lb1": "subnet-0cb284514ee47809a", "lb2": "subnet-07ac2e23b61479718",
+    "sub1": "subnet-0361b6749e63a30ad", "sub2": "subnet-04b15609421ad1de4"
+  },
+  {//Corp-QA
+    "accName": "TMX-CorpApps", "env": "QA", "vpc": "vpc-05c6abbc040534762",
+    "lb1": "subnet-0668228aa0d60d0f2", "lb2": "subnet-00b40396f36fea884",
+    "sub1": "subnet-019ef0cfdb445efa6", "sub2": "subnet-0f2c7ef0e714327cc"
+  },
+  {//Corp-training
+    "accName": "TMX-CorpApps", "env": "Training", "vpc": "vpc-0b24f5cdf16e5ca81",
+    "lb1": "subnet-0a7ef8f120f916ca0", "lb2": "subnet-0d05f28139a4e6a06",
+    "sub1": "subnet-0801a424986d394d9", "sub2": "subnet-08c3371432240c362"
+  },
+  {//Ecomm-Dev
+    "accName": "TMX-Ecomm", "env": "Dev", "vpc": "vpc-066ca1c28befe151f",
+    "lb1": "subnet-0200d0582c6db9190", "lb2": "subnet-0a3fe954e364eb9c7",
+    "sub1": "subnet-0be39299f983f09aa", "sub2": "subnet-07e910d238aa2c14a"
+  },
+  {//Ecomm-Test
+    "accName": "TMX-Ecomm", "env": "Test", "vpc": "vpc-02048e2212b9e0335",
+    "lb1": "subnet-049b8b5bb6e3dd894", "lb2": "subnet-01e99e7ff5d63b251",
+    "sub1": "subnet-0fa35bbd46a83eb2e", "sub2": "subnet-0abb007c7575ca66b"
+  },
+  {//Ecomm-Prod
+    "accName": "TMX-Ecomm", "env": "Prod", "vpc": "vpc-060176ad70173c5bd",
+    "lb1": "subnet-0bc94c94a05bb2cbd", "lb2": "subnet-0fa0c0ce5701bfe34",
+    "sub1": "subnet-052a003fe29fbd15f", "sub2": "subnet-0ad98fdd0b087da7c"
+  },
+  {//Integration-Dev
+    "accName": "TMX-Integration", "env": "Dev", "vpc": "vpc-017f5c0837ecb0839",
+    "lb1": "subnet-0d744fae9354141aa", "lb2": "subnet-0d41c14e3fc453c9c",
+    "sub1": "subnet-05dea48a108a5eaae", "sub2": "subnet-0b39ae62fd4e9347c"
+  },
+  {//Integration-Test
+    "accName": "TMX-Integration", "env": "Test", "vpc": "vpc-02dc69ea180cedf3f",
+    "lb1": "subnet-0a3c56b1d3d7dd52f", "lb2": "subnet-0a3c56b1d3d7dd52f",
+    "sub1": "subnet-0923862850b381923", "sub2": "subnet-04de480f7b4876d1f"
+  },
+  {//Integration-Prod
+    "accName": "TMX-Integration", "env": "Prod", "vpc": "vpc-0900eb9b296e35c72",
+    "lb1": "subnet-03728da7fc8d9069c", "lb2": "subnet-0d65e2f7edb09a47a",
+    "sub1": "subnet-02279cfcd0a558a2e", "sub2": "subnet-0d83ea59caa561419"
+  },
+  {//Integration-QA
+    "accName": "TMX-Integration", "env": "QA", "vpc": "vpc-093a24f06fa52c1a8",
+    "lb1": "subnet-0844a7591a953319b", "lb2": "subnet-0f1a00c934c46cf3e",
+    "sub1": "subnet-040f710f364811a98", "sub2": "subnet-037a02d0f93b51d29"
+  },
+  {//Integration-Training
+    "accName": "TMX-Integration", "env": "QA", "vpc": "vpc-0a2fa78b3220ad009",
+    "lb1": "subnet-04da17738e60a61af", "lb2": "subnet-067942c4db7817dca",
+    "sub1": "subnet-0aea9fe18f8d71822", "sub2": "subnet-05ccfbee6a6144750"
+  },
+  {//Integration-UAT
+    "accName": "TMX-Integration", "env": "UAT", "vpc": "vpc-01d1382a6ff836ffa",
+    "lb1": "subnet-0a411e9516f51288d", "lb2": " subnet-0c0906944fb42fe32",
+    "sub1": "subnet-0eb0d3f9cdf5c59aa", "sub2": "subnet-0efb36a523cd2e45e"
+  }
+];
+
 //POST method for generating files
 //(POST action name, parser, function(request, response))
 
@@ -163,7 +274,7 @@ switch(businessUnit){
 
   //Require file system for writing to file
   const fs = require('fs');
-
+staticValues.accName.get
   //Print out the data we received
   console.log(req.body);
 
@@ -390,6 +501,7 @@ switch(businessUnit){
     + '\n\t' + '}' + '\n'
     + '\n\t' + 'depends_on = [aws_lb_listener.main]'
     + '\n' + '}'
+    
 
   fs.mkdirSync(path.join('fargate-files'), (err) => {
     if (err) {
