@@ -6,7 +6,8 @@ const express = require('express')
 var path = require('path');
 const app = express()
 const port = 3000
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const { exec } = require('child_process');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static("express"));
 
@@ -423,9 +424,39 @@ staticValues.accName.get
       return
     }
   });
-
   //When finished, send user to file success page!
-  res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
+  //res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
+
+  // Get the current filenames 
+// in the directory 
+getCurrentFilenames(); 
+  
+// Using the recursive option to delete 
+// multiple directories that are nested 
+fs.rmdirSync("fargate-files", { 
+  recursive: true, 
+}); 
+console.log("Directories Deleted!"); 
+  
+// Get the current filenames 
+// in the directory to verify 
+getCurrentFilenames(); 
+  
+  
+// Function to get current filenames 
+// in directory 
+function getCurrentFilenames() { 
+  console.log("\nCurrent filenames:"); 
+  fs.readdirSync(__dirname).forEach(file => { 
+    console.log(file); 
+  }); 
+  console.log("\n"); 
+} 
+
+  res.writeHead(301,
+    {Location: req.body.repoUrl}
+  );
+  res.end();
 
 });
 /* Commented out app.post while in progress

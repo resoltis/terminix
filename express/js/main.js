@@ -118,6 +118,7 @@ function detectEnvironment(selectObject) {
             
   }
 
+
   //make sure task cpu and task memory are compatible
 function detectTaskCPU() {
     
@@ -170,3 +171,4 @@ function uploadFiles() {
     ('App Count:' +appCount.value));
     
 }
+

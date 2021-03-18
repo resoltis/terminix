@@ -1,0 +1,47 @@
+<body>
+    <!--EC2 Bucket form-->
+    <form id="ec2_form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <img class="icon" src="icons/ec2.jpg"/>
+                    <h1>EC2 Instance</h1>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label for="pam1">Choose A Parameter:</label>
+                    <select id="pam1" name="pam1">
+                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
+                        <option value="s3">S3 Bucket</option>
+                        <option value="ec2">EC2 Instance</option>
+                        <option value="rds">RDS Database</option>
+                        <option value="lambda">Lambda Function</option>
+                        <option value="fargate">Fargate Instance</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label for="pam2">Choose A Parameter:</label>
+                    <select id="pam2" name="pam2">
+                        <!--all the values in the dropdown list, 'value' is what is passed to JS-->
+                        <option value="s3">S3 Bucket</option>
+                        <option value="ec2">Test</option>
+                        <option value="rds">RDS Database</option>
+                        <option value="lambda">Lambda Function</option>
+                        <option value="fargate">Fargate Instance</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <input type="submit" value="Generate Terraform Files" class="button">
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
