@@ -138,6 +138,11 @@ let staticValues = [
 //POST method for generating files
 //(POST action name, parser, function(request, response))
 
+
+app.post('/generateFilesTest', urlencodedParser, function (req, res) {
+    console.log(req.body);
+});
+
 app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   var vpc_id;

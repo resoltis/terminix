@@ -38,20 +38,61 @@
             <img src="icons/terminix-logo.png"/>
         </header>
         <!-- ***** Header Area End ***** -->
-        
-        <div style="padding: 5em;">
+        <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFilesTest">
+            <div class ="row">
+                <div class="col-md-3">
+                    
+                    <label for="account">Choose an Account:</label>
+                    <select id="account" name="account" onchange="detectAccount(this)">
+                        <option value="TMX-BI">TMX-BI</option>
+                        <option value="TMX-Commercial">TMX-Commercial</option>
+                        <option value="TMX-CorpsApps">TMX-CorpsApps</option>
+                        <option value="TMX-Ecomm">TMX-Ecomm</option>
+                        <option value="TMX-Integration">TMX-Integration</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    
+                    <label for="environment">Choose an Environment:</label>
+                    <select id="environment" name="environment" onchange="detectEnvironment(this)">
+                        <option value="Dev">Dev</option>
+                        <option value="Test">Test</option>
+                        <option value="Prod">Prod</option>
+                        <option value="UAT" hidden>UAT</option>
+                        <option value="QA" hidden>QA</option>
+                        <option value="Training" hidden>Training</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="businessUnit">Business Unit Tag:</label>
+                    <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required/>
+                </div>
+                <div class="col-md-3">
+                    <label for="productOwner">Product Owner: </label>
+                    <input type="text" id="productOwner" name="productOwner" required style="width:100% "required/>
+                </div>
+            </div>
             <ul class="nav nav-tabs" role="tablist">
                 <li><a href="#" class="add-service">+ Add Service</a>
                 </li>
             </ul>
             <div class="tab-content">
             </div>
-        </div>
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <input type="submit" value="Generate Files" class="button">
+                    </div>
+                </div>
+            </div>
+        </form>
+        
 
         <script>
             //Showing content & deleting tab
             $(".nav-tabs")
-                .on("click", "a", function (e) {            //show content
+                .on("click", "a", function (e) {            //show content on click
                     e.preventDefault();
                     if (!$(this).hasClass('add-service')) { //If not add service button
                         $('.tab-pane').hide(); //hide all tab panes
@@ -78,7 +119,7 @@
                 var tabId = 'service_' + id; //Make ID name as String
                 $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
                 //add tab content section
-                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row"><select class="col-md-4" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service">Fargate Service</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
+                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
                 $('.nav-tabs li:nth-child(' + id + ') a').click();
             });
 
@@ -97,7 +138,7 @@
 
                 switch(value) 
                 {
-                    case 'Fargate Service':
+                    case 'Fargate Service (Non Ingress)':
                         $.get("fargate_form.html", function(data){ //get form data
                             $('#service_' + id).append(data); //append to that tab only
                         });
