@@ -109,6 +109,8 @@ function detectAccount(selectObject) {
           }
 
     }
+
+    detectEnvironment(selectObject);
   }
 
   
