@@ -278,7 +278,7 @@ switch(businessUnit){
 }
 
 //write param json
-const params = '['
+/*const params = '['
 + '\n' + '"parameters":  {'
 + '\n\t'+ '"ParameterKey": "AlbListenerArn",'
       "ParameterValue": ""
@@ -357,7 +357,7 @@ const params = '['
     },
     
 ]       
-
+*/
   //Require file system for writing to file
   const fs = require('fs');
 
