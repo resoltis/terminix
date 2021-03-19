@@ -102,22 +102,16 @@ header img {
 }
 
 label {
-    color: white;
+    color: black;
     font-size: 1.3em;
     text-align: left;
     width: 100%;
 }
 
 form {
-    background-color: #20aa4d;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 20px;
     border-radius: 4px;
-    margin-top: 20px;
-    -webkit-box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
-    box-shadow: 0px 0px 12px 3px rgba(0,0,0,1);
+    margin-left: 24px;
+    margin-right: 24px;
 }
 
 ​input[type=checkbox] {
@@ -162,7 +156,7 @@ body {
   }
 
   .row {
-    padding-top: 8px;
+    padding: 8px;
     position: relative;
   }
 
@@ -231,7 +225,7 @@ body {
   }
 
   .subHeading{
-    color: white;
+    color: black;
     
   }
 
@@ -245,13 +239,32 @@ body {
       padding-left : 25px;
   }
 
+  .nav-tabs {
+    border-bottom: 1px solid black !important;
+  }
 
  .nav-tabs > li {
      position:relative;
  }
  .nav-tabs > li > a {
      display:inline-block;
+     font-weight: bold;
+     font-size: larger;
  }
+
+ .nav-tabs > li > a:hover {
+  border-bottom-color: black !important;
+}
+
+.nav-tabs > li > a:focus {
+  border-bottom-color: black !important;
+}
+
+ .nav-tabs > li.active > a {
+  border-color: black !important;
+  border-bottom-color: transparent !important;
+}
+
  .nav-tabs > li > span {
      display:none;
      cursor:pointer;
@@ -262,6 +275,12 @@ body {
  }
  .nav-tabs > li:hover > span {
      display: inline-block;
+ }
+
+ .tab-content {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
  }
 
 

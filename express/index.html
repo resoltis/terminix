@@ -51,7 +51,7 @@
         <script>
             //Showing content & deleting tab
             $(".nav-tabs")
-                .on("click", "a", function (e) {            //show content
+                .on("click", "a", function (e) {            //show content on click
                     e.preventDefault();
                     if (!$(this).hasClass('add-service')) { //If not add service button
                         $('.tab-pane').hide(); //hide all tab panes
@@ -78,7 +78,7 @@
                 var tabId = 'service_' + id; //Make ID name as String
                 $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
                 //add tab content section
-                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row"><select class="col-md-4" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service">Fargate Service</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
+                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service">Fargate Service</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
                 $('.nav-tabs li:nth-child(' + id + ') a').click();
             });
 
