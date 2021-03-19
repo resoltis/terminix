@@ -86,6 +86,7 @@ function logValue(type) {
 }
 
 
+
 //make sure to change environment based on account
 function detectAccount(selectObject) {
     //document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
@@ -109,6 +110,8 @@ function detectAccount(selectObject) {
           }
 
     }
+
+    detectEnvironment(selectObject);
   }
 
   
@@ -122,8 +125,8 @@ function detectEnvironment(selectObject) {
   //make sure task cpu and task memory are compatible
 function detectTaskCPU() {
     
-    var cpu = document.getElementById('taskCPU');
-    var memory = document.getElementById('taskMemory');
+    var cpu = document.getElementById('containerCPU');
+    var memory = document.getElementById('containerMemory');
 
     if(cpu.value === "1024") 
     {

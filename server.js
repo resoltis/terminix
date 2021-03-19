@@ -32,6 +32,11 @@ app.listen(port, () => {
 //POST method for generating files
 //(POST action name, parser, function(request, response))
 
+
+app.post('/generateFilesTest', urlencodedParser, function (req, res) {
+  console.log(req.body);
+});
+
 app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   var vpc_id;
@@ -166,95 +171,171 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       break;
   }
 
+  //write param json
+  const params = '['
+    + '\n' + '"parameters":  {'
+    + '\n\t' + '"ParameterKey": "AlbListenerArn",'
+  "ParameterValue": ""
+},
+  {
+    "ParameterKey": "VpcId", //This will be static based on Account/Env
+    '"ParameterValue": "'   
+    },
+  {
+    "ParameterKey": "DockerImageUrl",
+    "ParameterValue": 
+    },
+  {
+    "ParameterKey": "TargetEnv",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "ContainerName",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "ContainerPort",
+    "ParameterValue": ""
+      "Default": "6379"
+  },
+  {
+    "ParameterKey": "ClusterName",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "LogRetention",
+    "ParameterValue": ""
+      "Default": "7"
+  },
+  {
+    "ParameterKey": "Version",
+    "ParameterValue": ""
+       "Default": "1"
+  },
+  {
+    "ParameterKey": "RulePriority",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "BusinessUnitTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "CustomerTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "EnvironmentTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "ManagedByTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "ProductOwnerTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "ProvisionedTag",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "Subnets",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "DesiredCount",
+    "ParameterValue": ""
+      "Default": "2"
+  },
+    
+]
+
+  //Require file system for writing to file
+  const fs = require('fs');
+
+//Print out the data we received
+console.log(req.body);
+
+//Put TF file text into a single string called content
+//Variables are passed as 'req.body' + variable name
 
 
+// const devContent = '#tags' + '\n' +
+//   'Environment  =\"' + req.body.environment + '\"\n' +
+//   'Provisioned  = "UACapstoneTeam"' + '\n' +
+//   'ManagedBy    = "Terraform"' + '\n' +
+//   'BusinessUnit = \"' + req.body.businessUnit + '\"\n\n' +
+
+//   '#common' + '\n' +
+//   'name         = \"' + req.body.fargateName + '\"\n' +
+//   'vpc_id       = ' + vpc_id + '\n' +
+//   'subnets      = [' + lbs_subnet + ']' + '\n' +
+//   'cluster_name = \"' + req.body.clusterName + '\"\n\n' +
+
+//   '#task_defination' + '\n' +
+//   'task_container_image   = ' + req.body.taskContainerImage + '\n' +
+//   'task_container_port    = ' + req.body.containerPort + '\n' +
+//   'task_host_port         = ' + req.body.hostPort + '\n' +
+//   'task_definition_cpu    = ' + req.body.taskCPU + '\n' +
+//   'task_definition_memory = ' + req.body.taskMemory + '\n\n' +
+
+//   '#alb' + '\n' +
+//   'alb_port     = ' + req.body.albPort + '\n' +
+//   'alb_protocol = "HTTP"' + '\n\n' +
+
+//   '#tg' + '\n' +
+//   'tg_port     = ' + req.body.tgPort + '\n' +
+//   'tg_protocol = "HTTP"' + '\n\n' +
+
+//   '#service' + '\n' +
+//   'app_count   = ' + req.body.appCount + '\n' +
+//   'launch_type = "FARGATE"' + '\n' +
+//   'container_port = ' + req.body.containerPort;
 
 
-
-  // //Require file system for writing to file
-  // const fs = require('fs');
-  // staticValues.accName.get
-  // //Print out the data we received
-  // console.log(req.body);
-
-  //Put TF file text into a single string called content
-  //Variables are passed as 'req.body' + variable name
+// //write main file
+// fs.writeFileSync(path.join('fargate-files', req.body.environment, 'main.tf'), providerMain, err => {
+//   if (err) {
+//     console.debug(err);
+//     return
+//   }
+//});
 
 
-  // const devContent = '#tags' + '\n' +
-  //   'Environment  =\"' + req.body.environment + '\"\n' +
-  //   'Provisioned  = "UACapstoneTeam"' + '\n' +
-  //   'ManagedBy    = "Terraform"' + '\n' +
-  //   'BusinessUnit = \"' + req.body.businessUnit + '\"\n\n' +
+//When finished, send user to file success page!
+//res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
 
-  //   '#common' + '\n' +
-  //   'name         = \"' + req.body.fargateName + '\"\n' +
-  //   'vpc_id       = ' + vpc_id + '\n' +
-  //   'subnets      = [' + lbs_subnet + ']' + '\n' +
-  //   'cluster_name = \"' + req.body.clusterName + '\"\n\n' +
+// Get the current filenames 
+// in the directory 
+getCurrentFilenames();
 
-  //   '#task_defination' + '\n' +
-  //   'task_container_image   = ' + req.body.taskContainerImage + '\n' +
-  //   'task_container_port    = ' + req.body.containerPort + '\n' +
-  //   'task_host_port         = ' + req.body.hostPort + '\n' +
-  //   'task_definition_cpu    = ' + req.body.taskCPU + '\n' +
-  //   'task_definition_memory = ' + req.body.taskMemory + '\n\n' +
+// Using the recursive option to delete 
+// multiple directories that are nested 
+fs.rmdirSync("fargate-files", {
+  recursive: true,
+});
+console.log("Directories Deleted!");
 
-  //   '#alb' + '\n' +
-  //   'alb_port     = ' + req.body.albPort + '\n' +
-  //   'alb_protocol = "HTTP"' + '\n\n' +
-
-  //   '#tg' + '\n' +
-  //   'tg_port     = ' + req.body.tgPort + '\n' +
-  //   'tg_protocol = "HTTP"' + '\n\n' +
-
-  //   '#service' + '\n' +
-  //   'app_count   = ' + req.body.appCount + '\n' +
-  //   'launch_type = "FARGATE"' + '\n' +
-  //   'container_port = ' + req.body.containerPort;
+// Get the current filenames 
+// in the directory to verify 
+getCurrentFilenames();
 
 
-  // //write main file
-  // fs.writeFileSync(path.join('fargate-files', req.body.environment, 'main.tf'), providerMain, err => {
-  //   if (err) {
-  //     console.debug(err);
-  //     return
-  //   }
-  //});
-
-
-  //When finished, send user to file success page!
-  //res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
-
-  // Get the current filenames 
-  // in the directory 
-  getCurrentFilenames();
-
-  // Using the recursive option to delete 
-  // multiple directories that are nested 
-  fs.rmdirSync("fargate-files", {
-    recursive: true,
+// Function to get current filenames 
+// in directory 
+function getCurrentFilenames() {
+  console.log("\nCurrent filenames:");
+  fs.readdirSync(__dirname).forEach(file => {
+    console.log(file);
   });
-  console.log("Directories Deleted!");
+  console.log("\n");
+}
 
-  // Get the current filenames 
-  // in the directory to verify 
-  getCurrentFilenames();
-
-
-  // Function to get current filenames 
-  // in directory 
-  function getCurrentFilenames() {
-    console.log("\nCurrent filenames:");
-    fs.readdirSync(__dirname).forEach(file => {
-      console.log(file);
-    });
-    console.log("\n");
-  }
-
-  res.writeHead(301,
-    { Location: req.body.repoUrl }
-  );
-  res.end();
+res.writeHead(301,
+  { Location: req.body.repoUrl }
+);
+res.end();
 
 });
