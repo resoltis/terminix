@@ -281,6 +281,30 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
  '\t{' +
  '\n\t "ParameterKey": "TargetEnv",' +
  '\n\t "ParameterValue": "' + req.body.environment + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "DockerImageUrl",' +
+ '\n\t "ParameterValue": "' + req.body.dockerImageUrl + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "LogRetention",' +
+ '\n\t "ParameterValue": "' + '7' + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "BusinessUnitTag",' +
+ '\n\t "ParameterValue": "' + req.body.businessUnit + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "ProductOwnerTag",' +
+ '\n\t "ParameterValue": "' + req.body.productOwner + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "ContainerPort",' +
+ '\n\t "ParameterValue": "' + req.body.containerPort + 
+ '"\n\t},' + 
+ '\n\t{' +
+ '\n\t "ParameterKey": "DesiredCount",' +
+ '\n\t "ParameterValue": "' + req.body.desiredCount + 
  '"\n\t}' + 
  '\n]';
   //Print out the data we received
