@@ -276,13 +276,15 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       app_subnet = "subnet-0eb0d3f9cdf5c59aa, subnet-0efb36a523cd2e45e";
       break;
   }
+  //write parameter file here
+  const paramsFiles = 'test information' ;
   //Require file system for writing to file
   const fs = require('fs');
 
   //Print out the data we received
-  console.log(req.body);
+  // console.log(req.body);
 
-  fs.mkdirSync(path.join('fargate-files'), (err) => {
+  fs.mkdirSync(path.join('cftFiles'), (err) => {
     if (err) {
       return console.error(err);
     }
@@ -291,7 +293,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   });
   // test
 
-  fs.mkdirSync(path.join('fargate-files', req.body.environment), (err) => {
+  fs.mkdirSync(path.join('cftFiles', req.body.environment), (err) => {
     if (err) {
       return console.error(err);
     }
@@ -299,14 +301,14 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   });
 
   //Write the file
-  fs.writeFileSync(path.join('fargate-files', req.body.environment, 'dev.tfvars'), devContent, err => {
+  fs.writeFileSync(path.join('cftFiles', req.body.environment, req.body.environment + '.params.json'), paramsFiles, err => {
     if (err) {
       console.debug(err);
       //We may need to send user to a file fail page here
       return
     }
     //file written successfully
-
+console.log('parameter files created successfully');
   });
 
   //When finished, send user to file success page!
@@ -342,6 +344,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     { Location: req.body.repoUrl }
   );
   res.end();
+
+});
 
   //This is just an example of how to sort the logic and "write to the file" for the param file. 
   // var account = 'TMX-BI'
@@ -453,6 +457,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
 
 
-});
+
 
 
