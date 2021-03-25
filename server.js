@@ -292,7 +292,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   });
 //Create parameter file
-fs.openSync(path.join('CTF Files', req.body.environment + '.params.json'), 'w');
+fs.openSync(path.join('CTF Files', req.body.environment.toLowerCase + '.params.json'), 'w');
 
   //Create base level CTF File
 
