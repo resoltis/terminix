@@ -276,18 +276,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       app_subnet = "subnet-0eb0d3f9cdf5c59aa, subnet-0efb36a523cd2e45e";
       break;
   }
-<<<<<<< HEAD
-  //write parameter file here
-  const paramsFiles = 'test information' ;
-  //Require file system for writing to file
-  const fs = require('fs');
-
-  //Print out the data we received
-  // console.log(req.body);
-
-  fs.mkdirSync(path.join('cftFiles'), (err) => {
-=======
-
+ const parameterFile; 
   //Print out the data we received
   console.log(req.body);
   
@@ -295,7 +284,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //make folder that will contain files for upload
   fs.mkdirSync(path.join('CTF Files'), (err) => {
->>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
     if (err) {
       return console.error(err);
     }
@@ -303,52 +291,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   });
 
-<<<<<<< HEAD
-  fs.mkdirSync(path.join('cftFiles', req.body.environment), (err) => {
-    if (err) {
-      return console.error(err);
-    }
-    console.log('Directory created successfully!');
-  });
-
-  //Write the file
-  fs.writeFileSync(path.join('cftFiles', req.body.environment, req.body.environment + '.params.json'), paramsFiles, err => {
-    if (err) {
-      console.debug(err);
-      //We may need to send user to a file fail page here
-      return
-    }
-    //file written successfully
-console.log('parameter files created successfully');
-  });
-
-  //When finished, send user to file success page!
-  //res.sendFile(path.join(__dirname + '/express/fileSuccess.html'));
-
-  // Get the current filenames 
-  // in the directory 
-  getCurrentFilenames();
-
-  // Using the recursive option to delete 
-  // multiple directories that are nested 
-  fs.rmdirSync("fargate-files", {
-    recursive: true,
-  });
-  console.log("Directories Deleted!");
-
-  // Get the current filenames 
-  // in the directory to verify 
-  getCurrentFilenames();
-
-
-  // Function to get current filenames 
-  // in directory 
-  function getCurrentFilenames() {
-    console.log("\nCurrent filenames:");
-    fs.readdirSync(__dirname).forEach(file => {
-      console.log(file);
-=======
   //Create base level CTF File
+
   fs.openSync(path.join('CTF Files', 'cloudformation.yml'), 'w');
 
   //Append templates to yaml file
@@ -358,7 +302,6 @@ console.log('parameter files created successfully');
     fs.appendFileSync(path.join('CTF Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
       if (err) throw err;
       console.log('Saved!');
->>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
     });
   }else
   if(services.includes("s3_bucket"))
@@ -366,13 +309,12 @@ console.log('parameter files created successfully');
     //do something
   }
 
-<<<<<<< HEAD
   res.writeHead(301,
     { Location: req.body.repoUrl }
   );
   res.end();
 
-});
+
 
   //This is just an example of how to sort the logic and "write to the file" for the param file. 
   // var account = 'TMX-BI'
@@ -487,6 +429,4 @@ console.log('parameter files created successfully');
 
 
 
-=======
 });
->>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
