@@ -277,7 +277,12 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       break;
   }
   //write parameter file here
- const parameterFile = 'test info'; 
+ const parameterFile = '[\n' + 
+ '\t{' +
+ '\n\t "ParameterKey": "TargetEnv",' +
+ '\n\t "ParameterValue": "' + req.body.environment + 
+ '"\n\t}' + 
+ '\n]';
   //Print out the data we received
   console.log(req.body);
   
@@ -292,7 +297,18 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   });
 //Create parameter file
-fs.openSync(path.join('CTF Files', req.body.environment.toLowerCase + '.params.json'), 'w');
+fs.openSync(path.join('CTF Files', req.body.environment + '.params.json'), 'w');
+
+fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), parameterFile, err => {
+  if (err) {
+    console.debug(err);
+    //We may need to send user to a file fail page here
+    return
+  }
+  //file written successfully
+
+});
+
 
   //Create base level CTF File
 
