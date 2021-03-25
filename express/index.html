@@ -38,7 +38,7 @@
             <img src="icons/terminix-logo.png"/>
         </header>
         <!-- ***** Header Area End ***** -->
-        <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFilesTest">
+        <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
             <div class ="row">
                 <div class="col-md-3">
                     
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="businessUnit">Business Unit Tag:</label>
-                    <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required/>
+                    <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required value="TMX-BI-Dev"/>
                 </div>
                 <div class="col-md-3">
                     <label for="productOwner">Product Owner: </label>
@@ -109,7 +109,7 @@
                     var anchor = $(this).siblings('a');     //anchor on link
                     $(anchor.attr('href')).remove();        //delete link
                     $(this).parent().remove();              //delete tab
-                    $(".nav-tabs li").children('a').first().click(); //idk what this does
+                    $(".nav-tabs li").children('a').first().click(); //change to the first tab
             });
 
             //Adding a new service

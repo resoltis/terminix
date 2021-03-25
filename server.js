@@ -4,8 +4,8 @@
 const http = require('http');
 const express = require('express')
 var path = require('path');
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 var bodyParser = require('body-parser');
 const { exec } = require('child_process');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 //Open port to incoming GET/POST calls
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`App running at http://localhost:${port}`)
 })
 
 //DO NOT CHANGE ANYTHING ABOVE THIS UNTIL WE CONTAINERIZE THE WEB APP
@@ -139,17 +139,17 @@ let staticValues = [
 //(POST action name, parser, function(request, response))
 
 
-app.post('/generateFilesTest', urlencodedParser, function (req, res) {
-  console.log(req.body);
-});
-
 app.post('/generateFiles', urlencodedParser, function (req, res) {
+
+  //Require file system for writing to file
+  const fs = require('fs');
 
   var vpc_id;
   var lbs_subnet;
   var app_subnet;
-  var businessUnit = req.body.businessUnit.toLowerCase()
-  switch (businessUnit) {
+  var businessUnit = req.body.businessUnit.toLowerCase();
+
+  switch(businessUnit){
     case "tmx-bi dev":
       vpc_id = "vpc-06f5145b2cac7068b";
       lbs_subnet = "subnet-08ebb9f71f54d7c03, subnet-069e59ee55c7869e3";
@@ -221,7 +221,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       lbs_subnet = "subnet-0a7ef8f120f916ca0, subnet-0d05f28139a4e6a06";
       app_subnet = "subnet-0801a424986d394d9, subnet-08c3371432240c362";
       break;
-
+      
     case "tmx-ecomm dev":
       vpc_id = "vpc-066ca1c28befe151f";
       lbs_subnet = "subnet-0200d0582c6db9190, subnet-0a3fe954e364eb9c7";
@@ -276,6 +276,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       app_subnet = "subnet-0eb0d3f9cdf5c59aa, subnet-0efb36a523cd2e45e";
       break;
   }
+<<<<<<< HEAD
   //write parameter file here
   const paramsFiles = 'test information' ;
   //Require file system for writing to file
@@ -285,14 +286,24 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   // console.log(req.body);
 
   fs.mkdirSync(path.join('cftFiles'), (err) => {
+=======
+
+  //Print out the data we received
+  console.log(req.body);
+  
+  var services = req.body.service; //get list of services
+
+  //make folder that will contain files for upload
+  fs.mkdirSync(path.join('CTF Files'), (err) => {
+>>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
     if (err) {
       return console.error(err);
     }
     console.log('Directory created successfully!');
 
   });
-  // test
 
+<<<<<<< HEAD
   fs.mkdirSync(path.join('cftFiles', req.body.environment), (err) => {
     if (err) {
       return console.error(err);
@@ -336,10 +347,26 @@ console.log('parameter files created successfully');
     console.log("\nCurrent filenames:");
     fs.readdirSync(__dirname).forEach(file => {
       console.log(file);
+=======
+  //Create base level CTF File
+  fs.openSync(path.join('CTF Files', 'cloudformation.yml'), 'w');
+
+  //Append templates to yaml file
+  //Completely expanded as long as templates are uploaded to YmlTemplates
+  if(services.includes("fargate"))
+  {
+    fs.appendFileSync(path.join('CTF Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+>>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
     });
-    console.log("\n");
+  }else
+  if(services.includes("s3_bucket"))
+  {
+    //do something
   }
 
+<<<<<<< HEAD
   res.writeHead(301,
     { Location: req.body.repoUrl }
   );
@@ -460,3 +487,6 @@ console.log('parameter files created successfully');
 
 
 
+=======
+});
+>>>>>>> 4fe17bec4f0ec013c57d41d863c0a1044a039634
