@@ -351,6 +351,13 @@ fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), 
   {
     //do something
   }
+  else if(services.includes("fargateIngress")){
+    //append FI template to Yaml file output
+    fs.appendFileSync(path.join('CTF Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  }
 
   res.writeHead(301,
     { Location: req.body.repoUrl }

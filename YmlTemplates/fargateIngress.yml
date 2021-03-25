@@ -1,4 +1,4 @@
-# For Non Ingress Service -- Only need the Task Definition, Execution Role, Security group, and Service Definition Resources
+# For Ingress Service -- 
 
 AWSTemplateFormatVersion: '2010-09-09'
 Description: # Service Name - ENV - Fargate CFT - Date
@@ -103,6 +103,53 @@ Resources:
               awslogs-stream-prefix: !Ref ContainerName
           PortMappings:
             - ContainerPort: !Ref ContainerPort
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Tags: 
+        - Key: BusinessUnit
+          Value: !Ref BusinessUnitTag
+        - Key: Customer
+          Value: !Ref CustomerTag
+        - Key: Environment
+          Value: !Ref EnvironmentTag
+        - Key: ManagedBy
+          Value: !Ref ManagedByTag
+        - Key: ProductOwner
+          Value: !Ref ProductOwnerTag
+        - Key: Provisioned
+          Value: !Ref ProvisionedTag
+      TargetType: ip
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /healthcheck
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: !Ref ContainerPort
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
+      Matcher: 
+        HttpCode: '200'
+      Name: !Ref ContainerName
+      Port: !Ref ContainerPort
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId: !Ref 'VpcId'
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: TargetGroup
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn: !Ref 'TargetGroup'
+      Conditions:
+      - Field: path-pattern
+        Values: ['/*']
+      ListenerArn: !Ref AlbListenerArn
+      Priority: !Ref RulePriority
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: #servicename-logs
+      RetentionInDays: !Ref LogRetention
   ContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
