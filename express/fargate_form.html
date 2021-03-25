@@ -5,7 +5,7 @@
             <div class="col-md-8" style="padding: 8px;">
                 <div class="row">
                     <img class="icon" src="icons/fargate.jpg"/>
-                    <h1>Parameters</h1>
+                    <h1>Fargate</h1>
                 </div>
             </div>
         </div>
@@ -14,14 +14,14 @@
             border-top: 1px solid black;
             border-bottom: 1px solid black;
             border-right: 1px solid black;">
-                
+            <input type="hidden" value="fargate" id="service" name="service">
                 <div class="row">
                     <label for="customerTag">Customer Tag:</label>
                     <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
                 </div>
                 <div class="row">
-                    <label for="productOwner">Product Owner Tag:</label>
-                    <input type="text" id="productOwner" name="productOwner" required style="width:100%" required />
+                    <label for="productOwnerTag">Product Owner Tag:</label>
+                    <input type="text" id="productOwnerTag" name="productOwnerTag" required style="width:100%" required />
                 </div>
                 <div class="row">
                     <label for="containerPort">Container Port</label>
