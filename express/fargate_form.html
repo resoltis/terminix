@@ -5,7 +5,7 @@
             <div class="col-md-8" style="padding: 8px;">
                 <div class="row">
                     <img class="icon" src="icons/fargate.jpg"/>
-                    <h1>Parameters</h1>
+                    <h1>Fargate</h1>
                 </div>
             </div>
         </div>
@@ -14,8 +14,43 @@
             border-top: 1px solid black;
             border-bottom: 1px solid black;
             border-right: 1px solid black;">
-                
-                
+            <input type="hidden" value="fargate" id="service" name="service">
+                <div class="row">
+                    <label for="customerTag">Customer Tag:</label>
+                    <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
+                </div>
+                <div class="row">
+                    <label for="productOwnerTag">Product Owner Tag:</label>
+                    <input type="text" id="productOwnerTag" name="productOwnerTag" required style="width:100%" required />
+                </div>
+                <div class="row">
+                    <label for="containerPort">Container Port</label>
+                    <input type="number" id="containerPort" name="containerPort" required style="width:100%" required />
+                </div>
+                <div class="row">
+                    <label for="containerCPU">Choose Task CPU:</label>
+                    <select id="containerCPU" name="containerCPU" onchange='detectTaskCPU()'>
+                        <option value="256">256 units</option>
+                        <option value="512">512 units</option>
+                        <option value="1024">1024 units</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label for="containerMemory">Choose Task Memory:</label>
+                    <select id="containerMemory" name="containerMemory">
+                        <option value="0.5">0.5 GB</option>
+                        <option value="1">1 GB</option>
+                        <option value="2">2 GB</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label for="dockerImageUrl">Docker Image URL:</label>
+                    <input type="text" id="dockerImageUrl" name="dockerImageUrl" required style="width:100%" required />
+                </div>
+                <div class="row">
+                    <label for="desiredCount">Desired Count:</label>
+                    <input type="number" id="desiredCount" name="desiredCount" placeholder="2" required style="width:100%" required />
+                </div>
             </div>
         </div>
     </div>
