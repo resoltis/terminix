@@ -276,7 +276,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       app_subnet = "subnet-0eb0d3f9cdf5c59aa, subnet-0efb36a523cd2e45e";
       break;
   }
- const parameterFile; 
+  //write parameter file here
+ const parameterFile = 'test info'; 
   //Print out the data we received
   console.log(req.body);
   
@@ -290,6 +291,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     console.log('Directory created successfully!');
 
   });
+//Create parameter file
+fs.openSync(path.join('CTF Files', req.body.environment + '.params.json'), 'w');
 
   //Create base level CTF File
 
