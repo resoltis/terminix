@@ -1,182 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!--These dont really matter on software only accessed by company-->
-        <meta name="description" content="">
-        <meta name="author" content="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!--Title of the page at the top of the tab-->
-        <title>Terminix AWS Generator</title>
+    <!--These dont really matter on software only accessed by company-->
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <!--Links the css sheets and any fonts-->
-        <link rel="stylesheet" href="bootstrap.min.css">
-        <link rel="stylesheet" href="main.css">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="https://cdn-prod.servicemaster.com/-/media/Feature/Terminix/Header/terminix-favicon.png?rev=27996333162a403993c6ca67915db6cb">
+    <!--Title of the page at the top of the tab-->
+    <title>Terminix AWS Generator</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        
-        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js">
-        </script>
+    <!--Links the css sheets and any fonts-->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="shortcut icon"
+        href="https://cdn-prod.servicemaster.com/-/media/Feature/Terminix/Header/terminix-favicon.png?rev=27996333162a403993c6ca67915db6cb">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        
-        
-        
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/test.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    </head> 
-    
-    <body id="body">
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <img src="icons/terminix-logo.png"/>
-        </header>
-        <!-- ***** Header Area End ***** -->
-        
-        <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFilesTest">
-            <div class ="row">
-                <div class="col-md">
-                    
-                    <label for="account">Choose an Account:</label>
-                    <select id="account" name="account" onchange="detectAccount(this)">
-                        <option value="TMX-BI">TMX-BI</option>
-                        <option value="TMX-Commercial">TMX-Commercial</option>
-                        <option value="TMX-CorpsApps">TMX-CorpsApps</option>
-                        <option value="TMX-Ecomm">TMX-Ecomm</option>
-                        <option value="TMX-Integration">TMX-Integration</option>
-                    </select>
-                </div>
-                <div class="col-md">
-                    
-                    <label for="environment">Choose an Environment:</label>
-                    <select id="environment" name="environment" onchange="detectEnvironment(this)">
-                        <option value="Dev">Dev</option>
-                        <option value="Test">Test</option>
-                        <option value="Prod">Prod</option>
-                        <option value="UAT" hidden>UAT</option>
-                        <option value="QA" hidden>QA</option>
-                        <option value="Training" hidden>Training</option>
-                    </select>
-                </div>
-                <div class="col-md">
-                    <label for="businessUnit">Business Unit Tag:</label>
-                    <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required value="TMX-BI-Dev"/>
-                </div>
-                <div class="col-md">
-                    <label for="productOwner">Product Owner: </label>
-                    <input type="text" id="productOwner" name="productOwner" required style="width:100% "required/>
-                </div>
-                <div class="col-md">
-                    <label for="customerTag">Customer Tag:</label>
-                    <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
-                </div>
-                <div class="col-md">
-                    <label for="targetEnv">Target Environment:</label>
-                    <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required/>
-                </div>
-               
-                
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js">
+    </script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
+
+</head>
+
+<body id="body">
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <img src="icons/terminix-logo.png" />
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
+        <div class="row">
+            <div class="col-md">
+
+                <label for="account">Choose an Account:</label>
+                <select id="account" name="account" onchange="detectAccount(this)">
+                    <option value="TMX-BI">TMX-BI</option>
+                    <option value="TMX-Commercial">TMX-Commercial</option>
+                    <option value="TMX-CorpsApps">TMX-CorpsApps</option>
+                    <option value="TMX-Ecomm">TMX-Ecomm</option>
+                    <option value="TMX-Integration">TMX-Integration</option>
+                </select>
             </div>
-            <div class="row">
-                
-                
-                
-               
-                
-                
+            <div class="col-md">
+
+                <label for="environment">Choose an Environment:</label>
+                <select id="environment" name="environment" onchange="detectEnvironment(this)">
+                    <option value="Dev">Dev</option>
+                    <option value="Test">Test</option>
+                    <option value="Prod">Prod</option>
+                    <option value="UAT" hidden>UAT</option>
+                    <option value="QA" hidden>QA</option>
+                    <option value="Training" hidden>Training</option>
+                </select>
             </div>
-            
-            <ul class="nav nav-tabs" role="tablist">
-                <li><a href="#" class="add-service">+ Add Service</a>
-                </li>
-            </ul>
-            <div class="tab-content">
+            <div class="col-md">
+                <label for="businessUnit">Business Unit Tag:</label>
+                <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required
+                    value="TMX-BI-Dev" />
             </div>
-        
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <input type="submit" value="Generate Files" class="button">
-                    </div>
+            <div class="col-md">
+                <label for="productOwner">Product Owner: </label>
+                <input type="text" id="productOwner" name="productOwner" required style="width:100% " required />
+            </div>
+            <div class="col-md">
+                <label for="customerTag">Customer Tag:</label>
+                <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
+            </div>
+            <div class="col-md">
+                <label for="targetEnv">Target Environment:</label>
+                <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required />
+            </div>
+
+
+        </div>
+        <div class="row">
+
+
+
+
+
+
+        </div>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a href="#" class="add-service">+ Add Service</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <input type="submit" value="Generate Files" class="button">
                 </div>
             </div>
-        </form>
-        
+        </div>
+    </form>
 
-        <script>
-            //Showing content & deleting tab
-            $(".nav-tabs")
-                .on("click", "a", function (e) {            //show content on click
-                    e.preventDefault();
-                    if (!$(this).hasClass('add-service')) { //If not add service button
-                        $('.tab-pane').hide(); //hide all tab panes
-                        $('.nav-tabs li').removeClass('active'); //de-activate all tabs at top
 
-                        var parent = $(this).parent('li'); //get parent list of selected tab
-                        $(parent).addClass('active'); //make selected tab appear active
-
-                        var content = $(this).attr('href'); //get tab content href
-                        $(content).show(); //show tab content
-                    }
-                })
-                .on("click", "span", function () {          //deleting tabs
-                    var anchor = $(this).siblings('a');     //anchor on link
-                    $(anchor.attr('href')).remove();        //delete link
-                    $(this).parent().remove();              //delete tab
-                    $(".nav-tabs li").children('a').first().click(); //change to the first tab
-            });
-
-            //Adding a new service
-            $('.add-service').click(function (e) {
+    <script>
+        //Showing content & deleting tab
+        $(".nav-tabs")
+            .on("click", "a", function (e) {            //show content on click
                 e.preventDefault();
-                var id = $(".nav-tabs").children().length; //Get number of tabs
-                var tabId = 'service_' + id; //Make ID name as String
-                $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
-                //add tab content section
-                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="Fargate Service (Ingress)">Fargate Service (Ingress)</option></select></div></div>');
-                $('.nav-tabs li:nth-child(' + id + ') a').click();
+                if (!$(this).hasClass('add-service')) { //If not add service button
+                    $('.tab-pane').hide(); //hide all tab panes
+                    $('.nav-tabs li').removeClass('active'); //de-activate all tabs at top
+
+                    var parent = $(this).parent('li'); //get parent list of selected tab
+                    $(parent).addClass('active'); //make selected tab appear active
+
+                    var content = $(this).attr('href'); //get tab content href
+                    $(content).show(); //show tab content
+                }
+            })
+            .on("click", "span", function () {          //deleting tabs
+                var anchor = $(this).siblings('a');     //anchor on link
+                $(anchor.attr('href')).remove();        //delete link
+                $(this).parent().remove();              //delete tab
+                $(".nav-tabs li").children('a').first().click(); //change to the first tab
             });
 
-            //Change tab name depending on dropdown selection
-            $('.tab-content').on('change', 'select', function(e) {
+        //Adding a new service
+        $('.add-service').click(function (e) {
+            e.preventDefault();
+            var id = $(".nav-tabs").children().length; //Get number of tabs
+            var tabId = 'service_' + id; //Make ID name as String
+            $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
+            //add tab content section
+            $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="Fargate Service (Ingress)">Fargate Service (Ingress)</option></select></div></div>');
+            $('.nav-tabs li:nth-child(' + id + ') a').click();
+        });
 
-                var id = $(this).attr('id').split('_').pop(); //get id of tab
+        //Change tab name depending on dropdown selection
+        $('.tab-content').on('change', 'select', function (e) {
 
-                if(this.id === 'service_select_' + id) //if the service type select box value is changed
-                {
-                    var value = $(this).find(":selected").text(); //Get text value of selection
-                    $('#service_tab_' + id).text(value); //Change tab name based on ID
-                    $(this).parent().next().remove(); //remove form if service type changes
-                    $(this).parent().next().remove(); //injecting code from live server adds a script so we may need to delete this later, idk
-                }
+            var id = $(this).attr('id').split('_').pop(); //get id of tab
 
-                switch(value) 
-                {
-                    case 'Fargate Service (Non Ingress)':
-                        $.get("fargate_form.html", function(data){ //get form data
-                            $('#service_' + id).append(data); //append to that tab only
-                        });
-                        break;
-                    case 'S3 Bucket':
-                        $.get("s3_form.html", function(data){ //get form data
-                            $('#service_' + id).append(data); //append to that tab only
-                        });
-                        break;
-                    case 'Fargate Service (Ingress)':
-                        $.get("fargate_form_Ingress.html", function(data){ //get form data
-                            $('#service_' + id).append(data); //append to that tab only
-                        });
-                        break;
-                }
+            if (this.id === 'service_select_' + id) //if the service type select box value is changed
+            {
+                var value = $(this).find(":selected").text(); //Get text value of selection
+                $('#service_tab_' + id).text(value); //Change tab name based on ID
+                $(this).parent().next().remove(); //remove form if service type changes
+                $(this).parent().next().remove(); //injecting code from live server adds a script so we may need to delete this later, idk
+            }
 
-            });
-        </script>
+            switch (value) {
+                case 'Fargate Service (Non Ingress)':
+                    $.get("fargate_form.html", function (data) { //get form data
+                        $('#service_' + id).append(data); //append to that tab only
+                    });
+                    break;
+                case 'S3 Bucket':
+                    $.get("s3_form.html", function (data) { //get form data
+                        $('#service_' + id).append(data); //append to that tab only
+                    });
+                    break;
+                case 'Fargate Service (Ingress)':
+                    $.get("fargate_form_Ingress.html", function (data) { //get form data
+                        $('#service_' + id).append(data); //append to that tab only
+                    });
+                    break;
+            }
 
-    </body>
+        });
+    </script>
+
+</body>
+
 </html>
