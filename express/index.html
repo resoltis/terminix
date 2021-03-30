@@ -1,95 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!--These dont really matter on software only accessed by company-->
-        <meta name="description" content="">
-        <meta name="author" content="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!--Title of the page at the top of the tab-->
-        <title>Terminix AWS Generator</title>
+    <!--These dont really matter on software only accessed by company-->
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <!--Links the css sheets and any fonts-->
-        <link rel="stylesheet" href="bootstrap.min.css">
-        <link rel="stylesheet" href="main.css">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link rel="shortcut icon" href="https://cdn-prod.servicemaster.com/-/media/Feature/Terminix/Header/terminix-favicon.png?rev=27996333162a403993c6ca67915db6cb">
+    <!--Title of the page at the top of the tab-->
+    <title>Terminix AWS Generator</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        
-        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js">
-        </script>
+    <!--Links the css sheets and any fonts-->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="shortcut icon"
+        href="https://cdn-prod.servicemaster.com/-/media/Feature/Terminix/Header/terminix-favicon.png?rev=27996333162a403993c6ca67915db6cb">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        
-        
-        
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/test.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    </head> 
-    
-    <body id="body">
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <img src="icons/terminix-logo.png"/>
-        </header>
-        <!-- ***** Header Area End ***** -->
-        
-        <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
-            <div class ="row">
-                <div class="col-md">
-                    
-                    <label for="account">Account:</label>
-                    <select id="account" name="account" onchange="detectAccount(this)">
-                        <option value="TMX-BI">TMX-BI</option>
-                        <option value="TMX-Commercial">TMX-Commercial</option>
-                        <option value="TMX-CorpsApps">TMX-CorpsApps</option>
-                        <option value="TMX-Ecomm">TMX-Ecomm</option>
-                        <option value="TMX-Integration">TMX-Integration</option>
-                    </select>
-                </div>
-                <div class="col-md">
-                    
-                    <label for="environment">Environment:</label>
-                    <select id="environment" name="environment" onchange="detectEnvironment(this)">
-                        <option value="Dev">Dev</option>
-                        <option value="Test">Test</option>
-                        <option value="Prod">Prod</option>
-                        <option value="UAT" hidden>UAT</option>
-                        <option value="QA" hidden>QA</option>
-                        <option value="Training" hidden>Training</option>
-                    </select>
-                </div>
-                <div class="col-md">
-                    <label for="businessUnit">Business Unit Tag:</label>
-                    <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required />
-                </div>
-                <div class="col-md">
-                    <label for="productOwner">Product Owner: </label>
-                    <input type="text" id="productOwner" name="productOwner" required style="width:100% "required/>
-                </div>
-                <div class="col-md">
-                    <label for="customerTag">Customer Tag:</label>
-                    <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
-                </div>
-                <div class="col-md">
-                    <label for="targetEnv">Target Environment:</label>
-                    <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required/>
-                </div>
-                <div class="col-md">
-                    <label for="repoUrl">Repo URL:</label>
-                    <input type="text" id="repoUrl" name="repoUrl" required style="width:100%" required />
-                </div>
-               
-                
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js">
+    </script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
+
+</head>
+
+<body id="body">
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <img src="icons/terminix-logo.png" />
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
+        <div class="row">
+            <div class="col-md">
+
+                <label for="account">Account:</label>
+                <select id="account" name="account" onchange="detectAccount(this)">
+                    <option value="TMX-BI">TMX-BI</option>
+                    <option value="TMX-Commercial">TMX-Commercial</option>
+                    <option value="TMX-CorpsApps">TMX-CorpsApps</option>
+                    <option value="TMX-Ecomm">TMX-Ecomm</option>
+                    <option value="TMX-Integration">TMX-Integration</option>
+                </select>
             </div>
             <div class="col-md">
 
-                <label for="environment">Choose an Environment:</label>
+                <label for="environment">Environment:</label>
                 <select id="environment" name="environment" onchange="detectEnvironment(this)">
                     <option value="Dev">Dev</option>
                     <option value="Test">Test</option>
@@ -101,8 +67,7 @@
             </div>
             <div class="col-md">
                 <label for="businessUnit">Business Unit Tag:</label>
-                <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required
-                    value="TMX-BI-Dev" />
+                <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required />
             </div>
             <div class="col-md">
                 <label for="productOwner">Product Owner: </label>
@@ -116,6 +81,14 @@
                 <label for="targetEnv">Target Environment:</label>
                 <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required />
             </div>
+            <div class="col-md">
+                <label for="repoUrl">Repo URL:</label>
+                <input type="text" id="repoUrl" name="repoUrl" required style="width:100%" required />
+            </div>
+
+
+        </div>
+
 
 
         </div>
