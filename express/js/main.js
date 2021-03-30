@@ -111,15 +111,15 @@ function detectAccount(selectObject) {
 
     }
 
-    detectEnvironment(selectObject);
+    //detectEnvironment(selectObject);
   }
 
   
-function detectEnvironment(selectObject) {
-    var value = selectObject.value;
-    document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
+//function detectEnvironment(selectObject) {
+    //var value = selectObject.value;
+   // document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
             
-  }
+ // }
 
 
   //make sure task cpu and task memory are compatible
