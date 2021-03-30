@@ -43,7 +43,7 @@
             <div class ="row">
                 <div class="col-md">
                     
-                    <label for="account">Choose an Account:</label>
+                    <label for="account">Account:</label>
                     <select id="account" name="account" onchange="detectAccount(this)">
                         <option value="TMX-BI">TMX-BI</option>
                         <option value="TMX-Commercial">TMX-Commercial</option>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md">
                     
-                    <label for="environment">Choose an Environment:</label>
+                    <label for="environment">Environment:</label>
                     <select id="environment" name="environment" onchange="detectEnvironment(this)">
                         <option value="Dev">Dev</option>
                         <option value="Test">Test</option>
@@ -79,6 +79,10 @@
                 <div class="col-md">
                     <label for="targetEnv">Target Environment:</label>
                     <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required/>
+                </div>
+                <div class="col-md">
+                    <label for="repoUrl">Repo URL:</label>
+                    <input type="text" id="repoUrl" name="repoUrl" required style="width:100%" required />
                 </div>
                
                 
