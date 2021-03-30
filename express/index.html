@@ -40,7 +40,7 @@
         <!-- ***** Header Area End ***** -->
         
         <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
-            <div class ="row">
+           <div class ="row">
                 <div class="col-md">
                     
                     <label for="account">Account:</label>
@@ -54,14 +54,15 @@
                 </div>
                 <div class="col-md">
                     
-                    <label for="environment">Environment:</label>
+                    <label for="environment">Target Environment:</label>
                     <select id="environment" name="environment" onchange="detectEnvironment(this)">
                         <option value="Dev">Dev</option>
                         <option value="Test">Test</option>
                         <option value="Prod">Prod</option>
-                        <option value="UAT" hidden>UAT</option>
-                        <option value="QA" hidden>QA</option>
-                        <option value="Training" hidden>Training</option>
+                        <option value="UAT">UAT</option>
+                        <option value="QA">QA</option>
+                        <option value="Training">Training</option>
+                        <option value="Migration">Migration</option>
                     </select>
                 </div>
                 <div class="col-md">
@@ -77,16 +78,16 @@
                     <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
                 </div>
                 <div class="col-md">
-                    <label for="targetEnv">Target Environment:</label>
-                    <input type="text" id="targetEnv" name="targetEnv" required style="width:100%" required/>
-                </div>
-                <div class="col-md">
                     <label for="repoUrl">Repo URL:</label>
                     <input type="text" id="repoUrl" name="repoUrl" required style="width:100%" required />
                 </div>
+                <div class="col-md">
+                    <label for="provisionedTag">Provisioned Tag:</label>
+                    <input type="text" id=provisionedTag name="provisionedTag" required style="width:100%" required/>
+                </div>
                
                 
-            </div>
+           </div>
             <div class="row">
                 
                 
@@ -143,7 +144,7 @@
                 var tabId = 'service_' + id; //Make ID name as String
                 $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
                 //add tab content section
-                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="Fargate Service (Ingress)">Fargate Service (Ingress)</option></select></div></div>');
+                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service">Fargate Service</option><option value="S3 Bucket">S3 Bucket</option></select></div></div>');
                 $('.nav-tabs li:nth-child(' + id + ') a').click();
             });
 
@@ -162,7 +163,7 @@
 
                 switch(value) 
                 {
-                    case 'Fargate Service (Non Ingress)':
+                    case 'Fargate Service':
                         $.get("fargate_form.html", function(data){ //get form data
                             $('#service_' + id).append(data); //append to that tab only
                         });

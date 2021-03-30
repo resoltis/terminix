@@ -88,31 +88,31 @@ function logValue(type) {
 
 
 //make sure to change environment based on account
-function detectAccount(selectObject) {
+//function detectAccount(selectObject) {
     //document.getElementById('businessUnit').value = document.getElementById('account').value + '-' + document.getElementById('environment').value;
-    var value = selectObject.value;
-    if(value === "TMX-CorpsApps" || value === "TMX-Integration") {
-        var list = document.getElementById('environment').getElementsByTagName('option');
-        for (var i = 0; i < list.length; i++) {
+    //var value = selectObject.value;
+   // if(value === "TMX-CorpsApps" || value === "TMX-Integration") {
+       // var list = document.getElementById('environment').getElementsByTagName('option');
+        //for (var i = 0; i < list.length; i++) {
             // lowercase comparison for case-insensitivity
-            if(list[i].value.toLowerCase() == "uat") list[i].hidden = false ;
-            if(list[i].value.toLowerCase() == "qa") list[i].hidden = false ;
-            if(list[i].value.toLowerCase() == "training") list[i].hidden = false ;
-          }
-    }
-    else {
-        var list = document.getElementById('environment').getElementsByTagName('option');
-        for (var i = 0; i < list.length; i++) {
+            //if(list[i].value.toLowerCase() == "uat") list[i].hidden = false ;
+            //if(list[i].value.toLowerCase() == "qa") list[i].hidden = false ;
+           // if(list[i].value.toLowerCase() == "training") list[i].hidden = false ;
+         // }
+   // }
+    //else {
+       // var list = document.getElementById('environment').getElementsByTagName('option');
+       // for (var i = 0; i < list.length; i++) {
             // lowercase comparison for case-insensitivity
-            if(list[i].value.toLowerCase() == "uat") list[i].hidden = true ;
-            if(list[i].value.toLowerCase() == "qa") list[i].hidden = true ;
-            if(list[i].value.toLowerCase() == "training") list[i].hidden = true ;
-          }
+         //   if(list[i].value.toLowerCase() == "uat") list[i].hidden = true ;
+          //  if(list[i].value.toLowerCase() == "qa") list[i].hidden = true ;
+          //  if(list[i].value.toLowerCase() == "training") list[i].hidden = true ;
+         // }
 
-    }
+   // }
 
     //detectEnvironment(selectObject);
-  }
+  //}
 
   
 //function detectEnvironment(selectObject) {
