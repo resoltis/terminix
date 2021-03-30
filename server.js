@@ -323,194 +323,186 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   //Create parameter file
   fs.openSync(path.join('CFT Files', req.body.environment + '.params.json'), 'w');
 
-  fs.writeFileSync(path.join('CFT Files', req.body.environment + '.params.json'), parameterFile, err => {
-    if (err) {
-      console.debug(err);
-      //We may need to send user to a file fail page here
-      return
+  // fs.writeFileSync(path.join('CFT Files', req.body.environment + '.params.json'), parameterFile, err => {
+  //   if (err) {
+  //     console.debug(err);
+  //     //We may need to send user to a file fail page here
+  //     return
+  //   }
+  //file written successfully
+
+
+
+
+
+  //Create base level CFT File
+
+  fs.openSync(path.join('CFT Files', 'cloudformation.yml'), 'w');
+
+  //Append templates to yaml file
+  //Completely expanded as long as templates are uploaded to YmlTemplates
+  if (services.includes("fargate")) {
+    fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  } else
+    if (services.includes("s3_bucket")) {
+      //do something
     }
-    //file written successfully
-
-
-    // fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), parameterFile, err => {
-    //   if (err) {
-    //     console.debug(err);
-    //     //We may need to send user to a file fail page here
-    //     return
-    //   }
-    //   //file written successfully
-
-    // });
-
-
-    //Create base level CFT File
-
-    fs.openSync(path.join('CFT Files', 'cloudformation.yml'), 'w');
-
-    //Append templates to yaml file
-    //Completely expanded as long as templates are uploaded to YmlTemplates
-    if (services.includes("fargate")) {
-      fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
+    else if (services.includes("fargateIngress")) {
+      //append FI template to Yaml file output
+      fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
-    } else
-      if (services.includes("s3_bucket")) {
-        //do something
-      }
-      else if (services.includes("fargateIngress")) {
-        //append FI template to Yaml file output
-        fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
-          if (err) throw err;
-          console.log('Saved!');
-        });
-      }
-
-
-    // Writes to Paramater File 
-    fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
-    fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', 'fill these values into the array of objects and then make a function to call on them here');
-    fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
-    fileWriterJson(req.body.environment + '.params.json', 'DockerImageUrl', req.body.dockerImageUrl);
-    fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.targetEnv);
-    fileWriterJson(req.body.environment + '.params.json', 'ContainerName', 'explain this with an example');
-    fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + '-' + req.body.environment);
-    fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
-    fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.version);
-    fileWriterJson(req.body.environment + '.params.json', 'RulePriority', 'lets get to talking about it');
-    fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
-    fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
-    fileWriterJson(req.body.environment + '.params.json', 'ManagedByTag', 'Portal name');
-    fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
-    fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
-    fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
-    fileWriterJsonLast(req.body.environment + '.params.json', 'DesiredCount', req.body.desiredCount);
-    fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), ']');
-
-    function fileWriterJson(fileName, paramKey, paramValue) {
-      fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
-      fs.appendFileSync(path.join('CFT Files', fileName), '"ParamaterValue": ' + '"' + paramValue + '"' + '\n' + '},\n');
-      return
-    }
-
-    res.writeHead(301,
-      { Location: req.body.repoUrl }
-    );
-    res.end();
-
-
-
-    //This is just an example of how to sort the logic and "write to the file" for the param file. 
-    // var account = 'TMX-BI'
-    // var enviroment = 'Dev'
-    // var businessUnit = 'lmlkm'
-    // var productOwner = ['1', '2', '3', '4'];
-    // var customerTag = ['tag1', 'tag2', 'tag3', 'tag4'];
-    // var containerPort = ['80', '50', '90', '100'];
-    // var containerCPU = ['256', '256', '256', '512'];
-    // var containerMemory = ['.5', '1', '2', '1'];
-    // var dockerimageurl = ['url1', 'url2', 'url3', 'url4'];
-    // var desiredCount = ['1', '2', '3', '1'];
-    // var serviceType = ['fni', 'fni', 'fi', 'fi'];
-
-
-    // var memoryarray = [];
-    // var cpuarray = [];
-    // var portarray = [];
-    // var dockerarray = [];
-    // var ownerarray = [];
-    // var tagarray = [];
-    // var countarray = [];
-
-
-
-    // let j = 1;
-
-    // for (var i = 0; i < serviceType.length; i++) {
-    //     if (i == 0) { // univerisal values go here
-    //         console.log('AccountName : ' + account);
-    //         console.log('TargetEnviorment : ' + enviroment);
-    //         console.log('businessUnit : ' + account + '-' + enviroment);
-    //         console.log('AlbListenerArn : will be defined later');
-    //         console.log('VpcId : ' + vpcLookup(staticValues, account, enviroment));
-    //         console.log('ContainerName : This is the project name based off the repo');
-    //         console.log('ClusterName : ' + account + '-' + enviroment + '-Cluster');
-    //         console.log('Logretention : 7');
-    //         console.log('RulePriority : not yet known');
-    //         console.log('ManagedBy : portal name');
-    //         console.log('subnets : ' + subLookup(staticValues, account, enviroment));
-    //     }
-
-    //     if (serviceType[i] == 'fi' || serviceType[i] == 'fni') {
-
-    //         var memory = 'ContainerMemory' + j;
-    //         var cpu = 'ContainerCPU' + j;
-    //         var port = 'ContainerPort' + j;
-    //         var docker = 'DockerImageUrl' + j;
-    //         var owner = 'ProductOwner' + j;
-    //         var tag = 'CustomerTag' + j;
-    //         var count = 'DesiredCount' + j;
-    //         j++;
-    //     }
-
-    //     switch (serviceType[i]) {
-
-    //         case 'fi':  //Fargate Ingress\
-
-    //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
-    //             portarray[i] = (port + ' : ' + containerPort[i]);
-    //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
-    //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
-    //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
-    //             tagarray[i] = (tag + ' : ' + customerTag[i]);
-    //             countarray[i] = (count + ' : ' + desiredCount[i]);
-    //             break;
-
-
-
-    //         case "fni": //Fargate Non Ingress
-
-    //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
-    //             portarray[i] = (port + ' : ' + containerPort[i]);
-    //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
-    //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
-    //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
-    //             tagarray[i] = (tag + ' : ' + customerTag[i]);
-    //             countarray[i] = (count + ' : ' + desiredCount[i]);
-    //             break;
-
-    //     }
-
-    // }
-    // printarray(memoryarray, serviceType.length);
-    // printarray(portarray, serviceType.length);
-    // printarray(cpuarray, serviceType.length);
-    // printarray(dockerarray, serviceType.length);
-    // printarray(ownerarray, serviceType.length);
-    // printarray(tagarray, serviceType.length);
-    // printarray(countarray, serviceType.length);
-
-
-    // function printarray(array, length) {
-    //     for (var i = 0; i < length; i++) {
-    //         console.log(array[i]);
-    //     }
-    // }
-
-    function vpcLookup(values, accountName, enviorment) {
-      let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
-      let valueSeek = specificValue.vpc;
-      return valueSeek;
-    }
-    function subLookup(values, accountName, enviorment) {
-      let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
-      let valueSeek = specificValue.sub1 + ',' + specificValue.sub2;
-      return valueSeek;
     }
 
 
+  // Writes to Paramater File 
+  fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
+  fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', 'fill these values into the array of objects and then make a function to call on them here');
+  fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+  fileWriterJson(req.body.environment + '.params.json', 'DockerImageUrl', req.body.dockerImageUrl);
+  fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.targetEnv);
+  fileWriterJson(req.body.environment + '.params.json', 'ContainerName', 'explain this with an example');
+  fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + '-' + req.body.environment);
+  fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+  fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.version);
+  fileWriterJson(req.body.environment + '.params.json', 'RulePriority', 'lets get to talking about it');
+  fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
+  fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
+  fileWriterJson(req.body.environment + '.params.json', 'ManagedByTag', 'Portal name');
+  fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
+  fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
+  fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+  fileWriterJsonLast(req.body.environment + '.params.json', 'DesiredCount', req.body.desiredCount);
+  fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), ']');
+
+  function fileWriterJson(fileName, paramKey, paramValue) {
+    fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
+    fs.appendFileSync(path.join('CFT Files', fileName), '"ParamaterValue": ' + '"' + paramValue + '"' + '\n' + '},\n');
+    return
+  }
+
+  res.writeHead(301,
+    { Location: req.body.repoUrl }
+  );
+  res.end();
 
 
-  });
+
+  //This is just an example of how to sort the logic and "write to the file" for the param file. 
+  // var account = 'TMX-BI'
+  // var enviroment = 'Dev'
+  // var businessUnit = 'lmlkm'
+  // var productOwner = ['1', '2', '3', '4'];
+  // var customerTag = ['tag1', 'tag2', 'tag3', 'tag4'];
+  // var containerPort = ['80', '50', '90', '100'];
+  // var containerCPU = ['256', '256', '256', '512'];
+  // var containerMemory = ['.5', '1', '2', '1'];
+  // var dockerimageurl = ['url1', 'url2', 'url3', 'url4'];
+  // var desiredCount = ['1', '2', '3', '1'];
+  // var serviceType = ['fni', 'fni', 'fi', 'fi'];
+
+
+  // var memoryarray = [];
+  // var cpuarray = [];
+  // var portarray = [];
+  // var dockerarray = [];
+  // var ownerarray = [];
+  // var tagarray = [];
+  // var countarray = [];
+
+
+
+  // let j = 1;
+
+  // for (var i = 0; i < serviceType.length; i++) {
+  //     if (i == 0) { // univerisal values go here
+  //         console.log('AccountName : ' + account);
+  //         console.log('TargetEnviorment : ' + enviroment);
+  //         console.log('businessUnit : ' + account + '-' + enviroment);
+  //         console.log('AlbListenerArn : will be defined later');
+  //         console.log('VpcId : ' + vpcLookup(staticValues, account, enviroment));
+  //         console.log('ContainerName : This is the project name based off the repo');
+  //         console.log('ClusterName : ' + account + '-' + enviroment + '-Cluster');
+  //         console.log('Logretention : 7');
+  //         console.log('RulePriority : not yet known');
+  //         console.log('ManagedBy : portal name');
+  //         console.log('subnets : ' + subLookup(staticValues, account, enviroment));
+  //     }
+
+  //     if (serviceType[i] == 'fi' || serviceType[i] == 'fni') {
+
+  //         var memory = 'ContainerMemory' + j;
+  //         var cpu = 'ContainerCPU' + j;
+  //         var port = 'ContainerPort' + j;
+  //         var docker = 'DockerImageUrl' + j;
+  //         var owner = 'ProductOwner' + j;
+  //         var tag = 'CustomerTag' + j;
+  //         var count = 'DesiredCount' + j;
+  //         j++;
+  //     }
+
+  //     switch (serviceType[i]) {
+
+  //         case 'fi':  //Fargate Ingress\
+
+  //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
+  //             portarray[i] = (port + ' : ' + containerPort[i]);
+  //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
+  //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
+  //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
+  //             tagarray[i] = (tag + ' : ' + customerTag[i]);
+  //             countarray[i] = (count + ' : ' + desiredCount[i]);
+  //             break;
+
+
+
+  //         case "fni": //Fargate Non Ingress
+
+  //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
+  //             portarray[i] = (port + ' : ' + containerPort[i]);
+  //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
+  //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
+  //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
+  //             tagarray[i] = (tag + ' : ' + customerTag[i]);
+  //             countarray[i] = (count + ' : ' + desiredCount[i]);
+  //             break;
+
+  //     }
+
+  // }
+  // printarray(memoryarray, serviceType.length);
+  // printarray(portarray, serviceType.length);
+  // printarray(cpuarray, serviceType.length);
+  // printarray(dockerarray, serviceType.length);
+  // printarray(ownerarray, serviceType.length);
+  // printarray(tagarray, serviceType.length);
+  // printarray(countarray, serviceType.length);
+
+
+  // function printarray(array, length) {
+  //     for (var i = 0; i < length; i++) {
+  //         console.log(array[i]);
+  //     }
+  // }
+
+  function vpcLookup(values, accountName, enviorment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+    let valueSeek = specificValue.vpc;
+    return valueSeek;
+  }
+  function subLookup(values, accountName, enviorment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+    let valueSeek = specificValue.sub1 + ',' + specificValue.sub2;
+    return valueSeek;
+  }
+
+
+
 
 });
+
+
