@@ -377,11 +377,16 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
   fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
   fileWriterJsonLast(req.body.environment + '.params.json', 'DesiredCount', req.body.desiredCount);
-  fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), ']');
+
 
   function fileWriterJson(fileName, paramKey, paramValue) {
     fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
     fs.appendFileSync(path.join('CFT Files', fileName), '"ParamaterValue": ' + '"' + paramValue + '"' + '\n' + '},\n');
+    return
+  }
+  function fileWriterJsonLast(fileName, paramKey, paramValue) {
+    fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
+    fs.appendFileSync(path.join('CFT Files', fileName), '"ParamaterValue": ' + '"' + paramValue + '"' + '\n' + '}\n]');
     return
   }
 
