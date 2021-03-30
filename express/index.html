@@ -139,7 +139,7 @@
                 var tabId = 'service_' + id; //Make ID name as String
                 $(this).closest('li').before('<li><a href="#service_' + id + '" id="service_tab_' + id + '">Select Service</a> <span><strong> x </strong></span></li>'); //add tab on top bar
                 //add tab content section
-                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="EC2 Instance">EC2 Instance</option><option value="RDS Database">RDS Database</option><option value="Lambda Function">Lambda Function</option></select></div></div>');
+                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '">' + '<div class="row" style="padding: 24px;"><select class="col-md-4" style="padding: 12px;" id="service_select_' + id + '"><option value="none_selected">Select Service...</option><option value="Fargate Service (Non Ingress)">Fargate Service (Non Ingress)</option><option value="S3 Bucket">S3 Bucket</option><option value="Fargate Service (Ingress)">Fargate Service (Ingress)</option></select></div></div>');
                 $('.nav-tabs li:nth-child(' + id + ') a').click();
             });
 
@@ -168,8 +168,8 @@
                             $('#service_' + id).append(data); //append to that tab only
                         });
                         break;
-                    case 'EC2 Instance':
-                        $.get("ec2_form.html", function(data){ //get form data
+                    case 'Fargate Service (Ingress)':
+                        $.get("fargate_form_Ingress.html", function(data){ //get form data
                             $('#service_' + id).append(data); //append to that tab only
                         });
                         break;
