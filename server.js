@@ -313,7 +313,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   var services = req.body.service; //get list of services
 
   //make folder that will contain files for upload
-  fs.mkdirSync(path.join('CTF Files'), (err) => {
+  fs.mkdirSync(path.join('CFT Files'), (err) => {
     if (err) {
       return console.error(err);
     }
@@ -321,9 +321,9 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   });
 //Create parameter file
-fs.openSync(path.join('CTF Files', req.body.environment + '.params.json'), 'w');
+fs.openSync(path.join('CFT Files', req.body.environment + '.params.json'), 'w');
 
-fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), parameterFile, err => {
+fs.writeFileSync(path.join('CFT Files', req.body.environment + '.params.json'), parameterFile, err => {
   if (err) {
     console.debug(err);
     //We may need to send user to a file fail page here
@@ -334,15 +334,15 @@ fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), 
 });
 
 
-  //Create base level CTF File
+  //Create base level CFT File
 
-  fs.openSync(path.join('CTF Files', 'cloudformation.yml'), 'w');
+  fs.openSync(path.join('CFT Files', 'cloudformation.yml'), 'w');
 
   //Append templates to yaml file
   //Completely expanded as long as templates are uploaded to YmlTemplates
   if(services.includes("fargate"))
   {
-    fs.appendFileSync(path.join('CTF Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
+    fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
       if (err) throw err;
       console.log('Saved!');
     });
@@ -353,7 +353,7 @@ fs.writeFileSync(path.join('CTF Files', req.body.environment + '.params.json'), 
   }
   else if(services.includes("fargateIngress")){
     //append FI template to Yaml file output
-    fs.appendFileSync(path.join('CTF Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
+    fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
       if (err) throw err;
       console.log('Saved!');
     });
