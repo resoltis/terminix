@@ -137,16 +137,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   //Create parameter file
   fs.openSync(path.join('CFT Files', req.body.environment + '.params.json'), 'w');
 
-  // fs.writeFileSync(path.join('CFT Files', req.body.environment + '.params.json'), parameterFile, err => {
-  //   if (err) {
-  //     console.debug(err);
-  //     //We may need to send user to a file fail page here
-  //     return
-  //   }
-  //file written successfully
-
-
-
 
 
   //Create base level CFT File
@@ -164,34 +154,80 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     if (services.includes("s3_bucket")) {
       //do something
     }
-    else if (services.includes("fargateIngress")) {
-      //append FI template to Yaml file output
-      fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-      });
+
+  var memoryArray = [];
+  var cpuArray = [];
+  var portArray = [];
+  var dockerArray = [];
+  var nameArray = [];
+  var trafficPortArray = [];
+  var sourceIpArray = [];
+  var desiredCountArray = [];
+
+
+  var arraylength = req.body.service;
+  fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.service[1]);
+  fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.service.length);
+  var flag = true;
+  for (var i = 0; i < req.body.service.length; i++) {
+
+    if (i == 0) { // fill in global values
+      fileWriterJson(req.body.environment + '.params.json', 'Account', req.body.account);
+      fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.environment);
+      fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
+      fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
+      fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
+      fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
+    }
+    if (req.body.service[i] == 'fargate') {
+      //fill service unqiue values into an array for each value. 
+      dockerArray[i] = req.body.dockerImageUrl[i];
+      portArray[i] = req.body.containerPort[i];
+      cpuArray[i] = req.body.containerCPU[i];
+      memoryArray[i] = req.body.containerMemory[i];
+      nameArray[i] = req.body.containerName[i];
+      trafficPortArray[i] = req.body.trafficPort[i]
+      sourceIpArray[i] = req.body.sourceIp[i];
+      desiredCountArray[i] = req.body.desiredCount[i];
+
+      // fileWriterJson(req.body.environment + '.params.json', 'DockerImageUrl', req.body.dockerImageUrl[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'ContainerPort', req.body.containerPort[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'CPU', req.body.containerCPU[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'Memory', req.body.containerMemory[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.version[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'DesiredCount', req.body.desiredCount[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'TrafficPort', req.body.trafficPort[i]);
+      // fileWriterJson(req.body.environment + '.params.json', 'SourceIP', req.body.sourceIp[i]);
+    }
+    if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') {
+      fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
+      fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
+      continue
     }
 
+    if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress' && flag == true) {
+      flag = false;
+      fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+      fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+      fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+      fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+      continue
+    }
+  }
+  printarray(dockerArray, 'DockerImageUrl');
+  printarray(portArray, 'ContainerPort');
+  printarray(cpuArray, 'CPU');
+  printarray(memoryArray, 'Memory');
+  printarray(nameArray, 'ContainerName');
+  printarray(trafficPortArray, 'TrafficPort');
+  printarray(sourceIpArray, 'SourceIP');
+  printarray(desiredCountArray, 'DesiredCount');
 
-  // Writes to Paramater File 
-  fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
-  fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', 'fill these values into the array of objects and then make a function to call on them here');
-  fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
-  fileWriterJson(req.body.environment + '.params.json', 'DockerImageUrl', req.body.dockerImageUrl);
-  fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.targetEnv);
-  fileWriterJson(req.body.environment + '.params.json', 'ContainerName', 'explain this with an example');
-  fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + '-' + req.body.environment);
-  fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
-  fileWriterJson(req.body.environment + '.params.json', 'Version', req.body.version);
-  fileWriterJson(req.body.environment + '.params.json', 'RulePriority', 'lets get to talking about it');
-  fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
-  fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
-  fileWriterJson(req.body.environment + '.params.json', 'ManagedByTag', 'Portal name');
-  fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
-  fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
-  fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
-  fileWriterJsonLast(req.body.environment + '.params.json', 'DesiredCount', req.body.desiredCount);
-
+  function printarray(array, name) {
+    for (var j = 0; j < array.length; j++) {
+      fileWriterJson(req.body.environment + '.params.json', name + (j + 1), array[j]);
+    }
+  }
 
   function fileWriterJson(fileName, paramKey, paramValue) {
     fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
@@ -211,81 +247,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
 
 
-
-
-
-  // let j = 1;
-
-  // for (var i = 0; i < serviceType.length; i++) {
-  //     if (i == 0) { // univerisal values go here
-  //         console.log('AccountName : ' + account);
-  //         console.log('TargetEnviorment : ' + enviroment);
-  //         console.log('businessUnit : ' + account + '-' + enviroment);
-  //         console.log('AlbListenerArn : will be defined later');
-  //         console.log('VpcId : ' + vpcLookup(staticValues, account, enviroment));
-  //         console.log('ContainerName : This is the project name based off the repo');
-  //         console.log('ClusterName : ' + account + '-' + enviroment + '-Cluster');
-  //         console.log('Logretention : 7');
-  //         console.log('RulePriority : not yet known');
-  //         console.log('ManagedBy : portal name');
-  //         console.log('subnets : ' + subLookup(staticValues, account, enviroment));
-  //     }
-
-  //     if (serviceType[i] == 'fi' || serviceType[i] == 'fni') {
-
-  //         var memory = 'ContainerMemory' + j;
-  //         var cpu = 'ContainerCPU' + j;
-  //         var port = 'ContainerPort' + j;
-  //         var docker = 'DockerImageUrl' + j;
-  //         var owner = 'ProductOwner' + j;
-  //         var tag = 'CustomerTag' + j;
-  //         var count = 'DesiredCount' + j;
-  //         j++;
-  //     }
-
-  //     switch (serviceType[i]) {
-
-  //         case 'fi':  //Fargate Ingress\
-
-  //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
-  //             portarray[i] = (port + ' : ' + containerPort[i]);
-  //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
-  //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
-  //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
-  //             tagarray[i] = (tag + ' : ' + customerTag[i]);
-  //             countarray[i] = (count + ' : ' + desiredCount[i]);
-  //             break;
-
-
-
-  //         case "fni": //Fargate Non Ingress
-
-  //             memoryarray[i] = (memory + ' : ' + containerMemory[i]);
-  //             portarray[i] = (port + ' : ' + containerPort[i]);
-  //             cpuarray[i] = (cpu + ' : ' + containerCPU[i]);
-  //             dockerarray[i] = (docker + ' : ' + dockerimageurl[i]);
-  //             ownerarray[i] = (owner + ' : ' + productOwner[i]);
-  //             tagarray[i] = (tag + ' : ' + customerTag[i]);
-  //             countarray[i] = (count + ' : ' + desiredCount[i]);
-  //             break;
-
-  //     }
-
-  // }
-  // printarray(memoryarray, serviceType.length);
-  // printarray(portarray, serviceType.length);
-  // printarray(cpuarray, serviceType.length);
-  // printarray(dockerarray, serviceType.length);
-  // printarray(ownerarray, serviceType.length);
-  // printarray(tagarray, serviceType.length);
-  // printarray(countarray, serviceType.length);
-
-
-  // function printarray(array, length) {
-  //     for (var i = 0; i < length; i++) {
-  //         console.log(array[i]);
-  //     }
-  // }
 
   function vpcLookup(values, accountName, enviorment) {
     let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
