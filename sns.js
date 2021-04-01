@@ -5,7 +5,7 @@ AWS.config.update({region: 'us-east-1'});
 
 // Create publish parameters
 var params = {
-  Message: 'hello testing', /* required */
+  Message: 'A new CFT has been sent to the repository', /* required */
   TopicArn: 'arn:aws:sns:us-east-1:833177699681:UACapstone2021'
 };
 
