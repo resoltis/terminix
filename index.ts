@@ -6,7 +6,7 @@ const git: SimpleGit = simpleGit();
 // it will add the CFT Files folder
 // send to a remote url
 function build() {
-  /*
+  
   git.rm(['--cached','-r','.']);
   git.checkoutLocalBranch('sending-to-remote-CFT');
   git.branch(['--orphan']);
@@ -16,9 +16,9 @@ function build() {
   // will add repo url as variable
   git.addRemote('test', 'https://tfs-svm.visualstudio.com/UA-Capstone-2021/_git/terraform-fargate-test');
   git.push(['-u','test', 'sending-to-remote-CFT'], () => console.log('done'));
-  //git.init();
+  git.init();
   //git.checkoutBranch('main', 'origin');
-  //git.reset(['HEAD^', '--hard']);
-  */
+  git.reset(['HEAD^', '--hard']);
+  
 } 
 build();
