@@ -16,7 +16,7 @@ function build() {
   // will add repo url as variable
   git.addRemote('test', 'https://tfs-svm.visualstudio.com/UA-Capstone-2021/_git/terraform-fargate-test');
   git.push(['-u','test', 'sending-to-remote-CFT'], () => console.log('done'));
-  // git.init();
+  //git.init();
   //git.checkoutBranch('main', 'origin');
   //git.reset(['HEAD^', '--hard']);
   */
