@@ -294,9 +294,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   );
   res.end();
 
-
-
-
   function vpcLookup(values, accountName, enviorment) {
     let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
     let valueSeek = specificValue.vpc;
@@ -307,9 +304,6 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     let valueSeek = specificValue.sub1 + ',' + specificValue.sub2;
     return valueSeek;
   }
-
-
-
 
 });
 
