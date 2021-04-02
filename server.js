@@ -145,15 +145,35 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Append templates to yaml file
   //Completely expanded as long as templates are uploaded to YmlTemplates
-  if (services.includes("fargate")) {
-    fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
+  if (typeof req.body.service == 'string'){
+    if (services.includes("fargate")) {
+      if (req.body.ingressNonIngress== 'ingress'){
+        fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
+          if (err) throw err;
+          console.log('Saved!')});
+      
+      }
+    
+      else if (req.body.ingressNonIngress == 'nonIngress'){
+        fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
       if (err) throw err;
-      console.log('Saved!');
-    });
-  } else
+      console.log('Saved!')});
+      }
+    
+  }
+  else
     if (services.includes("s3_bucket")) {
       //do something
+      fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 's3.yml')), function (err) {
+        if (err) throw err;
+        console.log('Saved!')});
+
     }
+  }
+  else if (typeof req.body.service == 'object'){
+    
+  }
+    
 
   var memoryArray = [];
   var cpuArray = [];
