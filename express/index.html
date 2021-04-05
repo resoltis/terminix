@@ -37,11 +37,18 @@
         <header class="header-area header-sticky">
             <img src="icons/terminix-logo.png"/>
         </header>
-        <!-- ***** Header Area End ***** -->
-        
+        <!-- ***** Header Area End ***** --> 
+         
         <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
+         <div class="wrap-collabsible">   <!-- wraps collapse -->
             <div class="row">
+                <input id="collapsible" class="toggle" type="checkbox" checked>
+                <label for="collapsible" class="lbl-toggle">Collapse global variables</label> <!-- creates button to collapse content-->
+                <div class="collapsible-content">  <!-- surrounds collapseable content-->
+                
+                
                 <div class ="col-md">
+                    
                     <div class="row">
                     
                         <label for="account">Account:</label>
@@ -91,8 +98,9 @@
                         <input type="text" id=provisionedTag name="provisionedTag" required style="width:100%" required/>
                     </div>   
                 </div>
-            
-            </div>
+                </div>
+            </div></div>
+        </div>
 
 
         
