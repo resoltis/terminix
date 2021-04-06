@@ -1,0 +1,15 @@
+ AWSTemplateFormatVersion: '2010-09-09'
+ Description: # Service Name - ENV - Fargate CFT - Date
+ Parameters:
+ VpcId:  #This will be static based on Account/Env 
+    Type: String
+  TargetEnv: #this will be surveyed 
+    Type: String
+ BusinessUnitTag: #Surveyed by user
+    Type: String
+ CustomerTag: #Surveyed by User
+    Type: String  
+ ProductOwnerTag: #Surveyed by user
+    Type: String
+ ProvisionedTag: #This is your web portal's name and static
+    Type: String
