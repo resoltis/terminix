@@ -297,6 +297,15 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
 
   }
+  // $(function() {
+  //   $("#addContainer").click(function(e) {
+  //     e.preventDefault();
+  //     $("#fieldList").append("<li>&nbsp;</li>");
+  //     $("#fieldList").append("<li><input type='text' name='dockerImageUrl' /></li>");
+  //     $("#fieldList").append("<li><input type='text' name='containerName'  /></li>");
+  //     $("#fieldList").append("<li><input type='text' name='containerPort'' /></li>");
+  //   });
+  // });
 
   function fileWriterJson(fileName, paramKey, paramValue) {
     fs.appendFileSync(path.join('CFT Files', fileName), '{' + '\n' + '"ParamaterKey": ' + '"' + paramKey + '",' + '\n');
