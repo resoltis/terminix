@@ -18,6 +18,10 @@ Parameters:
     Default: 6379
   ClusterName: #this will be static based on Account/Env
     Type: String
+  ContainerCPU: 
+   type: Number
+  ContainerMemory: 
+   Type: Number
   LogRetention: #Static 7 
     Type: Number
     Default: 7
@@ -90,8 +94,8 @@ Resources:
       Family: !Sub task-${AWS::StackName}
       NetworkMode: awsvpc
       RequiresCompatibilities: ['FARGATE']
-      Cpu: # SET THIS by Surveying User for a ContainerCPU param add it to the above parameter list and do !Ref ContainerCPU
-      Memory: # SET THIS by doing same as above but for ContainerMemory
+      Cpu: !Ref ContainerCPU # SET THIS by Surveying User for a ContainerCPU param add it to the above parameter list and do !Ref ContainerCPU
+      Memory: !Ref ContainerMemory # SET THIS by doing same as above but for ContainerMemory
       ContainerDefinitions: #A Task definition can have multiple containers each defined as part of this array. Let's assume its 1:1 right now and we can expand on the ability to add multi container setups to a Task definition if time.
         - Name: !Ref ContainerName
           Image: !Ref DockerImageUrl

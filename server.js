@@ -145,35 +145,46 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Append templates to yaml file
   //Completely expanded as long as templates are uploaded to YmlTemplates
-  if (typeof req.body.service == 'string'){
+  if (typeof req.body.service == 'string') {
     if (services.includes("fargate")) {
-      if (req.body.ingressNonIngress== 'ingress'){
+      if (req.body.ingressNonIngress == 'ingress') {
         fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargateIngress.yml')), function (err) {
           if (err) throw err;
-          console.log('Saved!')});
-      
+          console.log('Saved!')
+        });
+
       }
-    
-      else if (req.body.ingressNonIngress == 'nonIngress'){
+
+      else if (req.body.ingressNonIngress == 'nonIngress') {
         fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 'fargate.yml')), function (err) {
-      if (err) throw err;
-      console.log('Saved!')});
+          if (err) throw err;
+          console.log('Saved!')
+        });
       }
-    
-  }
-  else
-    if (services.includes("s3_bucket")) {
-      //do something
-      fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 's3.yml')), function (err) {
-        if (err) throw err;
-        console.log('Saved!')});
 
     }
+    else
+      if (services.includes("s3_bucket")) {
+        //do something
+        fs.appendFileSync(path.join('CFT Files', 'cloudformation.yml'), fs.readFileSync(path.join('YmlTemplates', 's3.yml')), function (err) {
+          if (err) throw err;
+          console.log('Saved!')
+        });
+
+      }
   }
-  else if (typeof req.body.service == 'object'){
-    
+  // This appends templates when there are multiple service selections.
+  else if (typeof req.body.service == 'object') {
+    let fiCount = 0;
+    let fniCount = 0;
+    let s3Count = 0;
+    for (var i = 0; i <= req.body.service.length - 1; i++) {
+      if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') { fiCount++; }
+      else if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress') { fniCount++; }
+      else if (req.body.service[i] == 's3_bucket') { s3Count++; }
+    }
   }
-    
+
 
   var memoryArray = [];
   var cpuArray = [];
