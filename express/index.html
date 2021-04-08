@@ -42,11 +42,8 @@
         <form style="padding-left: 5em; padding-right: 5em; padding-top: 3em;" method="POST" action="/generateFiles">
   <h3>Input Global parameters:</h3>
             <div class="row">
-              
-                
-                
-                <div class="col-md">
-                    
+                <div class="col-md-4">
+                        
                     <div class="row">
                     
                         <label for="account">Account:</label>
@@ -73,27 +70,27 @@
                     </div>
                     <div class="row">
                         <label for="businessUnit">Business Unit Tag:</label>
-                        <input type="text" id="businessUnit" name="businessUnit" required style="width:100%" required />
+                        <input type="text" id="businessUnit" name="businessUnit" required />
                     </div>
                     <div class="row">
                         <label for="productOwner">Product Owner: </label>
-                        <input type="text" id="productOwner" name="productOwner" required style="width:100% "required/>
+                        <input type="text" id="productOwner" name="productOwner" required/>
                     </div>
                 
                 
                     <div class="row">
                         <label for="customerTag">Customer Tag:</label>
-                        <input type="text" id="customerTag" name="customerTag" required style="width:100%" required />
+                        <input type="text" id="customerTag" name="customerTag" required />
                     </div>
                     <div class="row">
                         <label for="repoUrl">Repo URL:</label>
-                        <input type="text" id="repoUrl" name="repoUrl" required style="width:100%" required />
+                        <input type="text" id="repoUrl" name="repoUrl" required />
                     </div>
                 
                 
                     <div class="row">
                         <label for="provisionedTag">Provisioned Tag:</label>
-                        <input type="text" id=provisionedTag name="provisionedTag" required style="width:100%" required/>
+                        <input type="text" id=provisionedTag name="provisionedTag" required/>
                     </div>   
                 </div>
                 </div>
@@ -111,10 +108,22 @@
             <div class="col-md-12">
                 <div class="row">
                     <input type="submit" value="Generate Files" class="button">
+            </div>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href="#" class="add-service">+ Add Service</a>
+                </li>
+            </ul>
+            <div class="tab-content"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <input type="submit" value="Generate Files" class="button">
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
 
 
     <script>
