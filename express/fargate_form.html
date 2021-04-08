@@ -97,26 +97,22 @@
 
         <script>
             //Adding a new container
-            $('.add-container').click(function (e) {
+            $('.add-container').off().click(function (e) {
                 e.preventDefault();
-
                 var id = ($(this).parent().prev().children().length/3)+1; //Get number of containers
-
-                alert($(this).parent().prev().attr('id'));
-                if($(this).parent().parent().parent().parent().parent().css('display')!='none') //only add it to the form being displayed
-                {
-                    $(this).parent().prev().append('<div class="row"><label for="dockerImageUrl">Docker Image URL 1:</label>mageUrl" name="dockerImageUrl" style="width:100%" required ></div><div class="row"><label for="containerName">Container Name 1:</label><input type="text" id="containerName" name="containerName" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port 1:</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required ></div>'); //add tab on top bar
-                }
+                
+                $(this).parent().prev().append('<div class="row"><label for="dockerImageUrl">Docker Image URL '+id+':</label><input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required ></div><div class="row"><label for="containerName">Container Name '+id+':</label><input type="text" id="containerName" name="containerName" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port '+id+':</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required ></div>'); //add tab on top bar
+                
             });
 
             //Deleting a new container
-            $('.delete-container').click(function (e) {
+            $('.delete-container').off().click(function (e) {
                 e.preventDefault();
                 $(this).parent().prev().prev().children().slice(-3).remove();
             });
 
             //Adding a new security role
-            $('.add-traffic-area').click(function (e) {
+            $('.add-traffic-area').off().click(function (e) {
                 e.preventDefault();
                 var id = ($(this).parent().prev().children().length/2)+1; //Get number of security roles
                 $(this).parent().prev().append('<div class="row"><label for="trafficPort">Traffic Port '+id+':</label><input type="number"id="trafficPort" name="trafficPort" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="sourceIp">Source IP '+id+':</label><input type="number" id="sourceIp" name="sourceIp" required style="width:100%" required></div>'); //add tab on top bar
@@ -124,7 +120,7 @@
             });
 
             //Deleting a new security role
-            $('.delete-traffic-area').click(function (e) {
+            $('.delete-traffic-area').off().click(function (e) {
                 e.preventDefault();
                 $(this).parent().prev().prev().children().slice(-2).remove();
             });
