@@ -1,0 +1,15 @@
+# For S3 service 
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Skynet # Service Name - ENV - S3 CFT - Date
+Parameters: 
+  BucketName: #This will be surveyed
+    Type: String
+  Region:  #This will be surveyed 
+    Type: String
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
