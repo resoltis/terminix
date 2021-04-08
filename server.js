@@ -14,7 +14,7 @@ app.use(express.static("express"));
 // Load the AWS SDK for SNS Feature
 var AWS = require('aws-sdk');
 // Set region
-AWS.config.update({region: 'us-east-1'});
+AWS.config.update({ region: 'us-east-1' });
 
 //Load landing page
 app.get('/', (req, res) => {
@@ -200,6 +200,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   var sourceIpArray = [];
   var desiredCountArray = [];
   var flag = true;
+  var fargateLast = false;
   // This section creates the JSON file provided that there is only one service selected. 
   if (typeof req.body.service == 'string') {
     fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
@@ -219,13 +220,14 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       trafficPortArray[0] = req.body.trafficPort;
       sourceIpArray[0] = req.body.sourceIp;
       desiredCountArray[0] = req.body.desiredCount;
+      fargateLast = true;
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'ingress') {
       fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
       fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'nonIngress') {
-      flag = false;
+
       fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
       fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
       fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
@@ -240,48 +242,90 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   // This creates the JSON file if multiple services are selected
   if (typeof req.body.service == 'object') {
+
     for (var i = 0; i <= req.body.service.length - 1; i++) {
+      if (i < req.body.service.length) { // this handles the part before the last service being added
+        if (i == 0) { // fill in global values
+          fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
+          fileWriterJson(req.body.environment + '.params.json', 'Account', req.body.account);
+          fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.environment);
+          fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
+          fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
+          fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
+          fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
+        }
+        if (req.body.service[i] == 'fargate') {
+          //fill service unqiue values into an array for each value. 
+          dockerArray[i] = req.body.dockerImageUrl[i];
+          portArray[i] = req.body.containerPort[i];
+          cpuArray[i] = req.body.containerCPU[i];
+          memoryArray[i] = req.body.containerMemory[i];
+          nameArray[i] = req.body.containerName[i];
+          trafficPortArray[i] = req.body.trafficPort[i];
+          sourceIpArray[i] = req.body.sourceIp[i];
+          desiredCountArray[i] = req.body.desiredCount[i];
 
-      if (i == 0) { // fill in global values
-        fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
-        fileWriterJson(req.body.environment + '.params.json', 'Account', req.body.account);
-        fileWriterJson(req.body.environment + '.params.json', 'TargetEnv', req.body.environment);
-        fileWriterJson(req.body.environment + '.params.json', 'BusinessUnitTag', req.body.businessUnit);
-        fileWriterJson(req.body.environment + '.params.json', 'CustomerTag', req.body.customerTag);
-        fileWriterJson(req.body.environment + '.params.json', 'ProductOwnerTag', req.body.productOwner);
-        fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
+        }
+        if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') {
+          fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
+          fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
+          fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+          fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+          fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+          fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+
+        }
+
+        if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress' && flag == true) {
+          flag = false;
+          fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+          fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+          fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+          fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+
+        }
+        if (req.body.service[i] == 's3_bucket') {
+          fileWriterJson(req.body.environment + '.params.json', 'BucketName', req.body.s3_name);
+          fileWriterJson(req.body.environment + '.params.json', 'BucketRegion', req.body.region);
+        }
       }
-      if (req.body.service[i] == 'fargate') {
-        //fill service unqiue values into an array for each value. 
-        dockerArray[i] = req.body.dockerImageUrl[i];
-        portArray[i] = req.body.containerPort[i];
-        cpuArray[i] = req.body.containerCPU[i];
-        memoryArray[i] = req.body.containerMemory[i];
-        nameArray[i] = req.body.containerName[i];
-        trafficPortArray[i] = req.body.trafficPort[i]
-        sourceIpArray[i] = req.body.sourceIp[i];
-        desiredCountArray[i] = req.body.desiredCount[i];
+      if (req.body.service.length == i) { // This is the last service that is requested in the stack.
 
+        if (req.body.service[i] == 'fargate') {
+          //fill service unqiue values into an array for each value. 
+          dockerArray[i] = req.body.dockerImageUrl[i];
+          portArray[i] = req.body.containerPort[i];
+          cpuArray[i] = req.body.containerCPU[i];
+          memoryArray[i] = req.body.containerMemory[i];
+          nameArray[i] = req.body.containerName[i];
+          trafficPortArray[i] = req.body.trafficPort[i];
+          sourceIpArray[i] = req.body.sourceIp[i];
+          desiredCountArray[i] = req.body.desiredCount[i];
+          fargateLast = true;
+        }
+        if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') {
+          fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
+          fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
+          fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+          fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+          fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+          fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+
+        }
+
+        if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress' && flag == true) {
+          flag = false;
+          fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+          fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+          fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+          fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+
+        }
+        if (req.body.service[i] == 's3_bucket') {
+          fileWriterJson(req.body.environment + '.params.json', 'BucketName', req.body.s3_name);
+          fileWriterJsonLast(req.body.environment + '.params.json', 'BucketRegion', req.body.region);
+        }
       }
-      if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') {
-        fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
-        fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
-
-      }
-
-      if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress' && flag == true) {
-        flag = false;
-        fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
-        fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
-        fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
-        fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
-
-      }
-      if (req.body.service[i] == 's3_bucket') {
-        fileWriterJson(req.body.environment + '.params.json', 'BucketName', req.body.s3_name);
-        fileWriterJson(req.body.environment + '.params.json', 'BucketRegion', req.body.region);
-      }
-
     }
   }
   printarray(dockerArray, 'DockerImageUrl', false);
@@ -291,7 +335,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   printarray(nameArray, 'ContainerName', false);
   printarray(trafficPortArray, 'TrafficPort', false);
   printarray(sourceIpArray, 'SourceIP', false);
-  printarray(desiredCountArray, 'DesiredCount', true);
+  printarray(desiredCountArray, 'DesiredCount', fargateLast);
 
   function printarray(array, name, last) {
     if (last == false) {
