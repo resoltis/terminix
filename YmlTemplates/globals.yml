@@ -1,9 +1,7 @@
  AWSTemplateFormatVersion: '2010-09-09'
  Description: # Service Name - ENV - Fargate CFT - Date
  Parameters:
- VpcId:  #This will be static based on Account/Env 
-    Type: String
-  TargetEnv: #this will be surveyed 
+   TargetEnv: #this will be surveyed 
     Type: String
  BusinessUnitTag: #Surveyed by user
     Type: String
