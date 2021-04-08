@@ -16,6 +16,6 @@ function build() {
   git.push(['-u','test', 'sending-to-remote-CFT'], () => console.log('done'));
   //git.init();
   //git.checkoutBranch('main', 'origin');
-  git.reset(['HEAD^', '--hard']);
+  //git.reset(['HEAD^', '--hard']);
 } 
 build();
