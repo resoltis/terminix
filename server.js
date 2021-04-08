@@ -11,6 +11,11 @@ const { exec } = require('child_process');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static("express"));
 
+// Load the AWS SDK for SNS Feature
+var AWS = require('aws-sdk');
+// Set region
+AWS.config.update({region: 'us-east-1'});
+
 //Load landing page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/express/index.html'));
@@ -328,6 +333,29 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     fs.appendFileSync(path.join('CFT Files', fileName), '"ParamaterValue": ' + '"' + paramValue + '"' + '\n' + '}\n]');
     return
   }
+  /////////////////// SNS ///////////////////////
+  // we will put this back in when ready to deploy SNS feature
+  /*
+  // Create publish parameters
+var params = {
+  Message: 'A new CFT has been sent to the repository ' + req.body.repoUrl, /* required */
+  /*
+  TopicArn: 'arn:aws:sns:us-east-1:833177699681:UACapstone2021'
+};
+/*
+// Create promise and SNS service object
+var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params).promise();
+
+// Handle promise's fulfilled/rejected states
+publishTextPromise.then(
+  function(data) {
+    console.log(`Message ${params.Message} sent to the topic ${params.TopicArn}`);
+    console.log("MessageID is " + data.MessageId);
+  }).catch(
+    function(err) {
+    console.error(err, err.stack);
+  });
+*/
 
   res.writeHead(301,
     { Location: req.body.repoUrl }
