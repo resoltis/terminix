@@ -3,12 +3,8 @@
     <div style="padding: 24px;">
 
         <div class="row">
-            <div class="col-md-8" style="padding: 2px;">
-                <div class="row">
-                    <img class="icon" src="icons/fargate.jpg"/>
-                    <h3>Fargate</h3>
-                </div>
-            </div>
+            <img class="icon" src="icons/fargate.jpg">
+            <h1>Fargate</h1>
         </div>
 
         <div class="row">
@@ -44,11 +40,11 @@
             
                 <div class="row">
                     <label for="desiredCount">Desired Count:</label>
-                    <input type="number" id="desiredCount" name="desiredCount" value="2" required style="width:100%" required />
+                    <input type="number" id="desiredCount" name="desiredCount" value="2" style="width:100%" required >
                 </div>
                 <div class="row">
                     <label for="version">Version:</label>
-                    <input type="string" id="version" name="version" value="1" required style="width:100%" required />
+                    <input type="string" id="version" name="version" value="1" style="width:100%" required >
                 </div>
             </div>
         
@@ -56,15 +52,15 @@
                 <div id="containerArea">
                     <div class="row">
                         <label for="dockerImageUrl">Docker Image URL 1:</label>
-                        <input type="text" id="dockerImageUrl" name="dockerImageUrl" required style="width:100%" required />
+                        <input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required >
                     </div>
                     <div class="row">
                         <label for="containerName">Container Name 1:</label>
-                        <input type="text" id="containerName" name="containerName" required style='width:100%' required/>
+                        <input type="text" id="containerName" name="containerName" style='width:100%' required>
                     </div>
                     <div class="row" style="border-bottom: 1px solid black; border-width: 80%;">
                         <label for="containerPort">Container Port 1:</label>
-                        <input type="number" id="containerPort" name="containerPort" required style="width:100%" required />
+                        <input type="number" id="containerPort" name="containerPort" style="width:100%" required >
                     </div>
                 </div>
                 <div class="row">
@@ -80,11 +76,11 @@
                 <div id="trafficArea">
                     <div class="row">
                         <label for="trafficPort">Traffic Port 1:</label>
-                        <input type="number" id="trafficPort" name="trafficPort" required style="width:100%" required/>
+                        <input type="number" id="trafficPort" name="trafficPort" style="width:100%" required>
                     </div>
                     <div class="row" style="border-bottom: 1px solid black; border-width: 80%;">
                         <label for="sourceIp">Source IP 1:</label>
-                        <input type="number"id="sourceIp" name="sourceIp" required style="width:100%" required/>
+                        <input type="number"id="sourceIp" name="sourceIp" style="width:100%" required>
                     </div>
                 </div>
                 
@@ -103,44 +99,34 @@
             //Adding a new container
             $('.add-container').click(function (e) {
                 e.preventDefault();
-                var id = ($("#containerArea").children().length/3)+1; //Get number of containers
+
+                var id = ($(this).parent().prev().children().length/3)+1; //Get number of containers
+
+                alert($(this).parent().prev().attr('id'));
                 if($(this).parent().parent().parent().parent().parent().css('display')!='none') //only add it to the form being displayed
                 {
-                    $('#containerArea').append('<div class="row"><label for="dockerImageUrl">Docker Image URL '+id+':</label><input type="text" id="dockerImageUrl" name="dockerImageUrl" required /></div><div class="row" ><label for="containerName">Container Name '+id+':</label><input type="text" id="containerName" name="containerName" required/></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port '+id+':</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required /></div>'); //add tab on top bar
-            
+                    $(this).parent().prev().append('<div class="row"><label for="dockerImageUrl">Docker Image URL 1:</label>mageUrl" name="dockerImageUrl" style="width:100%" required ></div><div class="row"><label for="containerName">Container Name 1:</label><input type="text" id="containerName" name="containerName" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port 1:</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required ></div>'); //add tab on top bar
                 }
-                
             });
 
             //Deleting a new container
             $('.delete-container').click(function (e) {
                 e.preventDefault();
-                var id = ($("#containerArea").children().length/3); //Get number of containers
-                if($(this).parent().parent().parent().parent().parent().css('display')!='none') //only add it to the form being displayed
-                {
-                    $(this).parent().prev().prev().children().slice(-3).remove();
-                }
+                $(this).parent().prev().prev().children().slice(-3).remove();
             });
 
             //Adding a new security role
             $('.add-traffic-area').click(function (e) {
                 e.preventDefault();
-                var id = ($("#trafficArea").children().length/2)+1; //Get number of security roles
-                if($(this).parent().parent().parent().parent().parent().css('display')!='none') //only add it to the form being displayed
-                {
-                    $('#trafficArea').append('<div class="row"><label for="trafficPort">Traffic Port '+id+':</label><input type="number"id="trafficPort" name="trafficPort" required/></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="sourceIp">Source IP '+id+':</label><input type="number" id="sourceIp" name="sourceIp" required style="width:100%" required/></div>'); //add tab on top bar
+                var id = ($(this).parent().prev().children().length/2)+1; //Get number of security roles
+                $(this).parent().prev().append('<div class="row"><label for="trafficPort">Traffic Port '+id+':</label><input type="number"id="trafficPort" name="trafficPort" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="sourceIp">Source IP '+id+':</label><input type="number" id="sourceIp" name="sourceIp" required style="width:100%" required></div>'); //add tab on top bar
             
-                }
             });
 
             //Deleting a new security role
             $('.delete-traffic-area').click(function (e) {
                 e.preventDefault();
-                var id = ($("#trafficArea").children().length/2); //Get number of security roles
-                if($(this).parent().parent().parent().parent().parent().css('display')!='none') //only add it to the form being displayed
-                {
-                    $(this).parent().prev().prev().children().slice(-2).remove();
-                }
+                $(this).parent().prev().prev().children().slice(-2).remove();
             });
         </script>
             
