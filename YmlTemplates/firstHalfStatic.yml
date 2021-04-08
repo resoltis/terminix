@@ -1,0 +1,47 @@
+Resources:
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:  #build this off Service Name + Fargate-Execution-Role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+      Tags: 
+        - Key: BusinessUnit
+          Value: !Ref BusinessUnitTag
+        - Key: Customer
+          Value: !Ref CustomerTag
+        - Key: Environment
+          Value: !Ref EnvironmentTag
+        - Key: ManagedBy
+          Value: !Ref ManagedByTag
+        - Key: ProductOwner
+          Value: !Ref ProductOwnerTag
+        - Key: Provisioned
+          Value: !Ref ProvisionedTag
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Tags: 
+        - Key: BusinessUnit
+          Value: !Ref BusinessUnitTag
+        - Key: Customer
+          Value: !Ref CustomerTag
+        - Key: Environment
+          Value: !Ref EnvironmentTag
+        - Key: ManagedBy
+          Value: !Ref ManagedByTag
+        - Key: ProductOwner
+          Value: !Ref ProductOwnerTag
+        - Key: Provisioned
+          Value: !Ref ProvisionedTag
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref ExecutionRole
+      Family: !Sub task-${AWS::StackName}
+      NetworkMode: awsvpc
+      RequiresCompatibilities: ['FARGATE']

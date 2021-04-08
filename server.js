@@ -190,7 +190,9 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
   }
 
-
+  console.log("here  " + req.body.dockerImageUrl);
+  console.log("herev2  " + req.body.dockerImageUrl[1]);
+  console.log('herev3   ' + req.body.dockerImageUrl.length);
   var memoryArray = [];
   var cpuArray = [];
   var portArray = [];
@@ -244,7 +246,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   if (typeof req.body.service == 'object') {
 
     for (var i = 0; i <= req.body.service.length - 1; i++) {
-      if (i < req.body.service.length) { // this handles the part before the last service being added
+      if (i < (req.body.service.length - 1)) { // this handles the part before the last service being added
         if (i == 0) { // fill in global values
           fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
           fileWriterJson(req.body.environment + '.params.json', 'Account', req.body.account);
@@ -256,7 +258,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
         }
         if (req.body.service[i] == 'fargate') {
           //fill service unqiue values into an array for each value. 
-          dockerArray[i] = req.body.dockerImageUrl[i];
+          //for (var k = 0; k <= req.body.dockerimageUrl.length; k++) { dockerArray[i] = req.body.dockerImageUrl[i][k]; }
+          dockerArray[i] = req.body.dockerImageUrl[i][i];
           portArray[i] = req.body.containerPort[i];
           cpuArray[i] = req.body.containerCPU[i];
           memoryArray[i] = req.body.containerMemory[i];
@@ -289,7 +292,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           fileWriterJson(req.body.environment + '.params.json', 'BucketRegion', req.body.region);
         }
       }
-      if (req.body.service.length == i) { // This is the last service that is requested in the stack.
+      if (req.body.service.length == (i - 1)) { // This is the last service that is requested in the stack.
 
         if (req.body.service[i] == 'fargate') {
           //fill service unqiue values into an array for each value. 
@@ -328,13 +331,13 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       }
     }
   }
-  printarray(dockerArray, 'DockerImageUrl', false);
-  printarray(portArray, 'ContainerPort', false);
+  printarraylist(dockerArray, 'DockerImageUrl', false);
+  printarraylist(portArray, 'ContainerPort', false);
   printarray(cpuArray, 'CPU', false);
   printarray(memoryArray, 'Memory', false);
-  printarray(nameArray, 'ContainerName', false);
-  printarray(trafficPortArray, 'TrafficPort', false);
-  printarray(sourceIpArray, 'SourceIP', false);
+  printarraylist(nameArray, 'ContainerName', false);
+  printarraylist(trafficPortArray, 'TrafficPort', false);
+  printarraylist(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
 
   function printarray(array, name, last) {
@@ -355,8 +358,33 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
         else { fileWriterJsonLast(req.body.environment + '.params.json', name + (j + 1), array[j]); }
       }
     }
-
   }
+  // this handles multiple container definitons/securitry rules
+  function printarraylist(array, name) {
+
+    for (var j = 0; j <= array.length - 1; j++) {
+      // if (array.length == 1) {
+      console.log(name + ' ' + array);
+      console.log(array[0][0]);
+      console.log(array[0][1]);
+      console.log(array[1][0]);
+      console.log(array[1][1]);
+
+      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[0][0]);
+      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[0][1]);
+      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[1][0]);
+      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[1][1]);
+      // }
+      // else {
+      //   var holder = [];
+      //   holder = array[j].split(",");
+      //   fileWriterJson(req.body.environment + '.params.json', name + (j + 1), holder[2]);
+      // }
+    }
+  }
+
+
+
   // $(function() {
   //   $("#addContainer").click(function(e) {
   //     e.preventDefault();
@@ -406,13 +434,13 @@ publishTextPromise.then(
   );
   res.end();
 
-  function vpcLookup(values, accountName, enviorment) {
-    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+  function vpcLookup(values, accountName, enviornment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviornment);
     let valueSeek = specificValue.vpc;
     return valueSeek;
   }
-  function subLookup(values, accountName, enviorment) {
-    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+  function subLookup(values, accountName, enviornment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviornment);
     let valueSeek = specificValue.sub1 + ',' + specificValue.sub2;
     return valueSeek;
   }

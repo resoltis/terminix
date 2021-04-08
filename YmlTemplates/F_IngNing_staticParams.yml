@@ -1,0 +1,9 @@
+ VpcId:  #This will be static based on Account/Env 
+    Type: String
+ClusterName: #this will be static based on Account/Env
+    Type: String
+LogRetention: #Static 7 
+    Type: Number
+    Default: 7
+Subnets: #This is static based off the VPC ID
+    Type: CommaDelimitedList
