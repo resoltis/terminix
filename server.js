@@ -328,13 +328,13 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       }
     }
   }
-  printarray(dockerArray, 'DockerImageUrl', false);
-  printarray(portArray, 'ContainerPort', false);
+  printarraylist(dockerArray, 'DockerImageUrl', false);
+  printarraylist(portArray, 'ContainerPort', false);
   printarray(cpuArray, 'CPU', false);
   printarray(memoryArray, 'Memory', false);
   printarray(nameArray, 'ContainerName', false);
-  printarray(trafficPortArray, 'TrafficPort', false);
-  printarray(sourceIpArray, 'SourceIP', false);
+  printarraylist(trafficPortArray, 'TrafficPort', false);
+  printarraylist(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
 
   function printarray(array, name, last) {
@@ -355,7 +355,25 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
         else { fileWriterJsonLast(req.body.environment + '.params.json', name + (j + 1), array[j]); }
       }
     }
-
+  }
+  function printarraylist(array, name, last) {
+    if (last == false) {
+      for (var j = 0; j <= array.length - 1; j++) {
+        if (array.length == 1) {
+          fileWriterJson(req.body.environment + '.params.json', name, array[j]);
+        }
+        else { fileWriterJson(req.body.environment + '.params.json', name + (j + 1), array[j]); }
+      }
+    }
+    if (last == true) {
+      for (var j = 0; j <= array.length - 1; j++) {
+        if (array.length == 1) {
+          fileWriterJsonLast(req.body.environment + '.params.json', name, array[j]);
+        }
+        else if (array.length > 1 && j != array.length) { fileWriterJson(req.body.environment + '.params.json', name + (j + 1), array[j]); }
+        else { fileWriterJsonLast(req.body.environment + '.params.json', name + (j + 1), array[j]); }
+      }
+    }
   }
   // $(function() {
   //   $("#addContainer").click(function(e) {
@@ -406,13 +424,13 @@ publishTextPromise.then(
   );
   res.end();
 
-  function vpcLookup(values, accountName, enviorment) {
-    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+  function vpcLookup(values, accountName, enviornment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviornment);
     let valueSeek = specificValue.vpc;
     return valueSeek;
   }
-  function subLookup(values, accountName, enviorment) {
-    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviorment);
+  function subLookup(values, accountName, enviornment) {
+    let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviornment);
     let valueSeek = specificValue.sub1 + ',' + specificValue.sub2;
     return valueSeek;
   }
