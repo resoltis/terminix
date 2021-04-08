@@ -14,7 +14,7 @@ app.use(express.static("express"));
 // Load the AWS SDK for SNS Feature
 var AWS = require('aws-sdk');
 // Set region
-AWS.config.update({region: 'us-east-1'});
+AWS.config.update({ region: 'us-east-1' });
 
 //Load landing page
 app.get('/', (req, res) => {
@@ -220,6 +220,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       trafficPortArray[0] = req.body.trafficPort;
       sourceIpArray[0] = req.body.sourceIp;
       desiredCountArray[0] = req.body.desiredCount;
+      fargateLast = true;
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'ingress') {
       fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
@@ -260,7 +261,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           cpuArray[i] = req.body.containerCPU[i];
           memoryArray[i] = req.body.containerMemory[i];
           nameArray[i] = req.body.containerName[i];
-          trafficPortArray[i] = req.body.trafficPort[i]
+          trafficPortArray[i] = req.body.trafficPort[i];
           sourceIpArray[i] = req.body.sourceIp[i];
           desiredCountArray[i] = req.body.desiredCount[i];
 
@@ -288,7 +289,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           fileWriterJson(req.body.environment + '.params.json', 'BucketRegion', req.body.region);
         }
       }
-      if (req.body.service.length == i) {
+      if (req.body.service.length == i) { // This is the last service that is requested in the stack.
 
         if (req.body.service[i] == 'fargate') {
           //fill service unqiue values into an array for each value. 
@@ -297,7 +298,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           cpuArray[i] = req.body.containerCPU[i];
           memoryArray[i] = req.body.containerMemory[i];
           nameArray[i] = req.body.containerName[i];
-          trafficPortArray[i] = req.body.trafficPort[i]
+          trafficPortArray[i] = req.body.trafficPort[i];
           sourceIpArray[i] = req.body.sourceIp[i];
           desiredCountArray[i] = req.body.desiredCount[i];
           fargateLast = true;
