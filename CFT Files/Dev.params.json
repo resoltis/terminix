@@ -1,0 +1,66 @@
+[
+{
+"ParamaterKey": "Account",
+"ParamaterValue": "TMX-BI"
+},
+{
+"ParamaterKey": "TargetEnv",
+"ParamaterValue": "Dev"
+},
+{
+"ParamaterKey": "BusinessUnitTag",
+"ParamaterValue": "tag"
+},
+{
+"ParamaterKey": "CustomerTag",
+"ParamaterValue": "g"
+},
+{
+"ParamaterKey": "ProductOwnerTag",
+"ParamaterValue": "g"
+},
+{
+"ParamaterKey": "ProvisionedTag",
+"ParamaterValue": "Portal name"
+},
+{
+"ParamaterKey": "AlbListenerArn",
+"ParamaterValue": "#fill in LB Arn here"
+},
+{
+"ParamaterKey": "AlbListenerArn",
+"ParamaterValue": "#Rule Priority here"
+},
+{
+"ParamaterKey": "DockerImageUrl",
+"ParamaterValue": "h"
+},
+{
+"ParamaterKey": "ContainerPort",
+"ParamaterValue": "01"
+},
+{
+"ParamaterKey": "CPU",
+"ParamaterValue": "256"
+},
+{
+"ParamaterKey": "Memory",
+"ParamaterValue": "0.5"
+},
+{
+"ParamaterKey": "ContainerName",
+"ParamaterValue": "h"
+},
+{
+"ParamaterKey": "TrafficPort",
+"ParamaterValue": "010"
+},
+{
+"ParamaterKey": "SourceIP",
+"ParamaterValue": "01"
+},
+{
+"ParamaterKey": "DesiredCount",
+"ParamaterValue": "2"
+}
+]
