@@ -119,6 +119,7 @@
                 e.preventDefault();
                 if (!$(this).hasClass('add-service')) { //If not add service button
                     $('.tab-pane').hide(); //hide all tab panes
+                    $('#containerArea').hide(); //hide all tab panes
                     $('.nav-tabs li').removeClass('active'); //de-activate all tabs at top
 
                     var parent = $(this).parent('li'); //get parent list of selected tab
@@ -126,6 +127,7 @@
 
                     var content = $(this).attr('href'); //get tab content href
                     $(content).show(); //show tab content
+                    $(content).find('#containerArea').show();
                 }
             })
             .on("click", "span", function () {          //deleting tabs
