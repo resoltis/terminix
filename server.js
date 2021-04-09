@@ -127,7 +127,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Require file system for writing to file
   const fs = require('fs');
-
+  console.log("testtest " + contCount);
 
   var services = req.body.service; //get list of services
 
@@ -190,9 +190,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
   }
 
-  console.log("here  " + req.body.dockerImageUrl);
-  console.log("herev2  " + req.body.dockerImageUrl[1]);
-  console.log('herev3   ' + req.body.dockerImageUrl.length);
+
   var memoryArray = [];
   var cpuArray = [];
   var portArray = [];
