@@ -9,7 +9,7 @@
 },
 {
 "ParamaterKey": "BusinessUnitTag",
-"ParamaterValue": "tag"
+"ParamaterValue": "btag"
 },
 {
 "ParamaterKey": "CustomerTag",
@@ -17,7 +17,7 @@
 },
 {
 "ParamaterKey": "ProductOwnerTag",
-"ParamaterValue": "reagan"
+"ParamaterValue": "re"
 },
 {
 "ParamaterKey": "ProvisionedTag",
