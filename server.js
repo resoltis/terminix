@@ -127,7 +127,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Require file system for writing to file
   const fs = require('fs');
-  console.log("testtest " + contCount);
+  console.log("testtest " + req.body.countArray);
 
   var services = req.body.service; //get list of services
 
@@ -329,6 +329,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       }
     }
   }
+  // after the loops close this prints all the lists of values that were filled during the loop. 
   printarraylist(dockerArray, 'DockerImageUrl', false);
   printarraylist(portArray, 'ContainerPort', false);
   printarray(cpuArray, 'CPU', false);
@@ -338,8 +339,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   printarraylist(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
 
-  function printarray(array, name, last) {
-    if (last == false) {
+  function printarray(array, name, last) { // This function takes in an array and prints it into the param file as an orderd list.
+    if (last == false) { //This is where any non-last arrays are handled
       for (var j = 0; j <= array.length - 1; j++) {
         if (array.length == 1) {
           fileWriterJson(req.body.environment + '.params.json', name, array[j]);
@@ -347,7 +348,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
         else { fileWriterJson(req.body.environment + '.params.json', name + (j + 1), array[j]); }
       }
     }
-    if (last == true) {
+    if (last == true) { // This is where the last array is handled it is also how I handle ending the file if the last service is a fargate service. 
       for (var j = 0; j <= array.length - 1; j++) {
         if (array.length == 1) {
           fileWriterJsonLast(req.body.environment + '.params.json', name, array[j]);
