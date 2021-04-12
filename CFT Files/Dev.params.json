@@ -1,0 +1,33 @@
+[
+{
+"ParamaterKey": "Account",
+"ParamaterValue": "TMX-BI"
+},
+{
+"ParamaterKey": "TargetEnv",
+"ParamaterValue": "Dev"
+},
+{
+"ParamaterKey": "BusinessUnitTag",
+"ParamaterValue": "btag"
+},
+{
+"ParamaterKey": "CustomerTag",
+"ParamaterValue": "ctag"
+},
+{
+"ParamaterKey": "ProductOwnerTag",
+"ParamaterValue": "reagan"
+},
+{
+"ParamaterKey": "ProvisionedTag",
+"ParamaterValue": "Portal name"
+},
+{
+"ParamaterKey": "AlbListenerArn",
+"ParamaterValue": "#fill in LB Arn here"
+},
+{
+"ParamaterKey": "AlbListenerArn",
+"ParamaterValue": "#Rule Priority here"
+},
