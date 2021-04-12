@@ -9,15 +9,15 @@
 },
 {
 "ParamaterKey": "BusinessUnitTag",
-"ParamaterValue": "btag"
+"ParamaterValue": "t"
 },
 {
 "ParamaterKey": "CustomerTag",
-"ParamaterValue": "ctag"
+"ParamaterValue": "t"
 },
 {
 "ParamaterKey": "ProductOwnerTag",
-"ParamaterValue": "re"
+"ParamaterValue": "t"
 },
 {
 "ParamaterKey": "ProvisionedTag",
