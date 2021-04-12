@@ -9,11 +9,11 @@
 },
 {
 "ParamaterKey": "BusinessUnitTag",
-"ParamaterValue": "unit"
+"ParamaterValue": "tag"
 },
 {
 "ParamaterKey": "CustomerTag",
-"ParamaterValue": "ctag"
+"ParamaterValue": "tag"
 },
 {
 "ParamaterKey": "ProductOwnerTag",
