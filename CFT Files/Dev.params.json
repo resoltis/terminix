@@ -13,7 +13,7 @@
 },
 {
 "ParamaterKey": "CustomerTag",
-"ParamaterValue": "tag"
+"ParamaterValue": "ctag"
 },
 {
 "ParamaterKey": "ProductOwnerTag",
