@@ -127,7 +127,9 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
 
   //Require file system for writing to file
   const fs = require('fs');
-  console.log("testtest " + req.body.countArray);
+
+  // Test stuff asdfasf(#$(#(*$ #*$#$
+  console.log("testtest " + req.body.containerCount);
 
   var services = req.body.service; //get list of services
 
@@ -147,6 +149,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   //Create base level CFT File
 
   fs.openSync(path.join('CFT Files', 'cloudformation.yml'), 'w');
+  fs.openSync(path.join('CFT Files', 'AustinsTestFile.yml'), 'w');
+
 
   //Append templates to yaml file
   //Completely expanded as long as templates are uploaded to YmlTemplates
@@ -213,19 +217,29 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     fileWriterJson(req.body.environment + '.params.json', 'ProvisionedTag', 'Portal name');
     if (req.body.service == 'fargate') {
       //fill service unqiue values into an array for each value. 
-      dockerArray[0] = req.body.dockerImageUrl;
-      portArray[0] = req.body.containerPort;
+
       cpuArray[0] = req.body.containerCPU;
       memoryArray[0] = req.body.containerMemory;
-      nameArray[0] = req.body.containerName;
-      trafficPortArray[0] = req.body.trafficPort;
-      sourceIpArray[0] = req.body.sourceIp;
       desiredCountArray[0] = req.body.desiredCount;
       fargateLast = true;
+      for (var m = 0; m <= (req.body.containerCount - 1); m++) { // This fills the arrays for single service multiple container definitons
+        dockerArray[m] = req.body.dockerImageUrl[m];
+        portArray[m] = req.body.containerPort[m];
+        nameArray[m] = req.body.containerName[m];
+      }
+      for (var b = 0; b <= (req.body.securityCount - 1); b++) { // This feels the array for single service multiple sercurity group rules
+        trafficPortArray[b] = req.body.trafficPort[b];
+        sourceIpArray[b] = req.body.sourceIp[b];
+      }
+
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'ingress') {
       fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
       fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
+      fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
+      fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
+      fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
+      fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'nonIngress') {
 
@@ -240,7 +254,8 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
 
   }
-
+  // HERE IS YOUR TEST SHIT AUSTIN 
+  console.log("this is the docker array " + req.body.securityCount);
   // This creates the JSON file if multiple services are selected
   if (typeof req.body.service == 'object') {
 
@@ -332,13 +347,13 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
   }
   // after the loops close this prints all the lists of values that were filled during the loop. 
-  printarraylist(dockerArray, 'DockerImageUrl', false);
-  printarraylist(portArray, 'ContainerPort', false);
+  printarray(dockerArray, 'DockerImageUrl', false);
+  printarray(portArray, 'ContainerPort', false);
   printarray(cpuArray, 'CPU', false);
   printarray(memoryArray, 'Memory', false);
-  printarraylist(nameArray, 'ContainerName', false);
-  printarraylist(trafficPortArray, 'TrafficPort', false);
-  printarraylist(sourceIpArray, 'CidrIP', false);
+  printarray(nameArray, 'ContainerName', false);
+  printarray(trafficPortArray, 'TrafficPort', false);
+  printarray(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
 
   function printarray(array, name, last) { // This function takes in an array and prints it into the param file as an orderd list.
@@ -360,29 +375,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       }
     }
   }
-  // this handles multiple container definitons/securitry rules
-  function printarraylist(array, name) {
 
-    for (var j = 0; j <= array.length - 1; j++) {
-      // if (array.length == 1) {
-      console.log(name + ' ' + array);
-      console.log(array[0][0]);
-      console.log(array[0][1]);
-      console.log(array[1][0]);
-      console.log(array[1][1]);
-
-      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[0][0]);
-      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[0][1]);
-      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[1][0]);
-      // fileWriterJson(req.body.environment + '.params.json', "testhere" + name + (j + 1), array[1][1]);
-      // }
-      // else {
-      //   var holder = [];
-      //   holder = array[j].split(",");
-      //   fileWriterJson(req.body.environment + '.params.json', name + (j + 1), holder[2]);
-      // }
-    }
-  }
 
 
 
@@ -434,6 +427,10 @@ publishTextPromise.then(
     { Location: req.body.repoUrl }
   );
   res.end();
+  function ContainerDefYamlWriterSS(containerNameArray, DockerImageUrlArray, ContainerPortArray) // Writes the container defintion portion of YAML code for single service requests
+  {
+
+  }
 
   function vpcLookup(values, accountName, enviornment) {
     let specificValue = values.find(specificValue => specificValue.accName === accountName && specificValue.env === enviornment);

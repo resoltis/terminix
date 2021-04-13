@@ -18,7 +18,7 @@
         </div>
 
         <input type="hidden" value="fargate" id="service" name="service">
-    
+
         <div class="row">
             <div class="col-md-4" style="border: 1px solid black; border-right: none; padding: 24px;">
                 <div class="row">
@@ -37,23 +37,23 @@
                         <option value="2">2 GB</option>
                     </select>
                 </div>
-            
+
                 <div class="row">
                     <label for="desiredCount">Desired Count:</label>
-                    <input type="number" id="desiredCount" name="desiredCount" value="2" style="width:100%" required >
+                    <input type="number" id="desiredCount" name="desiredCount" value="2" style="width:100%" required>
                 </div>
                 <div class="row">
                     <label for="version">Version:</label>
-                    <input type="string" id="version" name="version" value="1" style="width:100%" required >
+                    <input type="string" id="version" name="version" value="1" style="width:100%" required>
                 </div>
             </div>
-        
+
             <div class="col-md-4" style="border: 1px solid black; border-right: none; padding: 24px;">
                 <div id="containerArea">
                     <input type="hidden" value="1" id="containerCount" name="containerCount">
                     <div class="row">
                         <label for="dockerImageUrl">Docker Image URL 1:</label>
-                        <input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required >
+                        <input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required>
                     </div>
                     <div class="row">
                         <label for="containerName">Container Name 1:</label>
@@ -61,13 +61,13 @@
                     </div>
                     <div class="row" style="border-bottom: 1px solid black; border-width: 80%;">
                         <label for="containerPort">Container Port 1:</label>
-                        <input type="number" id="containerPort" name="containerPort" style="width:100%" required >
+                        <input type="number" id="containerPort" name="containerPort" style="width:100%" required>
                     </div>
                 </div>
                 <div class="row">
                     <button id="addContainer" class="add-container">Add container</button>
                 </div>
-                
+
                 <div class="row">
                     <button id="deleteContainer" class="delete-container">Delete previous container</button>
                 </div>
@@ -82,10 +82,10 @@
                     </div>
                     <div class="row" style="border-bottom: 1px solid black; border-width: 80%;">
                         <label for="sourceIp">Source IP 1:</label>
-                        <input type="number"id="sourceIp" name="sourceIp" style="width:100%" required>
+                        <input type="number" id="sourceIp" name="sourceIp" style="width:100%" required>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <button id="addTrafficArea" class="add-traffic-area">Add security role</button>
                 </div>
@@ -101,11 +101,11 @@
             //Adding a new container
             $('.add-container').off().click(function (e) {
                 e.preventDefault();
-                var id = ($(this).parent().prev().children().length/3)+1; //Get number of containers
-                
-                $(this).parent().prev().append('<div class="row"><label for="dockerImageUrl">Docker Image URL '+id+':</label><input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required ></div><div class="row"><label for="containerName">Container Name '+id+':</label><input type="text" id="containerName" name="containerName" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port '+id+':</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required ></div>'); //add tab on top bar
-                var count=parseInt($('#containerCount').val());
-  $('#containerCount').val(count+1);
+                var id = ($(this).parent().prev().children().length / 3) + 1; //Get number of containers
+
+                $(this).parent().prev().append('<div class="row"><label for="dockerImageUrl">Docker Image URL ' + id + ':</label><input type="text" id="dockerImageUrl" name="dockerImageUrl" style="width:100%" required ></div><div class="row"><label for="containerName">Container Name ' + id + ':</label><input type="text" id="containerName" name="containerName" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="containerPort">Container Port ' + id + ':</label><input type="number" id="containerPort" name="containerPort" style="width:100%" required ></div>'); //add tab on top bar
+                var count = parseInt($('#containerCount').val());
+                $('#containerCount').val(count + 1);
 
             });
 
@@ -114,27 +114,27 @@
             $('.delete-container').off().click(function (e) {
                 e.preventDefault();
                 $(this).parent().prev().prev().children().slice(-3).remove();
-                var count=parseInt($('#securityCount').val());
-  $('#securityCount').val(count-1);
+                var count = parseInt($('#containerCount').val());
+                $('#containerCount').val(count - 1);
             });
 
             //Adding a new security role
             $('.add-traffic-area').off().click(function (e) {
                 e.preventDefault();
-                var id = ($(this).parent().prev().children().length/2)+1; //Get number of security roles
-                $(this).parent().prev().append('<div class="row"><label for="trafficPort">Traffic Port '+id+':</label><input type="number"id="trafficPort" name="trafficPort" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="sourceIp">Source IP '+id+':</label><input type="number" id="sourceIp" name="sourceIp" required style="width:100%" required></div>'); //add tab on top bar
-                var count=parseInt($('#securityCount').val());
-  $('#securityCount').val(count+1);
+                var id = ($(this).parent().prev().children().length / 2) + 1; //Get number of security roles
+                $(this).parent().prev().append('<div class="row"><label for="trafficPort">Traffic Port ' + id + ':</label><input type="number"id="trafficPort" name="trafficPort" required></div><div class="row" style="border-bottom: 1px solid black; border-width: 80%;"><label for="sourceIp">Source IP ' + id + ':</label><input type="number" id="sourceIp" name="sourceIp" required style="width:100%" required></div>'); //add tab on top bar
+                var count = parseInt($('#securityCount').val());
+                $('#securityCount').val(count + 1);
             });
 
             //Deleting a new security role
             $('.delete-traffic-area').off().click(function (e) {
                 e.preventDefault();
                 $(this).parent().prev().prev().children().slice(-2).remove();
-                var count=parseInt($('#securityCount').val());
-  $('#securityCount').val(count-1);
+                var count = parseInt($('#securityCount').val());
+                $('#securityCount').val(count - 1);
             });
         </script>
-            
+
     </div>
 </body>
