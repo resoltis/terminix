@@ -1,0 +1,18 @@
+ ServiceDefinition:
+    DependsOn: ListenerRule
+    Type: "AWS::ECS::Service"
+    Properties: 
+      Cluster: !Ref ClusterName
+      DesiredCount: !Ref DesiredCount
+      LaunchType: FARGATE
+      ServiceName: !Sub # "Service Name-${Version}"
+      TaskDefinition: !Ref TaskDefinition
+      LoadBalancers: 
+        - TargetGroupArn: !Ref TargetGroup
+          ContainerName: !Ref ContainerName
+          ContainerPort: !Ref ContainerPort
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          Subnets: !Ref Subnets
+          SecurityGroups:
+            - !Ref ContainerSecurityGroup

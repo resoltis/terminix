@@ -355,6 +355,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   printarray(trafficPortArray, 'TrafficPort', false);
   printarray(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
+  ContainerDefYamlWriterSS(nameArray, sourceIpArray);
 
   function printarray(array, name, last) { // This function takes in an array and prints it into the param file as an orderd list.
     if (last == false) { //This is where any non-last arrays are handled
@@ -427,9 +428,41 @@ publishTextPromise.then(
     { Location: req.body.repoUrl }
   );
   res.end();
-  function ContainerDefYamlWriterSS(containerNameArray, DockerImageUrlArray, ContainerPortArray) // Writes the container defintion portion of YAML code for single service requests
+  function ContainerDefYamlWriterSS(NameArray, portArray) // Writes  YAML code for single service requests handles multiple containers/security rules for ingress and noningress
   {
+    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressFHSingleService.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!')
+    });
 
+    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\n' + 'ContainerDefinitions: ' + '\n');
+    for (var i = 1; i <= NameArray.length; i++) {
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '- Name: !Ref ContainerName' + i + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '  image: !Ref DockerImageUrl' + i + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), 'LogConfiguration:' + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + 'LogDriver: awslogs' + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + 'Options: ' + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + '\t' + 'awslogs-group: !Ref LogGroup' + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + '\t' + "awslogs-region: !Ref 'AWS::Region'" + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + '\t' + 'awslogs-stream-prefix: !Ref ContainerName' + i + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + ' PortMappings:' + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + '\t' + '- ContainerPort: !Ref ContainerPort' + i + '\n');
+    }
+    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressMidSingleService.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!')
+    });
+    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\n');
+    for (var i = 1; i <= portArray.length; i++) {
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '- IpProtocol: tcp');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'FromPort: !Ref TrafficPort' + i + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'ToPort: !Ref TrafficPort' + i + '\n');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'CidrIp: !Ref CidrIp' + i + '\n');
+    }
+    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressEndSingleService.yml')), function (err) {
+      if (err) throw err;
+      console.log('Saved!')
+    });
   }
 
   function vpcLookup(values, accountName, enviornment) {

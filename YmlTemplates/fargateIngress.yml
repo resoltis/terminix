@@ -51,7 +51,6 @@ Parameters:
   type: Number
   CidrIp: # secuirty group ip
   type: String
-
 Resources:
   ExecutionRole:
     Type: AWS::IAM::Role
