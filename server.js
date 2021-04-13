@@ -240,6 +240,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
       fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
       fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+      ContainerDefYamlWriterSS(nameArray, sourceIpArray, 'ingress');// This writes the YAML File for the fargate ingress service
     }
     if (req.body.service == 'fargate' && req.body.ingressNonIngress == 'nonIngress') {
 
@@ -247,6 +248,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
       fileWriterJson(req.body.environment + '.params.json', 'ClusterName', req.body.account + 'Cluster');
       fileWriterJson(req.body.environment + '.params.json', 'Subnets', subLookup(staticValues, req.body.account, req.body.environment));
       fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
+      ContainerDefYamlWriterSS(nameArray, sourceIpArray, 'nonIngress'); // This writes the YAML file for the fargate non-ingress service 
     }
     if (req.body.service == 's3_bucket') {
       fileWriterJson(req.body.environment + '.params.json', 'BucketName', req.body.s3_name);
@@ -355,7 +357,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   printarray(trafficPortArray, 'TrafficPort', false);
   printarray(sourceIpArray, 'CidrIP', false);
   printarray(desiredCountArray, 'DesiredCount', fargateLast);
-  ContainerDefYamlWriterSS(nameArray, sourceIpArray);
+
 
   function printarray(array, name, last) { // This function takes in an array and prints it into the param file as an orderd list.
     if (last == false) { //This is where any non-last arrays are handled
@@ -428,7 +430,7 @@ publishTextPromise.then(
     { Location: req.body.repoUrl }
   );
   res.end();
-  function ContainerDefYamlWriterSS(NameArray, portArray) // Writes  YAML code for single service requests handles multiple containers/security rules for ingress and noningress
+  function ContainerDefYamlWriterSS(NameArray, portArray, INI) // Writes  YAML code for single service requests handles multiple containers/security rules for ingress and noningress
   {
     fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressFHSingleService.yml')), function (err) {
       if (err) throw err;
@@ -448,13 +450,22 @@ publishTextPromise.then(
       fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + ' PortMappings:' + '\n');
       fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '\t' + '\t' + '- ContainerPort: !Ref ContainerPort' + i + '\n');
     }
-    fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressMidSingleService.yml')), function (err) {
-      if (err) throw err;
-      console.log('Saved!')
-    });
+    if (INI == "ingress") {
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'IngressMidSingleService.yml')), function (err) {
+        if (err) throw err;
+        console.log('Saved!')
+      });
+    }
+    if (INI == "nonIngress") {
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), fs.readFileSync(path.join('YmlTemplates', 'NonIngressMidSingleService.yml')), function (err) {
+        if (err) throw err;
+        console.log('Saved!')
+      });
+    }
+
     fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\n');
     for (var i = 1; i <= portArray.length; i++) {
-      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '- IpProtocol: tcp');
+      fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + '- IpProtocol: tcp' + '\n');
       fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'FromPort: !Ref TrafficPort' + i + '\n');
       fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'ToPort: !Ref TrafficPort' + i + '\n');
       fs.appendFileSync(path.join('CFT Files', 'AustinsTestFile.yml'), '\t' + 'CidrIp: !Ref CidrIp' + i + '\n');
