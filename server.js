@@ -190,7 +190,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
     }
   }
 
-
+  // this defines all the arrays that need to be filled in order to organize paramters that can have multiple values. 
   var memoryArray = [];
   var cpuArray = [];
   var portArray = [];
@@ -201,6 +201,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
   var desiredCountArray = [];
   var flag = true;
   var fargateLast = false;
+
   // This section creates the JSON file provided that there is only one service selected. 
   if (typeof req.body.service == 'string') {
     fs.appendFileSync(path.join('CFT Files', req.body.environment + '.params.json'), '[\n');
@@ -267,6 +268,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           desiredCountArray[i] = req.body.desiredCount[i];
 
         }
+        // fills in values for an ingress fargate service. 
         if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'ingress') {
           fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#fill in LB Arn here');
           fileWriterJson(req.body.environment + '.params.json', 'AlbListenerArn', '#Rule Priority here');
@@ -276,7 +278,7 @@ app.post('/generateFiles', urlencodedParser, function (req, res) {
           fileWriterJson(req.body.environment + '.params.json', 'vpcID', vpcLookup(staticValues, req.body.account, req.body.environment));
 
         }
-
+        // fills in values for a non-ingress fargate service. 
         if (req.body.service[i] == 'fargate' && req.body.ingressNonIngress[i] == 'nonIngress' && flag == true) {
           flag = false;
           fileWriterJson(req.body.environment + '.params.json', 'LogRetention', '7');
