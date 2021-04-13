@@ -3,6 +3,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Skynet # Service Name - ENV - S3 CFT - Date
 Parameters: 
+TargetEnv: #this will be surveyed 
+    Type: String
+ BusinessUnitTag: #Surveyed by user
+    Type: String
+ CustomerTag: #Surveyed by User
+    Type: String  
+ ProductOwnerTag: #Surveyed by user
+    Type: String
+ ProvisionedTag: #This is your web portal's name and static
+    Type: String
   BucketName: #This will be surveyed
     Type: String
   Region:  #This will be surveyed 
